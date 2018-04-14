@@ -24,61 +24,140 @@ void litehtml::el_before_after_base::add_style(const litehtml::style& st)
 {
 	html_tag::add_style(st);
 
-	tstring content = get_style_property(atom_content, false, _t(""));
-	if(!content.empty())
+	const tchar_t*	content = get_style_property(atom_content, false, atom_null );
+
+	//	content: normal;
+	//	content: none;
+	//	content: 'text';
+	//	content: url(http:/exemple.com/img.png);
+	//	content: counter(c_name);
+	//	content: attr(a_name);
+	//	content: open-quote;
+	//	content: close-quote;
+	//	content: no-open-quote;
+	//	content: no-close-quote;
+
+	//	Sauf avec normal et none, on peut utiliser plusieurs valeurs de façon simultanée
+	//	content: open-quote chapter_counter;
+
+	//	Valeurs globales
+	//	content: inherit;
+	//	content: initial;
+	//	content: unset;
+
+
+	//<eco: bad old code: if( content.empty() )
+	if( content && *content!=0 )
 	{
-		int idx = value_index(content.c_str(), content_property_string);
+		int idx = atom_index(content, -1, content_property_atoms );
 		if(idx < 0)
 		{
-			tstring fnc;
-			tstring::size_type i = 0;
-			while(i < content.length() && i != tstring::npos)
-			{
-				if(content.at(i) == _t('"'))
-				{
-					fnc.clear();
-					i++;
-					tstring::size_type pos = content.find(_t('"'), i);
-					tstring txt;
-					if(pos == tstring::npos)
-					{
-						txt = content.substr(i);
-						i = tstring::npos;
-					} else
-					{
-						txt = content.substr(i, pos - i);
-						i = pos + 1;
+			const tchar_t*	p = skip_sp( content );
+			if( *p=='"' || *p=='\'' ) {
+
+				tchar_t		sep = *p++;
+				const tchar_t*	start = p;
+
+				while( *p && *p!=sep ) {
+					p++;
+				}
+
+				if( *p==sep ) {
+					add_text( start, p-1-start );
+				}
+			}
+			else {
+				const tchar_t*	start = p;
+
+				// skip until end or params
+				while( *p && *p!='(' && *p!=' ' && *p!='\t' ) {
+					p++;
+				}
+
+				p = skip_sp( p );
+
+				if( *p=='(' ) {
+
+					//	url
+					//	counter
+					//	attr
+
+					xstring	t( start, p-start );
+					if( t.imatch("url") ) {
+
+						p = skip_sp( ++p );
+
+						xstring	url;
+
+						if( *p=='\'' || *p=='\"' ) {
+							tchar_t	sep = *p;
+							p++;
+							start = p;
+
+							while( *p && *p!=sep ) {
+								p++;
+							}
+
+							if( *p==sep ) {
+								url.set( start, p-start, true );
+							}
+						}
+						else {
+							start = p;
+							while( *p && *p!=')' ) {
+								p++;
+							}
+
+							if( *p==')' ) {
+
+								// trim
+								while( p>start && (p[-1]==' ' || p[-1]=='\t') )
+									p--;
+
+								url.set( start, p-start, true );
+							}
+						}
+
+
+						element::ptr el = std::make_shared<el_image>(get_document());
+						el->set_attr(atom_src, url.c_str());
+						el->set_attr(atom_style, _t("display:inline-block"));
+						el->set_tagName( atom_img /*_t("img")*/);
+						appendChild(el);
+						el->parse_attributes();
 					}
-					add_text(txt);
-				} else if(content.at(i) == _t('('))
-				{
-					i++;
-					litehtml::trim(fnc);
-					litehtml::lcase(fnc);
-					tstring::size_type pos = content.find(_t(')'), i);
-					tstring params;
-					if(pos == tstring::npos)
-					{
-						params = content.substr(i);
-						i = tstring::npos;
-					} else
-					{
-						params = content.substr(i, pos - i);
-						i = pos + 1;
+					else if( t.imatch("counter") ) {
+						//<todo:
 					}
-					add_function(fnc, params);
-					fnc.clear();
-				} else
-				{
-					fnc += content.at(i);
-					i++;
+					else if( t.imatch("attr") ) {
+
+						element::ptr el_parent = parent();
+						if (el_parent) {
+
+							start = skip_sp( ++p );
+							p = skip_nsp( p );
+
+							xstring	param( start, p-start );
+							atom	a_name = atom_create(param.c_str(), false );
+
+							if( a_name!=atom_null ) {	// unknown name
+								const tchar_t*	attr_value = el_parent->get_attr(a_name);
+								if (attr_value) {
+									add_text( attr_value );
+								}
+							}
+						}
+					}
+				}
+				else {
+					// ignored
 				}
 			}
 		}
 	}
 }
 
-void litehtml::el_before_after_base::add_text( const tstring& txt )
+void litehtml::el_before_after_base::add_text( const char* txt, int len=-1 )
 {
 	tstring word;
 	tstring esc;
@@ -106,8 +185,8 @@ void litehtml::el_before_after_base::add_text( const tstring& txt )
 					esc += txt.at(i);
 				}
 			}
-		} else
-		{
+		}
+		else {
 			if(!esc.empty() || txt.at(i) == _t('\\'))
 			{
 				esc += txt.at(i);
@@ -144,20 +223,21 @@ void litehtml::el_before_after_base::add_function( const tstring& fnc, const tst
 				tstring p_name = params;
 				trim(p_name);
 				//lcase(p_name);
-				atom a_name = atom_create(p_name.c_str() );
+				atom a_name = atom_create(p_name.c_str(), false );
 				//__asm int 3;	//<eco:
 
 				const tchar_t* attr_value = el_parent->get_attr(a_name);
-				if (attr_value)
-				{
+				if (attr_value) {
 					add_text(attr_value);
 				}
 			}
 		}
 		break;
+
 	// counter
 	case 1:
 		break;
+
 	// url
 	case 2:
 		{

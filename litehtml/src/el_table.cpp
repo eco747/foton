@@ -40,7 +40,7 @@ void litehtml::el_table::parse_styles(bool is_reparse)
 {
 	html_tag::parse_styles(is_reparse);
 
-	m_table_infos->m_border_collapse = (border_collapse) value_index(get_style_property(atom_border_collapse, true, _t("separate")), border_collapse_strings, border_collapse_separate);
+	m_table_infos->m_border_collapse = (border_collapse) atom_index(get_style_property(atom_border_collapse, true, _t("separate")), border_collapse_separate, border_collapse_atoms );
 
 	if(m_table_infos->m_border_collapse == border_collapse_separate)
 	{

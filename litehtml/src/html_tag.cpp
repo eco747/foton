@@ -8,12 +8,10 @@
 #include <locale>
 #include "el_before_after.h"
 
-using namespace litehtml;
+namespace litehtml {
 
-static	atom	a_border_style[]		= style_display_atoms;
-static	atom	a_element_position[]	= element_position_atoms;
-
-litehtml::html_tag::html_tag(const std::shared_ptr<litehtml::document>& doc) : litehtml::element(doc)
+html_tag::html_tag(const std::shared_ptr<document>& doc)
+	: element(doc)
 {
 	m_box_sizing			= box_sizing_content_box;
 	m_z_index				= 0;
@@ -40,12 +38,12 @@ litehtml::html_tag::html_tag(const std::shared_ptr<litehtml::document>& doc) : l
 	//m_table_infos->m_border_collapse		= border_collapse_separate;
 }
 
-litehtml::html_tag::~html_tag()
+html_tag::~html_tag()
 {
 
 }
 
-bool litehtml::html_tag::appendChild(const element::ptr &el)
+bool html_tag::appendChild(const element::ptr &el)
 {
 	if( el )
 	{
@@ -56,7 +54,7 @@ bool litehtml::html_tag::appendChild(const element::ptr &el)
 	return false;
 }
 
-bool litehtml::html_tag::removeChild(const element::ptr &el)
+bool html_tag::removeChild(const element::ptr &el)
 {
 	if(el && el->parent() == shared_from_this())
 	{
@@ -67,7 +65,7 @@ bool litehtml::html_tag::removeChild(const element::ptr &el)
 	return false;
 }
 
-void litehtml::html_tag::clearRecursive()
+void html_tag::clearRecursive()
 {
 	for(auto& el : m_children)
 	{
@@ -78,13 +76,13 @@ void litehtml::html_tag::clearRecursive()
 }
 
 
-litehtml::atom litehtml::html_tag::get_tagName() const
+atom html_tag::get_tagName() const
 {
 	//return m_tag.c_str();
 	return m_tag;
 }
 
-void litehtml::html_tag::set_attr( atom name, const tchar_t* val )
+void html_tag::set_attr( atom name, const tchar_t* val )
 {
 	if(name && val)
 	{
@@ -98,7 +96,7 @@ void litehtml::html_tag::set_attr( atom name, const tchar_t* val )
 	}
 }
 
-const litehtml::tchar_t* litehtml::html_tag::get_attr( atom name, const tchar_t* def )
+const tchar_t* html_tag::get_attr( atom name, const tchar_t* def )
 {
 	attr_map::const_iterator attr = m_attrs.find(name);
 	if(attr != m_attrs.end())
@@ -109,7 +107,7 @@ const litehtml::tchar_t* litehtml::html_tag::get_attr( atom name, const tchar_t*
 	return def;
 }
 
-litehtml::elements_vector litehtml::html_tag::select_all( const tstring& selector )
+elements_vector html_tag::select_all( const tstring& selector )
 {
 	css_selector sel(media_query_list::ptr(0));
 	sel.parse(selector);
@@ -117,14 +115,14 @@ litehtml::elements_vector litehtml::html_tag::select_all( const tstring& selecto
 	return select_all(sel);
 }
 
-litehtml::elements_vector litehtml::html_tag::select_all( const css_selector& selector )
+elements_vector html_tag::select_all( const css_selector& selector )
 {
-	litehtml::elements_vector res;
+	elements_vector res;
 	select_all(selector, res);
 	return res;
 }
 
-void litehtml::html_tag::select_all(const css_selector& selector, elements_vector& res)
+void html_tag::select_all(const css_selector& selector, elements_vector& res)
 {
 	if(select(selector))
 	{
@@ -138,7 +136,7 @@ void litehtml::html_tag::select_all(const css_selector& selector, elements_vecto
 }
 
 
-litehtml::element::ptr litehtml::html_tag::select_one( const tstring& selector )
+element::ptr html_tag::select_one( const tstring& selector )
 {
 	css_selector sel(media_query_list::ptr(0));
 	sel.parse(selector);
@@ -146,7 +144,7 @@ litehtml::element::ptr litehtml::html_tag::select_one( const tstring& selector )
 	return select_one(sel);
 }
 
-litehtml::element::ptr litehtml::html_tag::select_one( const css_selector& selector )
+element::ptr html_tag::select_one( const css_selector& selector )
 {
 	if(select(selector))
 	{
@@ -164,7 +162,7 @@ litehtml::element::ptr litehtml::html_tag::select_one( const css_selector& selec
 	return 0;
 }
 
-void litehtml::html_tag::apply_stylesheet( const litehtml::css& stylesheet )
+void html_tag::apply_stylesheet( const css& stylesheet )
 {
 	remove_before_after();
 
@@ -236,7 +234,7 @@ void litehtml::html_tag::apply_stylesheet( const litehtml::css& stylesheet )
 	}
 }
 
-void litehtml::html_tag::get_content_size( size& sz, int max_width )
+void html_tag::get_content_size( size& sz, int max_width )
 {
 	sz.height	= 0;
 	if(m_display == display_block)
@@ -248,7 +246,7 @@ void litehtml::html_tag::get_content_size( size& sz, int max_width )
 	}
 }
 
-void litehtml::html_tag::draw( uint_ptr hdc, int x, int y, const position* clip )
+void html_tag::draw( uint_ptr hdc, int x, int y, const position* clip )
 {
 	position pos = m_pos;
 	pos.x	+= x;
@@ -281,7 +279,7 @@ void litehtml::html_tag::draw( uint_ptr hdc, int x, int y, const position* clip 
 	}
 }
 
-litehtml::uint_ptr litehtml::html_tag::get_font(font_metrics* fm)
+uint_ptr html_tag::get_font(font_metrics* fm)
 {
 	if(fm)
 	{
@@ -290,7 +288,7 @@ litehtml::uint_ptr litehtml::html_tag::get_font(font_metrics* fm)
 	return m_font;
 }
 
-const litehtml::tchar_t* litehtml::html_tag::get_style_property( atom name, bool inherited, const tchar_t* def /*= 0*/ )
+const tchar_t* html_tag::get_style_property( atom name, bool inherited, const tchar_t* def /*= 0*/ )
 {
 	const tchar_t* ret = m_style.get_property(name);
 	element::ptr el_parent = parent();
@@ -310,7 +308,7 @@ const litehtml::tchar_t* litehtml::html_tag::get_style_property( atom name, bool
 	return ret;
 }
 
-const litehtml::tchar_t* litehtml::html_tag::get_style_property( atom name, bool inherited, const atom def /*= 0*/ )
+const tchar_t* html_tag::get_style_property( atom name, bool inherited, const atom def /*= 0*/ )
 {
 	const tchar_t*	ret = m_style.get_property(name);
 	element::ptr	el_parent = parent();
@@ -329,7 +327,7 @@ const litehtml::tchar_t* litehtml::html_tag::get_style_property( atom name, bool
 	return ret;
 }
 
-void litehtml::html_tag::parse_styles(bool is_reparse)
+void html_tag::parse_styles(bool is_reparse)
 {
 	const tchar_t* style = get_attr(atom_style);
 
@@ -341,13 +339,13 @@ void litehtml::html_tag::parse_styles(bool is_reparse)
 	init_font();
 	document::ptr doc = get_document();
 
-	m_el_position	= (element_position)	value_index_atom(get_style_property(atom_position,		false,	_t("static")),		a_element_position,		element_position_fixed);
-	m_text_align	= (text_align)			value_index(get_style_property(atom_text_align,		true,	_t("left")),		text_align_strings,			text_align_left);
-	m_overflow		= (overflow)			value_index(get_style_property(atom_overflow,		false,	_t("visible")),		overflow_strings,			overflow_visible);
-	m_white_space	= (white_space)			value_index(get_style_property(atom_white_space,	true,	_t("normal")),		white_space_strings,		white_space_normal);
-	m_display		= (style_display)		value_index_atom(get_style_property(atom_display,	false,	_t("inline")),		a_border_style,				display_inline);
-	m_visibility	= (visibility)			value_index(get_style_property(atom_visibility,		true,	_t("visible")),		visibility_strings,			visibility_visible);
-	m_box_sizing	= (box_sizing)			value_index(get_style_property(atom_box_sizing,		false,	_t("content-box")),	box_sizing_strings,			box_sizing_content_box);
+	m_el_position	= (element_position)	atom_index( get_style_property(atom_position,		false,	_t("static")),		element_position_fixed, element_position_atoms );
+	m_text_align	= (text_align)			atom_index( get_style_property(atom_text_align,		true,	_t("left")),		text_align_left,		text_align_atoms );
+	m_overflow		= (overflow)			atom_index( get_style_property(atom_overflow,		false,	_t("visible")),		overflow_visible,		overflow_atoms );
+	m_white_space	= (white_space)			atom_index( get_style_property(atom_white_space,	true,	_t("normal")),		white_space_normal,		white_space_atoms );
+	m_display		= (style_display)		atom_index( get_style_property(atom_display,		false,	_t("inline")),		display_inline,			border_style_atoms );
+	m_visibility	= (visibility)			atom_index( get_style_property(atom_visibility,		true,	_t("visible")),		visibility_visible,		visibility_atoms );
+	m_box_sizing	= (box_sizing)			atom_index( get_style_property(atom_box_sizing,		false,	_t("content-box")),	box_sizing_content_box,	box_sizing_atoms );
 
 	if(m_el_position != element_position_static)
 	{
@@ -359,12 +357,12 @@ void litehtml::html_tag::parse_styles(bool is_reparse)
 	}
 
 	const tchar_t* va	= get_style_property(atom_vertical_align, true,	_t("baseline"));
-	m_vertical_align = (vertical_align) value_index(va, vertical_align_strings, va_baseline);
+	m_vertical_align = (vertical_align) atom_index(va, va_baseline, vertical_align_atoms);
 
 	const tchar_t* fl	= get_style_property(atom_float, false,	_t("none"));
-	m_float = (element_float) value_index(fl, element_float_strings, float_none);
+	m_float = (element_float) atom_index(fl, float_none, element_float_atoms );
 
-	m_clear = (element_clear) value_index(get_style_property(atom_clear, false, _t("none")), element_clear_strings, clear_none);
+	m_clear = (element_clear) atom_index(get_style_property(atom_clear, false, _t("none")), clear_none, element_clear_atoms );
 
 	if (m_float != float_none)
 	{
@@ -512,10 +510,10 @@ void litehtml::html_tag::parse_styles(bool is_reparse)
 	if(m_display == display_list_item)
 	{
 		const tchar_t* list_type = get_style_property(atom_list_style_type, true, _t("disc"));
-		m_list_style_type = (list_style_type) value_index(list_type, list_style_type_strings, list_style_type_disc);
+		m_list_style_type = (list_style_type) atom_index(list_type, list_style_type_disc, list_style_type_atoms);
 
 		const tchar_t* list_pos = get_style_property(atom_list_style_position, true, _t("outside"));
-		m_list_style_position = (list_style_position) value_index(list_pos, list_style_position_strings, list_style_position_outside);
+		m_list_style_position = (list_style_position) value_index(list_pos, list_style_position_outside, list_style_position_atoms);
 
 		const tchar_t* list_image = get_style_property(atom_list_style_image, true, 0);
 		if(list_image && list_image[0])
@@ -540,7 +538,7 @@ void litehtml::html_tag::parse_styles(bool is_reparse)
 	}
 }
 
-int litehtml::html_tag::render( int x, int y, int max_width, bool second_pass )
+int html_tag::render( int x, int y, int max_width, bool second_pass )
 {
 	if (m_display == display_table || m_display == display_inline_table)
 	{
@@ -550,17 +548,17 @@ int litehtml::html_tag::render( int x, int y, int max_width, bool second_pass )
 	return render_box(x, y, max_width, second_pass);
 }
 
-bool litehtml::html_tag::is_white_space() const
+bool html_tag::is_white_space() const
 {
 	return false;
 }
 
-int litehtml::html_tag::get_font_size() const
+int html_tag::get_font_size() const
 {
 	return m_font_size;
 }
 
-int litehtml::html_tag::get_base_line()
+int html_tag::get_base_line()
 {
 	if(is_replaced())
 	{
@@ -574,7 +572,7 @@ int litehtml::html_tag::get_base_line()
 	return bl;
 }
 
-void litehtml::html_tag::init()
+void html_tag::init()
 {
 	if (m_display == display_table || m_display == display_inline_table)
 	{
@@ -620,7 +618,7 @@ void litehtml::html_tag::init()
 	}
 }
 
-int litehtml::html_tag::select(const css_selector& selector, bool apply_pseudo)
+int html_tag::select(const css_selector& selector, bool apply_pseudo)
 {
 	int right_res = select(selector.m_right, apply_pseudo);
 	if(right_res == select_no_match)
@@ -706,7 +704,7 @@ int litehtml::html_tag::select(const css_selector& selector, bool apply_pseudo)
 	return right_res;
 }
 
-int litehtml::html_tag::select(const css_element_selector& selector, bool apply_pseudo)
+int html_tag::select(const css_element_selector& selector, bool apply_pseudo)
 {
 	//if(!selector.m_tag.empty() && selector.m_tag != _t("*"))
 	if(selector.m_tag!=atom_null && selector.m_tag != atom_star )
@@ -834,13 +832,13 @@ int litehtml::html_tag::select(const css_element_selector& selector, bool apply_
 				if(begin != tstring::npos)
 				{
 					selector_name = i->val.substr(0, begin);
-					litehtml::trim(selector_name);
+					trim(selector_name);
 				} else
 				{
 					selector_name = i->val;
 				}
 
-				int selector = value_index(selector_name.c_str(), pseudo_class_strings);
+				int selector = atom_index(selector_name.c_str(), -1, pseudo_class_atoms );
 				
 				switch(selector)
 				{
@@ -959,7 +957,7 @@ int litehtml::html_tag::select(const css_element_selector& selector, bool apply_
 	return res;
 }
 
-litehtml::element::ptr litehtml::html_tag::find_ancestor(const css_selector& selector, bool apply_pseudo, bool* is_pseudo)
+element::ptr html_tag::find_ancestor(const css_selector& selector, bool apply_pseudo, bool* is_pseudo)
 {
 	element::ptr el_parent = parent();
 	if (!el_parent)
@@ -984,7 +982,7 @@ litehtml::element::ptr litehtml::html_tag::find_ancestor(const css_selector& sel
 	return el_parent->find_ancestor(selector, apply_pseudo, is_pseudo);
 }
 
-int litehtml::html_tag::get_floats_height(element_float el_float) const
+int html_tag::get_floats_height(element_float el_float) const
 {
 	if(is_floats_holder())
 	{
@@ -1070,7 +1068,7 @@ int litehtml::html_tag::get_floats_height(element_float el_float) const
 	return 0;
 }
 
-int litehtml::html_tag::get_left_floats_height() const
+int html_tag::get_left_floats_height() const
 {
 	if(is_floats_holder())
 	{
@@ -1093,7 +1091,7 @@ int litehtml::html_tag::get_left_floats_height() const
 	return 0;
 }
 
-int litehtml::html_tag::get_right_floats_height() const
+int html_tag::get_right_floats_height() const
 {
 	if(is_floats_holder())
 	{
@@ -1116,7 +1114,7 @@ int litehtml::html_tag::get_right_floats_height() const
 	return 0;
 }
 
-int litehtml::html_tag::get_line_left( int y )
+int html_tag::get_line_left( int y )
 {
 	if(is_floats_holder())
 	{
@@ -1153,7 +1151,7 @@ int litehtml::html_tag::get_line_left( int y )
 	return 0;
 }
 
-int litehtml::html_tag::get_line_right( int y, int def_right )
+int html_tag::get_line_right( int y, int def_right )
 {
 	if(is_floats_holder())
 	{
@@ -1195,7 +1193,7 @@ int litehtml::html_tag::get_line_right( int y, int def_right )
 }
 
 
-void litehtml::html_tag::get_line_left_right( int y, int def_right, int& ln_left, int& ln_right )
+void html_tag::get_line_left_right( int y, int def_right, int& ln_left, int& ln_right )
 {
 	if(is_floats_holder())
 	{
@@ -1218,7 +1216,7 @@ void litehtml::html_tag::get_line_left_right( int y, int def_right, int& ln_left
 	}
 }
 
-int litehtml::html_tag::fix_line_width( int max_width, element_float flt )
+int html_tag::fix_line_width( int max_width, element_float flt )
 {
 	int ret_width = 0;
 	if(!m_boxes.empty())
@@ -1311,7 +1309,7 @@ int litehtml::html_tag::fix_line_width( int max_width, element_float flt )
 	return ret_width;
 }
 
-void litehtml::html_tag::add_float(const element::ptr &el, int x, int y)
+void html_tag::add_float(const element::ptr &el, int x, int y)
 {
 	if(is_floats_holder())
 	{
@@ -1381,7 +1379,7 @@ void litehtml::html_tag::add_float(const element::ptr &el, int x, int y)
 	}
 }
 
-int litehtml::html_tag::find_next_line_top( int top, int width, int def_right )
+int html_tag::find_next_line_top( int top, int width, int def_right )
 {
 	if(is_floats_holder())
 	{
@@ -1453,16 +1451,7 @@ int litehtml::html_tag::find_next_line_top( int top, int width, int def_right )
 	return 0;
 }
 
-const tchar_t*	skip_sp( const tchar_t* p ) {
-	tchar_t		ch;
-	while( (ch=*p)==' ' || ch=='\t' ) {
-		p++;
-	}
-
-	return p;
-}
-
-void litehtml::html_tag::parse_background()
+void html_tag::parse_background()
 {
 	// parse background-color
 	m_bg.m_color		= get_color(atom_background_color, false, web_color(0, 0, 0, 0) );
@@ -1474,27 +1463,22 @@ void litehtml::html_tag::parse_background()
 		string_vector res;
 		split_string(str, res, _t(" \t"));
 
-		const tchar_t*	p = str;
-
 		const tchar_t*	left;
-		const tchar_t*	right;
+		const tchar_t*	right = NULL;
 
 		left = skip_sp(str);
-		while( *p && (*p!=' ' && *p!='\t') )
-			p++;
-
-		if( *p==0 ) {
-
+		if( *left ) {
+			right = skip_nsp(left);
+			right = skip_sp(right);
 		}
 
-
-
-
-		if(res.size() > 0)
+		if( *left )
 		{
-			if(res.size() == 1)
+			atom a_left = atom_create(left,false);
+
+			if( *right==0 )
 			{
-				if( value_in_list(res[0].c_str(), _t("left;right;center")) )
+				if( atom_in_list(a_left, 3, atom_left, atom_right, atom_center ) )
 				{
 					m_bg.m_position.x.fromString(res[0], _t("left;right;center"));
 					m_bg.m_position.y.set_value(50, css_units_percentage);
@@ -1603,28 +1587,16 @@ void litehtml::html_tag::parse_background()
 	doc->cvt_units(m_bg.m_position.height,	m_font_size);
 
 	// parse background_attachment
-	m_bg.m_attachment = (background_attachment) value_index(
-		get_style_property(atom_background_attachment, false, _t("scroll")),
-		background_attachment_strings, 
-		background_attachment_scroll);
+	m_bg.m_attachment = (background_attachment) atom_index( get_style_property(atom_background_attachment, false, _t("scroll")), background_attachment_scroll, background_attachment_atoms);
 
 	// parse background_attachment
-	m_bg.m_repeat = (background_repeat) value_index(
-		get_style_property(atom_background_repeat, false, _t("repeat")),
-		background_repeat_strings, 
-		background_repeat_repeat);
+	m_bg.m_repeat = (background_repeat) atom_index( get_style_property(atom_background_repeat, false, _t("repeat")), background_repeat_repeat, background_repeat_atoms );
 
 	// parse background_clip
-	m_bg.m_clip = (background_box) value_index(
-		get_style_property(atom_background_clip, false, _t("border-box")),
-		background_box_strings, 
-		background_box_border);
+	m_bg.m_clip = (background_box) atom_index( get_style_property(atom_background_clip, false, _t("border-box")), background_box_border, background_box_atoms );
 
 	// parse background_origin
-	m_bg.m_origin = (background_box) value_index(
-		get_style_property(atom_background_origin, false, _t("padding-box")),
-		background_box_strings, 
-		background_box_content);
+	m_bg.m_origin = (background_box) value_index( get_style_property(atom_background_origin, false, _t("padding-box")), background_box_content, background_box_atoms );
 
 	// parse background-image
 	css::parse_css_url( get_style_property(atom_background_image, false, _t("")), m_bg.m_image );
@@ -1636,7 +1608,7 @@ void litehtml::html_tag::parse_background()
 	}
 }
 
-void litehtml::html_tag::add_positioned(const element::ptr &el)
+void html_tag::add_positioned(const element::ptr &el)
 {
 	if (m_el_position != element_position_static || (!have_parent()))
 	{
@@ -1651,7 +1623,7 @@ void litehtml::html_tag::add_positioned(const element::ptr &el)
 	}
 }
 
-void litehtml::html_tag::calc_outlines( int parent_width )
+void html_tag::calc_outlines( int parent_width )
 {
 	m_padding.left	= m_css_padding.left.calc_percent(parent_width);
 	m_padding.right	= m_css_padding.right.calc_percent(parent_width);
@@ -1669,7 +1641,7 @@ void litehtml::html_tag::calc_outlines( int parent_width )
 	m_padding.bottom	= m_css_padding.bottom.calc_percent(parent_width);
 }
 
-void litehtml::html_tag::calc_auto_margins(int parent_width)
+void html_tag::calc_auto_margins(int parent_width)
 {
 	if (get_element_position() != element_position_absolute && (m_display == display_block || m_display == display_table))
 	{
@@ -1702,7 +1674,7 @@ void litehtml::html_tag::calc_auto_margins(int parent_width)
 	}
 }
 
-void litehtml::html_tag::parse_attributes()
+void html_tag::parse_attributes()
 {
 	for(auto& el : m_children)
 	{
@@ -1710,7 +1682,7 @@ void litehtml::html_tag::parse_attributes()
 	}
 }
 
-void litehtml::html_tag::get_text( tstring& text )
+void html_tag::get_text( tstring& text )
 {
 	for (auto& el : m_children)
 	{
@@ -1718,18 +1690,18 @@ void litehtml::html_tag::get_text( tstring& text )
 	}
 }
 
-bool litehtml::html_tag::is_body()  const
+bool html_tag::is_body()  const
 {
 	return false;
 }
 
-void litehtml::html_tag::set_data( const tchar_t* data )
+void html_tag::set_data( const tchar_t* data )
 {
 }
 
-void litehtml::html_tag::get_inline_boxes( position::vector& boxes )
+void html_tag::get_inline_boxes( position::vector& boxes )
 {
-	litehtml::box* old_box = 0;
+	box* old_box = 0;
 	position pos;
 	for(auto& el : m_children)
 	{
@@ -1799,7 +1771,7 @@ void litehtml::html_tag::get_inline_boxes( position::vector& boxes )
 	}
 }
 
-bool litehtml::html_tag::on_mouse_over()
+bool html_tag::on_mouse_over()
 {
 	bool ret = false;
 
@@ -1816,7 +1788,7 @@ bool litehtml::html_tag::on_mouse_over()
 	return ret;
 }
 
-bool litehtml::html_tag::find_styles_changes( position::vector& redraw_boxes, int x, int y )
+bool html_tag::find_styles_changes( position::vector& redraw_boxes, int x, int y )
 {
 	if(m_display == display_inline_text)
 	{
@@ -1888,7 +1860,7 @@ bool litehtml::html_tag::find_styles_changes( position::vector& redraw_boxes, in
 	return ret;
 }
 
-bool litehtml::html_tag::on_mouse_leave()
+bool html_tag::on_mouse_leave()
 {
 	bool ret = false;
 
@@ -1909,7 +1881,7 @@ bool litehtml::html_tag::on_mouse_leave()
 	return ret;
 }
 
-bool litehtml::html_tag::on_lbutton_down()
+bool html_tag::on_lbutton_down()
 {
     bool ret = false;
 
@@ -1926,7 +1898,7 @@ bool litehtml::html_tag::on_lbutton_down()
     return ret;
 }
 
-bool litehtml::html_tag::on_lbutton_up()
+bool html_tag::on_lbutton_up()
 {
 	bool ret = false;
 
@@ -1945,7 +1917,7 @@ bool litehtml::html_tag::on_lbutton_up()
 	return ret;
 }
 
-void litehtml::html_tag::on_click()
+void html_tag::on_click()
 {
 	if (have_parent())
 	{
@@ -1957,7 +1929,7 @@ void litehtml::html_tag::on_click()
 	}
 }
 
-const litehtml::tchar_t* litehtml::html_tag::get_cursor()
+const tchar_t* html_tag::get_cursor()
 {
 	return get_style_property(atom_cursor, true, 0);
 }
@@ -1975,32 +1947,32 @@ static const int font_size_table[8][7] =
 };
 
 
-void litehtml::html_tag::init_font()
+void html_tag::init_font()
 {
 	// initialize font size
 	const tchar_t* str = get_style_property(atom_font_size, false, 0);
 
 	int parent_sz = 0;
 	int doc_font_size = get_document()->container()->get_default_font_size();
+
 	element::ptr el_parent = parent();
-	if (el_parent)
-	{
+	if (el_parent) {
 		parent_sz = el_parent->get_font_size();
-	} else
-	{
+	}
+	else {
 		parent_sz = doc_font_size;
 	}
 
 
-	if(!str)
-	{
+	if(!str) {
 		m_font_size = parent_sz;
-	} else
-	{
+	}
+	else {
 		m_font_size = parent_sz;
 
 		css_length sz;
 		sz.fromString(str, font_size_strings);
+
 		if(sz.is_predefined())
 		{
 			int idx_in_table = doc_font_size - 9;
@@ -2009,12 +1981,12 @@ void litehtml::html_tag::init_font()
 				if(sz.predef() >= fontSize_xx_small && sz.predef() <= fontSize_xx_large)
 				{
 					m_font_size = font_size_table[idx_in_table][sz.predef()];
-				} else
-				{
+				}
+				else {
 					m_font_size = doc_font_size;
 				}
-			} else			
-			{
+			}
+			else {
 				switch(sz.predef())
 				{
 				case fontSize_xx_small:
@@ -2040,36 +2012,36 @@ void litehtml::html_tag::init_font()
 					break;
 				}
 			}
-		} else
-		{
+		}
+		else {
 			if(sz.units() == css_units_percentage)
 			{
 				m_font_size = sz.calc_percent(parent_sz);
-			} else if(sz.units() == css_units_none)
-			{
+			}
+			else if(sz.units() == css_units_none) {
 				m_font_size = parent_sz;
-			} else
-			{
+			}
+			else {
 				m_font_size = get_document()->cvt_units(sz, parent_sz);
 			}
 		}
 	}
 
 	// initialize font
-	const tchar_t* name			= get_style_property(atom_font_family,		true,	_t("inherit"));
-	const tchar_t* weight		= get_style_property(atom_font_weight,		true,	_t("normal"));
-	const tchar_t* style		= get_style_property(atom_font_style,		true,	_t("normal"));
-	const tchar_t* decoration	= get_style_property(atom_text_decoration,	true,	_t("none"));
+	const tchar_t* name			= get_style_property(atom_font_family,		true,	atom_inherit );
+	const tchar_t* weight		= get_style_property(atom_font_weight,		true,	atom_normal );
+	const tchar_t* style		= get_style_property(atom_font_style,		true,	atom_normal );
+	const tchar_t* decoration	= get_style_property(atom_text_decoration,	true,	atom_none );
 
 	m_font = get_document()->get_font(name, m_font_size, weight, style, decoration, &m_font_metrics);
 }
 
-bool litehtml::html_tag::is_break() const
+bool html_tag::is_break() const
 {
 	return false;
 }
 
-void litehtml::html_tag::set_tagName(atom tag )
+void html_tag::set_tagName(atom tag )
 {
 	/*
 	tstring s_val = tag;
@@ -2084,7 +2056,7 @@ void litehtml::html_tag::set_tagName(atom tag )
 	m_tag = tag;
 }
 
-void litehtml::html_tag::draw_background( uint_ptr hdc, int x, int y, const position* clip )
+void html_tag::draw_background( uint_ptr hdc, int x, int y, const position* clip )
 {
 	position pos = m_pos;
 	pos.x	+= x;
@@ -2187,7 +2159,7 @@ void litehtml::html_tag::draw_background( uint_ptr hdc, int x, int y, const posi
 	}
 }
 
-int litehtml::html_tag::render_inline(const element::ptr &container, int max_width)
+int html_tag::render_inline(const element::ptr &container, int max_width)
 {
 	int ret_width = 0;
 	int rw = 0;
@@ -2234,7 +2206,7 @@ int litehtml::html_tag::render_inline(const element::ptr &container, int max_wid
 	return ret_width;
 }
 
-int litehtml::html_tag::place_element(const element::ptr &el, int max_width)
+int html_tag::place_element(const element::ptr &el, int max_width)
 {
 	if(el->get_display() == display_none) return 0;
 
@@ -2378,7 +2350,7 @@ int litehtml::html_tag::place_element(const element::ptr &el, int max_width)
 				break;
 			case display_inline_text:
 				{
-					litehtml::size sz;
+					size sz;
 					el->get_content_size(sz, line_ctx.right);
 					el->m_pos = sz;
 				}
@@ -2481,7 +2453,7 @@ int litehtml::html_tag::place_element(const element::ptr &el, int max_width)
 	return ret_width;
 }
 
-bool litehtml::html_tag::set_pseudo_class( const tchar_t* pclass, bool add )
+bool html_tag::set_pseudo_class( const tchar_t* pclass, bool add )
 {
 	bool ret = false;
 	if(add)
@@ -2503,7 +2475,7 @@ bool litehtml::html_tag::set_pseudo_class( const tchar_t* pclass, bool add )
 	return ret;
 }
 
-bool litehtml::html_tag::set_class( const tchar_t* pclass, bool add )
+bool html_tag::set_class( const tchar_t* pclass, bool add )
 {
 	string_vector classes;
 	bool changed = false;
@@ -2549,17 +2521,17 @@ bool litehtml::html_tag::set_class( const tchar_t* pclass, bool add )
 
 }
 
-int litehtml::html_tag::line_height() const
+int html_tag::line_height() const
 {
 	return m_line_height;
 }
 
-bool litehtml::html_tag::is_replaced() const
+bool html_tag::is_replaced() const
 {
 	return false;
 }
 
-int litehtml::html_tag::finish_last_box(bool end_of_render)
+int html_tag::finish_last_box(bool end_of_render)
 {
 	int line_top = 0;
 
@@ -2581,7 +2553,7 @@ int litehtml::html_tag::finish_last_box(bool end_of_render)
 	return line_top;
 }
 
-int litehtml::html_tag::new_box(const element::ptr &el, int max_width, line_context& line_ctx)
+int html_tag::new_box(const element::ptr &el, int max_width, line_context& line_ctx)
 {
 	line_ctx.top = get_cleared_top(el, finish_last_box());
 
@@ -2640,7 +2612,7 @@ int litehtml::html_tag::new_box(const element::ptr &el, int max_width, line_cont
 	return line_ctx.top;
 }
 
-int litehtml::html_tag::get_cleared_top(const element::ptr &el, int line_top) const
+int html_tag::get_cleared_top(const element::ptr &el, int line_top) const
 {
 	switch(el->get_clear())
 	{
@@ -2685,17 +2657,17 @@ int litehtml::html_tag::get_cleared_top(const element::ptr &el, int line_top) co
 	return line_top;
 }
 
-litehtml::style_display litehtml::html_tag::get_display() const
+style_display html_tag::get_display() const
 {
 	return m_display;
 }
 
-litehtml::element_float litehtml::html_tag::get_float() const
+element_float html_tag::get_float() const
 {
 	return m_float;
 }
 
-bool litehtml::html_tag::is_floats_holder() const
+bool html_tag::is_floats_holder() const
 {
 	if(	m_display == display_inline_block || 
 		m_display == display_table_cell || 
@@ -2711,7 +2683,7 @@ bool litehtml::html_tag::is_floats_holder() const
 	return false;
 }
 
-bool litehtml::html_tag::is_first_child_inline(const element::ptr& el) const
+bool html_tag::is_first_child_inline(const element::ptr& el) const
 {
 	if(!m_children.empty())
 	{
@@ -2739,7 +2711,7 @@ bool litehtml::html_tag::is_first_child_inline(const element::ptr& el) const
 	return false;
 }
 
-bool litehtml::html_tag::is_last_child_inline(const element::ptr& el)
+bool html_tag::is_last_child_inline(const element::ptr& el)
 {
 	if(!m_children.empty())
 	{
@@ -2767,73 +2739,73 @@ bool litehtml::html_tag::is_last_child_inline(const element::ptr& el)
 	return false;
 }
 
-litehtml::white_space litehtml::html_tag::get_white_space() const
+white_space html_tag::get_white_space() const
 {
 	return m_white_space;
 }
 
-litehtml::vertical_align litehtml::html_tag::get_vertical_align() const
+vertical_align html_tag::get_vertical_align() const
 {
 	return m_vertical_align;
 }
 
-litehtml::css_length litehtml::html_tag::get_css_left() const
+css_length html_tag::get_css_left() const
 {
 	return m_css_offsets.left;
 }
 
-litehtml::css_length litehtml::html_tag::get_css_right() const
+css_length html_tag::get_css_right() const
 {
 	return m_css_offsets.right;
 }
 
-litehtml::css_length litehtml::html_tag::get_css_top() const
+css_length html_tag::get_css_top() const
 {
 	return m_css_offsets.top;
 }
 
-litehtml::css_length litehtml::html_tag::get_css_bottom() const
+css_length html_tag::get_css_bottom() const
 {
 	return m_css_offsets.bottom;
 }
 
 
-litehtml::css_offsets litehtml::html_tag::get_css_offsets() const
+css_offsets html_tag::get_css_offsets() const
 {
 	return m_css_offsets;
 }
 
-litehtml::element_clear litehtml::html_tag::get_clear() const
+element_clear html_tag::get_clear() const
 {
 	return m_clear;
 }
 
-litehtml::css_length litehtml::html_tag::get_css_width() const
+css_length html_tag::get_css_width() const
 {
 	return m_css_width;
 }
 
-litehtml::css_length litehtml::html_tag::get_css_height() const
+css_length html_tag::get_css_height() const
 {
 	return m_css_height;
 }
 
-size_t litehtml::html_tag::get_children_count() const
+size_t html_tag::get_children_count() const
 {
 	return m_children.size();
 }
 
-litehtml::element::ptr litehtml::html_tag::get_child( int idx ) const
+element::ptr html_tag::get_child( int idx ) const
 {
 	return m_children[idx];
 }
 
-void litehtml::html_tag::set_css_width( css_length& w )
+void html_tag::set_css_width( css_length& w )
 {
 	m_css_width = w;
 }
 
-void litehtml::html_tag::apply_vertical_align()
+void html_tag::apply_vertical_align()
 {
 	if(!m_boxes.empty())
 	{
@@ -2866,7 +2838,7 @@ void litehtml::html_tag::apply_vertical_align()
 	}
 }
 
-litehtml::element_position litehtml::html_tag::get_element_position(css_offsets* offsets) const
+element_position html_tag::get_element_position(css_offsets* offsets) const
 {
 	if(offsets && m_el_position != element_position_static)
 	{
@@ -2875,7 +2847,7 @@ litehtml::element_position litehtml::html_tag::get_element_position(css_offsets*
 	return m_el_position;
 }
 
-void litehtml::html_tag::init_background_paint(position pos, background_paint &bg_paint, const background* bg)
+void html_tag::init_background_paint(position pos, background_paint &bg_paint, const background* bg)
 {
 	if(!bg) return;
 
@@ -2888,10 +2860,10 @@ void litehtml::html_tag::init_background_paint(position pos, background_paint &b
 
 	switch(bg->m_clip)
 	{
-	case litehtml::background_box_padding:
+	case background_box_padding:
 		bg_paint.clip_box = padding_box;
 		break;
-	case litehtml::background_box_content:
+	case background_box_content:
 		bg_paint.clip_box = content_box;
 		break;
 	default:
@@ -2901,10 +2873,10 @@ void litehtml::html_tag::init_background_paint(position pos, background_paint &b
 
 	switch(bg->m_origin)
 	{
-	case litehtml::background_box_border:
+	case background_box_border:
 		bg_paint.origin_box = border_box;
 		break;
-	case litehtml::background_box_content:
+	case background_box_content:
 		bg_paint.origin_box = content_box;
 		break;
 	default:
@@ -2917,7 +2889,7 @@ void litehtml::html_tag::init_background_paint(position pos, background_paint &b
 		get_document()->container()->get_image_size(bg_paint.image.c_str(), bg_paint.baseurl.c_str(), bg_paint.image_size);
 		if(bg_paint.image_size.width && bg_paint.image_size.height)
 		{
-			litehtml::size img_new_sz = bg_paint.image_size;
+			size img_new_sz = bg_paint.image_size;
 			double img_ar_width		= (double) bg_paint.image_size.width / (double) bg_paint.image_size.height;
 			double img_ar_height	= (double) bg_paint.image_size.height / (double) bg_paint.image_size.width;
 
@@ -2926,7 +2898,7 @@ void litehtml::html_tag::init_background_paint(position pos, background_paint &b
 			{
 				switch(bg->m_position.width.predef())
 				{
-				case litehtml::background_size_contain:
+				case background_size_contain:
 					if( (int) ((double) bg_paint.origin_box.width * img_ar_height) <= bg_paint.origin_box.height )
 					{
 						img_new_sz.width = bg_paint.origin_box.width;
@@ -2937,7 +2909,7 @@ void litehtml::html_tag::init_background_paint(position pos, background_paint &b
 						img_new_sz.width	= (int) ((double) bg_paint.origin_box.height * img_ar_width);
 					}
 					break;
-				case litehtml::background_size_cover:
+				case background_size_cover:
 					if( (int) ((double) bg_paint.origin_box.width * img_ar_height) >= bg_paint.origin_box.height )
 					{
 						img_new_sz.width = bg_paint.origin_box.width;
@@ -2949,7 +2921,7 @@ void litehtml::html_tag::init_background_paint(position pos, background_paint &b
 					}
 					break;
 					break;
-				case litehtml::background_size_auto:
+				case background_size_auto:
 					if(!bg->m_position.height.is_predefined())
 					{
 						img_new_sz.height	= bg->m_position.height.calc_percent(bg_paint.origin_box.height);
@@ -2980,12 +2952,12 @@ void litehtml::html_tag::init_background_paint(position pos, background_paint &b
 	bg_paint.is_root		= have_parent() ? false : true;
 }
 
-litehtml::visibility litehtml::html_tag::get_visibility() const
+visibility html_tag::get_visibility() const
 {
 	return m_visibility;
 }
 
-void litehtml::html_tag::draw_list_marker( uint_ptr hdc, const position &pos )
+void html_tag::draw_list_marker( uint_ptr hdc, const position &pos )
 {
 	list_marker lm;
 
@@ -3033,7 +3005,7 @@ void litehtml::html_tag::draw_list_marker( uint_ptr hdc, const position &pos )
 	get_document()->container()->draw_list_marker(hdc, lm);
 }
 
-void litehtml::html_tag::draw_children( uint_ptr hdc, int x, int y, const position* clip, draw_flag flag, int zindex )
+void html_tag::draw_children( uint_ptr hdc, int x, int y, const position* clip, draw_flag flag, int zindex )
 {
 	if (m_display == display_table || m_display == display_inline_table)
 	{
@@ -3045,13 +3017,13 @@ void litehtml::html_tag::draw_children( uint_ptr hdc, int x, int y, const positi
 	}
 }
 
-bool litehtml::html_tag::fetch_positioned()
+bool html_tag::fetch_positioned()
 {
 	bool ret = false;
 
 	m_positioned.clear();
 
-	litehtml::element_position el_pos;
+	element_position el_pos;
 
 	for(auto& el : m_children)
 	{
@@ -3072,12 +3044,12 @@ bool litehtml::html_tag::fetch_positioned()
 	return ret;
 }
 
-int litehtml::html_tag::get_zindex() const
+int html_tag::get_zindex() const
 {
 	return m_z_index;
 }
 
-void litehtml::html_tag::render_positioned(render_type rt)
+void html_tag::render_positioned(render_type rt)
 {
 	position wnd_position;
 	get_document()->container()->get_client_rect(wnd_position);
@@ -3279,14 +3251,14 @@ void litehtml::html_tag::render_positioned(render_type rt)
 
 	if(!m_positioned.empty())
 	{
-		std::stable_sort(m_positioned.begin(), m_positioned.end(), [](const litehtml::element::ptr& _Left, const litehtml::element::ptr& _Right)
+		std::stable_sort(m_positioned.begin(), m_positioned.end(), [](const element::ptr& _Left, const element::ptr& _Right)
 		{
 			return (_Left->get_zindex() < _Right->get_zindex());
 		});
 	}
 }
 
-void litehtml::html_tag::draw_stacking_context( uint_ptr hdc, int x, int y, const position* clip, bool with_positioned )
+void html_tag::draw_stacking_context( uint_ptr hdc, int x, int y, const position* clip, bool with_positioned )
 {
 	if(!is_visible()) return;
 
@@ -3329,12 +3301,12 @@ void litehtml::html_tag::draw_stacking_context( uint_ptr hdc, int x, int y, cons
 	}
 }
 
-litehtml::overflow litehtml::html_tag::get_overflow() const
+overflow html_tag::get_overflow() const
 {
 	return m_overflow;
 }
 
-bool litehtml::html_tag::is_nth_child(const element::ptr& el, int num, int off, bool of_type) const
+bool html_tag::is_nth_child(const element::ptr& el, int num, int off, bool of_type) const
 {
 	int idx = 1;
 	for(const auto& child : m_children)
@@ -3367,7 +3339,7 @@ bool litehtml::html_tag::is_nth_child(const element::ptr& el, int num, int off, 
 	return false;
 }
 
-bool litehtml::html_tag::is_nth_last_child(const element::ptr& el, int num, int off, bool of_type) const
+bool html_tag::is_nth_last_child(const element::ptr& el, int num, int off, bool of_type) const
 {
 	int idx = 1;
 	for(elements_vector::const_reverse_iterator child = m_children.rbegin(); child != m_children.rend(); child++)
@@ -3400,7 +3372,7 @@ bool litehtml::html_tag::is_nth_last_child(const element::ptr& el, int num, int 
 	return false;
 }
 
-void litehtml::html_tag::parse_nth_child_params( tstring param, int &num, int &off )
+void html_tag::parse_nth_child_params( tstring param, int &num, int &off )
 {
 	if(param == _t("odd"))
 	{
@@ -3437,7 +3409,7 @@ void litehtml::html_tag::parse_nth_child_params( tstring param, int &num, int &o
 	}
 }
 
-void litehtml::html_tag::calc_document_size( litehtml::size& sz, int x /*= 0*/, int y /*= 0*/ )
+void html_tag::calc_document_size( size& sz, int x /*= 0*/, int y /*= 0*/ )
 {
 	if(is_visible() && m_el_position != element_position_fixed)
 	{
@@ -3463,7 +3435,7 @@ void litehtml::html_tag::calc_document_size( litehtml::size& sz, int x /*= 0*/, 
 }
 
 
-void litehtml::html_tag::get_redraw_box(litehtml::position& pos, int x /*= 0*/, int y /*= 0*/)
+void html_tag::get_redraw_box(position& pos, int x /*= 0*/, int y /*= 0*/)
 {
 	if(is_visible())
 	{
@@ -3482,7 +3454,7 @@ void litehtml::html_tag::get_redraw_box(litehtml::position& pos, int x /*= 0*/, 
 	}
 }
 
-litehtml::element::ptr litehtml::html_tag::find_adjacent_sibling( const element::ptr& el, const css_selector& selector, bool apply_pseudo /*= true*/, bool* is_pseudo /*= 0*/ )
+element::ptr html_tag::find_adjacent_sibling( const element::ptr& el, const css_selector& selector, bool apply_pseudo /*= true*/, bool* is_pseudo /*= 0*/ )
 {
 	element::ptr ret;
 	for(auto& e : m_children)
@@ -3519,7 +3491,7 @@ litehtml::element::ptr litehtml::html_tag::find_adjacent_sibling( const element:
 	return 0;
 }
 
-litehtml::element::ptr litehtml::html_tag::find_sibling(const element::ptr& el, const css_selector& selector, bool apply_pseudo /*= true*/, bool* is_pseudo /*= 0*/)
+element::ptr html_tag::find_sibling(const element::ptr& el, const css_selector& selector, bool apply_pseudo /*= true*/, bool* is_pseudo /*= 0*/)
 {
 	element::ptr ret = 0;
 	for(auto& e : m_children)
@@ -3552,7 +3524,7 @@ litehtml::element::ptr litehtml::html_tag::find_sibling(const element::ptr& el, 
 	return 0;
 }
 
-bool litehtml::html_tag::is_only_child(const element::ptr& el, bool of_type) const
+bool html_tag::is_only_child(const element::ptr& el, bool of_type) const
 {
 	int child_count = 0;
 	for(const auto& child : m_children)
@@ -3574,7 +3546,7 @@ bool litehtml::html_tag::is_only_child(const element::ptr& el, bool of_type) con
 	return true;
 }
 
-void litehtml::html_tag::update_floats(int dy, const element::ptr &parent)
+void html_tag::update_floats(int dy, const element::ptr &parent)
 {
 	if(is_floats_holder())
 	{
@@ -3614,7 +3586,7 @@ void litehtml::html_tag::update_floats(int dy, const element::ptr &parent)
 	}
 }
 
-void litehtml::html_tag::remove_before_after()
+void html_tag::remove_before_after()
 {
 	if(!m_children.empty())
 	{
@@ -3634,7 +3606,7 @@ void litehtml::html_tag::remove_before_after()
 	}
 }
 
-litehtml::element::ptr litehtml::html_tag::get_element_before()
+element::ptr html_tag::get_element_before()
 {
 	if(!m_children.empty())
 	{
@@ -3650,7 +3622,7 @@ litehtml::element::ptr litehtml::html_tag::get_element_before()
 	return el;
 }
 
-litehtml::element::ptr litehtml::html_tag::get_element_after()
+element::ptr html_tag::get_element_after()
 {
 	if(!m_children.empty())
 	{
@@ -3665,12 +3637,12 @@ litehtml::element::ptr litehtml::html_tag::get_element_after()
 	return el;
 }
 
-void litehtml::html_tag::add_style( const litehtml::style& st )
+void html_tag::add_style( const style& st )
 {
 	m_style.combine(st);
 }
 
-bool litehtml::html_tag::have_inline_child() const
+bool html_tag::have_inline_child() const
 {
 	if(!m_children.empty())
 	{
@@ -3685,7 +3657,7 @@ bool litehtml::html_tag::have_inline_child() const
 	return false;
 }
 
-void litehtml::html_tag::refresh_styles()
+void html_tag::refresh_styles()
 {
 	remove_before_after();
 
@@ -3758,7 +3730,7 @@ void litehtml::html_tag::refresh_styles()
 	}
 }
 
-litehtml::element::ptr litehtml::html_tag::get_child_by_point(int x, int y, int client_x, int client_y, draw_flag flag, int zindex)
+element::ptr html_tag::get_child_by_point(int x, int y, int client_x, int client_y, draw_flag flag, int zindex)
 {
 	element::ptr ret = 0;
 
@@ -3870,7 +3842,7 @@ litehtml::element::ptr litehtml::html_tag::get_child_by_point(int x, int y, int 
 	return ret;
 }
 
-litehtml::element::ptr litehtml::html_tag::get_element_by_point(int x, int y, int client_x, int client_y)
+element::ptr html_tag::get_element_by_point(int x, int y, int client_x, int client_y)
 {
 	if(!is_visible()) return 0;
 
@@ -3937,7 +3909,7 @@ litehtml::element::ptr litehtml::html_tag::get_element_by_point(int x, int y, in
 	return ret;
 }
 
-const litehtml::background* litehtml::html_tag::get_background(bool own_only)
+const background* html_tag::get_background(bool own_only)
 {
 	if(own_only)
 	{
@@ -3982,7 +3954,7 @@ const litehtml::background* litehtml::html_tag::get_background(bool own_only)
 	return &m_bg;
 }
 
-int litehtml::html_tag::render_box(int x, int y, int max_width, bool second_pass /*= false*/)
+int html_tag::render_box(int x, int y, int max_width, bool second_pass /*= false*/)
 {
 	int parent_width = max_width;
 
@@ -4248,7 +4220,7 @@ int litehtml::html_tag::render_box(int x, int y, int max_width, bool second_pass
 	return ret_width;
 }
 
-int litehtml::html_tag::render_table(int x, int y, int max_width, bool second_pass /*= false*/)
+int html_tag::render_table(int x, int y, int max_width, bool second_pass /*= false*/)
 {
 	if (!m_table_infos || !m_table_infos->m_grid)
 		return 0;
@@ -4595,7 +4567,7 @@ int litehtml::html_tag::render_table(int x, int y, int max_width, bool second_pa
 	return max_table_width;
 }
 
-void litehtml::html_tag::draw_children_box(uint_ptr hdc, int x, int y, const position* clip, draw_flag flag, int zindex)
+void html_tag::draw_children_box(uint_ptr hdc, int x, int y, const position* clip, draw_flag flag, int zindex)
 {
 	position pos = m_pos;
 	pos.x += x;
@@ -4701,7 +4673,7 @@ void litehtml::html_tag::draw_children_box(uint_ptr hdc, int x, int y, const pos
 	}
 }
 
-void litehtml::html_tag::draw_children_table(uint_ptr hdc, int x, int y, const position* clip, draw_flag flag, int zindex)
+void html_tag::draw_children_table(uint_ptr hdc, int x, int y, const position* clip, draw_flag flag, int zindex)
 {
 	if (!m_table_infos || !m_table_infos->m_grid) return;
 
@@ -4727,4 +4699,5 @@ void litehtml::html_tag::draw_children_table(uint_ptr hdc, int x, int y, const p
 			}
 		}
 	}
+}
 }

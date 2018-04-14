@@ -107,7 +107,7 @@ namespace litehtml
 			return set( txt );
 		}
 
-		xstring& set( const tchar_t* txt, int32_t len=-1 )
+		xstring& set( const tchar_t* txt, int32_t len=-1, bool lowercase=false )
 		{
 			if( txt>=__ptr && txt<=__ptr+__len ) {
 				__asm int 3;
@@ -119,7 +119,14 @@ namespace litehtml
 
 			__realloc( len );
 			__len	= len;
-			memcpy( __ptr, txt, __len*sizeof(tchar_t) );
+
+			if( lewercase==false ) {
+				memcpy( __ptr, txt, __len*sizeof(tchar_t) );
+			}
+			else {
+
+			}
+
 			__ptr[__len] = 0;
 
 			return *this;
@@ -130,6 +137,10 @@ namespace litehtml
 			*__buf	= 0;
 			__ptr	= __buf;
 			__len	= 0;
+		}
+
+		bool match( const xstring& ) {
+
 		}
 
 	private:
@@ -355,8 +366,8 @@ namespace litehtml
 	};
 
 //#define  style_display_strings		_t("none;block;inline;inline-block;inline-table;list-item;table;table-caption;table-cell;table-column;table-column-group;table-footer-group;table-header-group;table-row;table-row-group;flex")
-#define		style_display_atoms		{atom_none,atom_block,atom_inline,atom_inline_block,atom_inline_table,atom_list_item,atom_table,atom_table_caption,atom_table_cell,atom_table_column,atom_table_column_group,atom_table_footer_group,\
-										atom_table_header_group,atom_table_row,atom_table_row_group,atom_flex,atom_null}
+#define		style_display_atoms			atom_none,atom_block,atom_inline,atom_inline_block,atom_inline_table,atom_list_item,atom_table,atom_table_caption,atom_table_cell,atom_table_column,atom_table_column_group,atom_table_footer_group,\
+										atom_table_header_group,atom_table_row,atom_table_row_group,atom_flex,0
 
 	enum style_display
 	{
@@ -390,7 +401,8 @@ namespace litehtml
 		borderDouble
 	};
 
-#define  font_size_strings		_t("xx-small;x-small;small;medium;large;x-large;xx-large;smaller;larger")
+//#define  font_size_strings		_t("xx-small;x-small;small;medium;large;x-large;xx-large;smaller;larger")
+	#define  font_size_atoms		atom_xx_small,atom_x_small,atom_small,atom_medium,atom_large,atom_x_large,atom_xx_large,atom_smaller,atom_larger,0
 
 	enum font_size
 	{
@@ -405,7 +417,8 @@ namespace litehtml
 		fontSize_larger,
 	};
 
-#define  font_style_strings		_t("normal;italic")
+//#define  font_style_strings		_t("normal;italic")
+	#define  font_style_atoms		atom_normal,atom_italic,0
 
 	enum font_style
 	{
@@ -413,7 +426,8 @@ namespace litehtml
 		fontStyleItalic
 	};
 
-#define  font_variant_strings		_t("normal;small-caps")
+//#define  font_variant_strings		_t("normal;small-caps")
+	#define  font_variant_atoms		atom_normal,atom_small_caps,0
 
 	enum font_variant
 	{
@@ -421,7 +435,7 @@ namespace litehtml
 		font_variant_italic
 	};
 
-#define  font_weight_strings	_t("normal;bold;bolder;lighter100;200;300;400;500;600;700")
+#define  font_weight_strings	_t("normal;bold;bolder;lighter;100;200;300;400;500;600;700")
 
 	enum font_weight
 	{
@@ -438,7 +452,9 @@ namespace litehtml
 		fontWeight700
 	};
 
-#define  list_style_type_strings	_t("none;circle;disc;square;armenian;cjk-ideographic;decimal;decimal-leading-zero;georgian;hebrew;hiragana;hiragana-iroha;katakana;katakana-iroha;lower-alpha;lower-greek;lower-latin;lower-roman;upper-alpha;upper-latin;upper-roman")
+//#define  list_style_type_strings	_t("none;circle;disc;square;armenian;cjk-ideographic;decimal;decimal-leading-zero;georgian;hebrew;hiragana;hiragana-iroha;katakana;katakana-iroha;lower-alpha;lower-greek;lower-latin;lower-roman;upper-alpha;upper-latin;upper-roman")
+	#define  list_style_type_atoms	atom_none,atom_circle,atom_disc,atom_square,atom_armenian,atom_cjk_ideographic,atom_decimal,atom_decimal_leading_zero,atom_georgian,atom_hebrew,atom_hiragana\
+									atom_hiragana_iroha,atom_katakana,atom_katakana_iroha,atom_lower_alpha,atom_lower_greek,atom_lower_latin,atom_lower_roman,atom_upper_alpha,atom_upper_latin,atom_upper_roman,0
 
 	enum list_style_type
 	{
@@ -465,7 +481,8 @@ namespace litehtml
 		list_style_type_upper_roman,
 	};
 
-#define  list_style_position_strings	_t("inside;outside")
+//#define  list_style_position_strings	_t("inside;outside")
+	#define  list_style_position_atoms	atom_inside,atom_outside,0
 
 	enum list_style_position
 	{
@@ -473,7 +490,8 @@ namespace litehtml
 		list_style_position_outside
 	};
 
-#define  vertical_align_strings	_t("baseline;sub;super;top;text-top;middle;bottom;text-bottom")
+//#define  vertical_align_strings	_t("baseline;sub;super;top;text-top;middle;bottom;text-bottom")
+	#define  vertical_align_atoms	atom_baseline,atom_sub,atom_super,atom_top,atom_text_top,atom_middle,atom_bottom,atom_text_bottom,0
 
 	enum vertical_align
 	{
@@ -487,7 +505,8 @@ namespace litehtml
 		va_text_bottom
 	};
 
-#define  border_width_strings	_t("thin;medium;thick")
+//#define  border_width_strings	_t("thin;medium;thick")
+	#define  border_width_atoms	atom_thin,atom_medium,atom_thick,0
 
 	enum border_width
 	{
@@ -496,7 +515,8 @@ namespace litehtml
 		border_width_thick
 	};
 
-#define  border_style_strings	_t("none;hidden;dotted;dashed;solid;double;groove;ridge;inset;outset")
+//#define  border_style_strings	_t("none;hidden;dotted;dashed;solid;double;groove;ridge;inset;outset")
+	#define  border_style_atoms	atom_none,atom_hidden,atom_dotted,atom_dashed,atom_solid,atom_double,atom_groove,atom_ridge,atom_inset,atom_outset,0
 
 	enum border_style
 	{
@@ -512,7 +532,8 @@ namespace litehtml
 		border_style_outset
 	};
 
-#define  element_float_strings	_t("none;left;right")
+	//#define  element_float_strings	_t("none;left;right")
+	#define  element_float_atoms	atom_none,atom_left,atom_right,0
 
 	enum element_float
 	{
@@ -521,7 +542,8 @@ namespace litehtml
 		float_right
 	};
 
-#define  element_clear_strings	_t("none;left;right;both")
+//#define  element_clear_strings	_t("none;left;right;both")
+	#define  element_clear_atoms	atom_none,atom_left,atom_right,atom_both,0
 
 	enum element_clear
 	{
@@ -531,7 +553,8 @@ namespace litehtml
 		clear_both
 	};
 
-#define  css_units_strings	_t("none;%;in;cm;mm;em;ex;pt;pc;px;dpi;dpcm;vw;vh;vmin;vmax")
+//#define  css_units_strings	_t("none;%;in;cm;mm;em;ex;pt;pc;px;dpi;dpcm;vw;vh;vmin;vmax")
+	#define  css_units_atoms	atom_none,atom_perc,atom_in,atom_cm,atom_mm,atom_em,atom_ex,atom_pt,atom_pc,atom_px,atom_dpi,atom_dpcm,atom_vw,atom_vh,atom_vmin,atom_vmax,0
 
 	enum css_units
 	{
@@ -553,7 +576,8 @@ namespace litehtml
 		css_units_vmax,
 	};
 
-#define  background_attachment_strings	_t("scroll;fixed")
+//#define  background_attachment_strings	_t("scroll;fixed")
+	#define  background_attachment_atoms	atom_scroll,atom_fixed,0
 
 	enum background_attachment
 	{
@@ -562,7 +586,7 @@ namespace litehtml
 	};
 
 //#define  background_repeat_strings	_t("repeat;repeat-x;repeat-y;no-repeat")
-	#define  background_repeat_atoms	{atom_repeat,atom_repeat_x,atom_repeat_y,atom_no_repeat,atom_null}
+	#define  background_repeat_atoms	atom_repeat,atom_repeat_x,atom_repeat_y,atom_no_repeat,0
 
 	enum background_repeat
 	{
@@ -573,7 +597,7 @@ namespace litehtml
 	};
 
 //#define  background_box_strings	_t("border-box;padding-box;content-box")
-	#define  background_box_atoms	{atom_border_box,atom_padding_box,atom_content_box,atom_null}
+	#define  background_box_atoms	atom_border_box,atom_padding_box,atom_content_box,0
 
 	enum background_box
 	{
@@ -583,7 +607,7 @@ namespace litehtml
 	};
 
 //#define element_position_strings	_t("static;relative;absolute;fixed")
-	#define element_position_atoms	{atom_static,atom_relative,atom_absolute,atom_fixed,atom_null}
+	#define element_position_atoms	atom_static,atom_relative,atom_absolute,atom_fixed,0
 
 	enum element_position
 	{
@@ -594,7 +618,7 @@ namespace litehtml
 	};
 
 //#define text_align_strings		_t("left;right;center;justify")
-	#define text_align_atoms		{atom_left,atom_right,atom_center,atom_justify,atom_null}
+	#define text_align_atoms		atom_left,atom_right,atom_center,atom_justify,0
 
 	enum text_align
 	{
@@ -605,7 +629,7 @@ namespace litehtml
 	};
 
 //#define text_transform_strings		_t("none;capitalize;uppercase;lowercase")
-#define text_transform_atoms		{atom_none,atom_capitalize,atom_uppercase,atom_lowercase,atom_null}
+#define text_transform_atoms		atom_none,atom_capitalize,atom_uppercase,atom_lowercase,0
 
 	enum text_transform
 	{
@@ -615,7 +639,8 @@ namespace litehtml
 		text_transform_lowercase
 	};
 
-#define white_space_strings		_t("normal;nowrap;pre;pre-line;pre-wrap")
+//#define white_space_strings		_t("normal;nowrap;pre;pre-line;pre-wrap")
+	#define white_space_atoms		atom_normal,atom_nowrap,atom_pre,atom_pre_line,atom_pre_wrap,0
 
 	enum white_space
 	{
@@ -626,7 +651,8 @@ namespace litehtml
 		white_space_pre_wrap
 	};
 
-#define overflow_strings		_t("visible;hidden;scroll;auto;no-display;no-content")
+//#define overflow_strings		_t("visible;hidden;scroll;auto;no-display;no-content")
+	#define overflow_atoms		atom_visible,atom_hidden,atom_scroll,atom_auto,atom_no_display,atom_no_content,0
 
 	enum overflow
 	{
@@ -638,7 +664,8 @@ namespace litehtml
 		overflow_no_content
 	};
 
-#define background_size_strings		_t("auto;cover;contain")
+//#define background_size_strings		_t("auto;cover;contain")
+	#define background_size_atoms	atom_auto,atom_cover,atom_contain,0
 
 	enum background_size
 	{
@@ -647,7 +674,8 @@ namespace litehtml
 		background_size_contain,
 	};
 
-#define visibility_strings			_t("visible;hidden;collapse")
+//#define visibility_strings			_t("visible;hidden;collapse")
+	#define visibility_atoms		atom_visible,atom_hidden,atom_collapse,0
 
 	enum visibility
 	{
@@ -656,7 +684,8 @@ namespace litehtml
 		visibility_collapse,
 	};
 
-#define border_collapse_strings		_t("collapse;separate")
+//#define border_collapse_strings		_t("collapse;separate")
+	#define border_collapse_atoms	atom_collapse,atom_separate,0
 
 	enum border_collapse
 	{
@@ -665,7 +694,9 @@ namespace litehtml
 	};
 
 
-#define pseudo_class_strings		_t("only-child;only-of-type;first-child;first-of-type;last-child;last-of-type;nth-child;nth-of-type;nth-last-child;nth-last-of-type;not;lang")
+//#define pseudo_class_strings		_t("only-child;only-of-type;first-child;first-of-type;last-child;last-of-type;nth-child;nth-of-type;nth-last-child;nth-last-of-type;not;lang")
+	#define pseudo_class_atoms		atom_only_child,atom_only_of_type,atom_first_child,atom_first_of_type,atom_last_child,atom_last_of_type,atom_nth_child,atom_nth_of_type,atom_nth_last_child,\
+									atom_nth_last_of_type,atom_not,atom_lang,0
 
 	enum pseudo_class
 	{
@@ -683,7 +714,8 @@ namespace litehtml
 		pseudo_class_lang,
 	};
 
-#define content_property_string		_t("none;normal;open-quote;close-quote;no-open-quote;no-close-quote")
+//#define content_property_string		_t("none;normal;open-quote;close-quote;no-open-quote;no-close-quote")
+	#define content_property_atoms		atom_none,atom_normal,atom_open_quote,atom_close_quote,atom_no_open_quote,atom_no_close_quote,0
 
 	enum content_property
 	{
@@ -806,7 +838,8 @@ namespace litehtml
 	};
 
 
-#define media_orientation_strings		_t("portrait;landscape")
+//#define media_orientation_strings		_t("portrait;landscape")
+	#define media_orientation_atoms		atom_portrait,atom_landscape,0
 
 	enum media_orientation
 	{
@@ -814,7 +847,11 @@ namespace litehtml
 		media_orientation_landscape,
 	};
 
-#define media_feature_strings		_t("none;width;min-width;max-width;height;min-height;max-height;device-width;min-device-width;max-device-width;device-height;min-device-height;max-device-height;orientation;aspect-ratio;min-aspect-ratio;max-aspect-ratio;device-aspect-ratio;min-device-aspect-ratio;max-device-aspect-ratio;color;min-color;max-color;color-index;min-color-index;max-color-index;monochrome;min-monochrome;max-monochrome;resolution;min-resolution;max-resolution")
+//#define media_feature_strings		_t("none;width;min-width;max-width;height;min-height;max-height;device-width;min-device-width;max-device-width;device-height;min-device-height;max-device-height;orientation;aspect-ratio;min-aspect-ratio;max-aspect-ratio;device-aspect-ratio;min-device-aspect-ratio;max-device-aspect-ratio;color;min-color;max-color;color-index;min-color-index;max-color-index;monochrome;min-monochrome;max-monochrome;resolution;min-resolution;max-resolution")
+	#define media_feature_strings		atom_none,atom_width,atom_min_width,atom_max_width,atom_height,atom_min_height,atom_max_height,atom_device_width,atom_min_device_width,atom_max_device_width,\
+										atom_device_height,atom_min_device_height,atom_max_device_height,atom_orientation,atom_aspect_ratio,atom_min_aspect_ratio,atom_max_aspect_ratio,atom_device_aspect_ratio,\
+										atom_min_device_aspect_ratio,atom_max_device_aspect_ratio,atom_color,atom_min_color,atom_max_color,atom_color_index,atom_min_color_index,atom_max_color_index,atom_monochrome,\
+										atom_min_monochrome,atom_max_monochrome,atom_resolution,atom_min_resolution,atom_max_resolution,0
 
 	enum media_feature
 	{
@@ -863,7 +900,8 @@ namespace litehtml
 		media_feature_max_resolution,
 	};
 
-#define box_sizing_strings		_t("content-box;border-box")
+//#define box_sizing_strings		_t("content-box;border-box")
+	#define box_sizing_atoms		atom_content_box,atom_border_box,0
 
 	enum box_sizing
 	{
@@ -872,7 +910,8 @@ namespace litehtml
 	};
 
 
-#define media_type_strings		_t("none;all;screen;print;braille;embossed;handheld;projection;speech;tty;tv")
+//#define media_type_strings		_t("none;all;screen;print;braille;embossed;handheld;projection;speech;tty;tv")
+	#define media_type_atoms		atom_none,atom_all,atom_screen,atom_print,atom_braille,atom_embossed,atom_handheld,atom_projection,atom_speech,atom_tty,atom_tv,0
 
 	enum media_type
 	{

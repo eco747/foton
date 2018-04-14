@@ -81,26 +81,52 @@ int litehtml::value_index( const tstring& val, const tstring& strings, int defVa
 	return defValue;
 }
 
-int litehtml::value_index_atom( const tchar_t* val, const atom* predef_values, int defValue )
+/**
+ * @brief litehtml::atom_index
+ * @param val
+ * @param predef_values
+ * @param defValue
+ * @return
+ */
+
+int litehtml::atom_index( const tchar_t* val, int defValue, va_list lst )
 {
-	if( *val==0 || !predef_values )	{
+	if( *val==0 )	{
 		return defValue;
 	}
 
 	int		idx = 0;
 	atom	a = atom_create( val, false );
+	atom	c;
 
-	while( *predef_values!=atom_null ) {
-		if( a==*predef_values ) {
+	while( (c=__crt_va_arg( lst, atom))!=atom_null ) {
+		if( a==c ) {
 			return idx;
 		}
 
 		idx++;
-		predef_values++;
 	}
 
 	return defValue;
 }
+
+int litehtml::atom_index( const tchar_t* val, int defValue, ... )
+{
+	if( *val==0 )	{
+		return defValue;
+	}
+
+	int		result;
+
+	va_list	lst;
+	__crt_va_start( lst, defValue );
+	result = atom_index( val, defValue, lst );
+	__crt_va_end( lst );
+
+	return result;
+}
+
+
 
 bool litehtml::value_in_list( const tstring& val, const tstring& strings, tchar_t delim )
 {
@@ -110,6 +136,30 @@ bool litehtml::value_in_list( const tstring& val, const tstring& strings, tchar_
 		return true;
 	}
 	return false;
+}
+
+
+/**
+ * @brief litehtml::atom_in_list
+ * @param val - value to check
+ * @return true/false
+ */
+
+bool litehtml::atom_in_list( atom val, ... )
+{
+	atom		c;
+	va_list		lst;
+	__crt_va_start( lst, val );
+
+	while( (c=__crt_va_arg(lst,atom))!=atom_null ) {
+		if( val==c ) {
+			return true;
+		}
+	}
+
+	__crt_va_end( lst );
+	return false;
+
 }
 
 void litehtml::split_string(const tstring& str, string_vector& tokens, const tstring& delims, const tstring& delims_preserve, const tstring& quote)

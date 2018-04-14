@@ -246,5 +246,4 @@ DISTFILES += \
     test.js \
     litehtml/include/master.css \
     modules/dom/dom.js \
-    modules/dom/testfile.html \
-    litehtml/perfect_hash.js
+    modules/dom/testfile.html

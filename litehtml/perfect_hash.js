@@ -150,10 +150,18 @@ let input = "pseudo-el,before,after,pseudo,id,class,inherit,underline,line-throu
  "background-position-y,word-break,table-layout,zoom,text-overflow,box-shadow,justify-content,user_drag,tabindex,halign,column-gap,flex-wrap,column-width,column-count,align-content,"+
  "flex-flow,transparent,"+
  "none,block,inline,inline-block,inline-table,list-item,table-caption,table-cell,table-column,table-column-group,table-footer-group,table-header-group,table-row,table-row-group,flex,"+
- "static,relative,absolute,fixed,"+
- "capitalize,uppercase,lowercase,"+
- "border-box,padding-box,content-box"+
- "repeat,repeat-x,repeat-y,no-repeat";
+ "static,relative,absolute,fixed,capitalize,uppercase,lowercase,border-box,padding-box,content-box,repeat,repeat-x,repeat-y,no-repeat,"+
+ "justify,normal,pre-line,pre-wrap,visible,hidden,scroll,no-display,no-content,cover,contain,collapse,separate,only-child,only-of-type,first-child,first-of-type,last-child,last-of-type,"+
+ "nth-child,nth-of-type,nth-last-child,nth-last-of-type,not,open-quote,close-quote,no-open-quote,no-close-quote,portrait,landscape,"+
+ "device-width,min-device-width,max-device-width,device-height,min-device-height,max-device-height,orientation,aspect-ratio,min-aspect-ratio,max-aspect-ratio,device-aspect-ratio,"+
+ "min-device-aspect-ratio,max-device-aspect-ratio,min-color,max-color,color-index,min-color-index,max-color-index,monochrome,min-monochrome,max-monochrome,resolution,min-resolution,max-resolution,"+
+ "xx-small,x-small,medium,large,x-large,xx-large,smaller,larger,italic,small-caps,"+
+ "disc,square,armenian,cjk-ideographic,decimal,decimal-leading-zero,georgian,hebrew,hiragana,hiragana-iroha,katakana,katakana-iroha,lower-alpha,lower-greek,lower-latin,lower-roman,upper-alpha,upper-latin,upper-roman,"+
+ "inside,outside,baseline,super,text-top,middle,text-bottom,thin,thick,dotted,dashed,solid,double,groove,ridge,inset,outset,both,%,in,cm,mm,ex,pt,pc,px,dpi,dpcm,vw,vh,vmin,vmax,"+
+ "screen,print,braille,embossed,handheld,projection,speech,tty,tv,";
+ 
+ 
+ 
 
 // -webkit-margin-before,webkit-margin-after,-webkit-margin-start,-webkit-margin-end,-webkit-columns ,-webkit-text-emphasis ,-webkit-text-security ,-webkit-align-self ,-webkit-user-modify ,-webkit-user-select ,-webkit-rtl-ordering ,-webkit-writing-mode ,-webkit-appearance ,-webkit-padding-after ,-webkit-padding-before ,-webkit-padding-end ,-webkit-padding-start 
  
@@ -253,6 +261,7 @@ for( var x=0, y=-1; x<all_in.length; x++, y-- ) {
 	if( v.length ) {
 		let name = v.replace( /[-:]/gi, "_" );
 			name = name.replace( /[*]/gi, 'star' );
+			name = name.replace( /[%]/gi, 'perc' );
 		console.log( "\tatom_"+name+" = "+y+"," );
 	}
 }

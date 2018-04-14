@@ -43,7 +43,7 @@ const litehtml::tchar_t* litehtml::el_text::get_style_property( atom name, bool 
 
 void litehtml::el_text::parse_styles(bool /*is_reparse*/)
 {
-	m_text_transform	= (text_transform)	value_index(get_style_property(atom_text_transform, true,	_t("none")),	text_transform_strings,	text_transform_none);
+	m_text_transform	= (text_transform)	atom_index(get_style_property(atom_text_transform, true,	_t("none")),	text_transform_none, text_transform_atoms );
 	if(m_text_transform != text_transform_none)
 	{
 		m_transformed_text	= m_text;
