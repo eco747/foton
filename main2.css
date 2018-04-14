@@ -1,0 +1,15 @@
+.content {
+  background-color: white;
+  font-family: "open sans";
+  display: flex;
+}
+.content .header {
+  color: white;
+  background-color: #8edaf8;
+  font-size: 32px;
+  box-sizing: border-box;
+  padding: 0.2em;
+}
+.content .page {
+  background-color: red;
+}

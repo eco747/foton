@@ -1,0 +1,1317 @@
+<html class="x-strict"><head id="ext-gen1070">
+		<meta charset="utf-8">
+		<title></title>
+
+		<link rel="shortcut icon" type="image/ico" href="/resources/img/favicon.ico">
+		<link rel="icon" type="image/png" href="/resources/img/luxoICON16.png">
+		<link rel="stylesheet" type="text/css" href="normalize.css">
+
+		<!-- script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script -->
+		<script async="" src="//www.google-analytics.com/analytics.js"></script><script type="text/javascript" src="/lib/qwebchannel.js"></script>
+
+		<!-- link rel="stylesheet" type="text/css" 	href="/lib/ext/css/ext-all.css" / -->
+
+		<!-- debug mode: 1 -->
+
+		<style>
+			#os-loading
+			{
+				width: 100%;
+				height: 100%;
+				top: 0px;
+				left: 0px;
+				position: fixed;
+				display: block;
+				background-color: #fff;
+				z-index: 99;
+				text-align: center;
+			}
+
+			#os-loading .loading-img
+			{
+				position: relative;
+				top: 50%;
+				-webkit-transform: translateY(-50%);
+				transform: translateY(-50%);
+
+				border-radius: 48px;
+				background-color: #FDFEFF;
+				border: 1px solid rgba(30, 86, 124, 0.05);
+				width: 60px;
+				height: 60px;
+
+				margin: 0 auto;
+			}
+
+			#os-loading .loading-image
+			{
+				position: absolute;
+				left: -81px;
+				top: -52px;
+				width: 223px;
+			}
+		</style>
+	<style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; touch-action-delay: none; }
+body /shadow-deep/ [touch-action="none"]{ -ms-touch-action: none; touch-action: none; touch-action-delay: none; }
+[touch-action="auto"]{ -ms-touch-action: auto; touch-action: auto; touch-action-delay: none; }
+body /shadow-deep/ [touch-action="auto"]{ -ms-touch-action: auto; touch-action: auto; touch-action-delay: none; }
+[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; touch-action-delay: none; }
+body /shadow-deep/ [touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; touch-action-delay: none; }
+[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; touch-action-delay: none; }
+body /shadow-deep/ [touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; touch-action-delay: none; }
+[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; touch-action-delay: none; }
+body /shadow-deep/ [touch-action="pan-x pan-y"],body /shadow-deep/ [touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; touch-action-delay: none; }
+</style><style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+	top: 18px !important;
+	left: 50% !important;
+	margin-left: -100px !important;
+	width: 200px !important;
+	border: 2px rgba(255,255,255,.38) solid !important;
+	border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+	margin-left: 0px !important;
+}
+</style></head>
+
+	<body class="os-body brand-oligoscan x-body x-webkit x-chrome" id="ext-gen1020">
+
+
+
+		<!-- script type="text/javascript" src="/lib/debug.js"></script -->
+		<script type="text/javascript" src="/lib/ext/ext-all-debug.js"></script>
+		<link rel="stylesheet" href="main.css">
+
+
+				<!-- modify compress.cmd -->
+		<script type="text/javascript" src="/lib/ext/UnitFields.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/grid/feature/MixinSummary.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/grid/feature/MultiAbstractSummary.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/grid/feature/MultiGroupStore.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/grid/feature/TableLayout.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/grid/feature/MultiAbstractSummary.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/grid/feature/MultiGrouping.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/grid/feature/MultiGroupingSummary.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/DataView/Draggable.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/DataView/DragSelector.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/DataView/LabelEditor.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/layout/Center.js"></script>
+		<script type="text/javascript" src="/lib/ext/ux/TreeCombo.js"></script>
+
+		<script type="text/javascript" src="/lib/utils.js"></script>
+
+		<script type="text/javascript" src="/assets/f/jsutils.js"></script>
+		<script type="text/javascript" src="/assets/f/exti18n.js"></script>
+		<script type="text/javascript" src="/lib/cryptojs-3.0.2.js"></script>
+
+				<script type="text/javascript" src="/lib/ext/os/elementpanel.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/navbar.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/jsapp.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/portal.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/cloudstorage.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/searcher.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/monthfield.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/carousel.js"></script>
+		<script type="text/javascript" src="/lib/ext/os/iconview.js"></script>
+
+
+		<!-- script type="text/javascript" src="/lib/ext/os/raphael-2.1.4.js"></script -->
+		<!-- script type="text/javascript" src="/lib/ext/os/gauge.js"></script -->
+
+		<div id="container" class="full admin">
+			<div id="content" class="os-content"><div class="x-panel desktop x-unselectable x-panel-default x-border-box" style="padding:0px 0px 0px 0px;width:100%;height:100%;" id="panel-1015"><div id="panel-1015-body" class="x-panel-body desktop-body x-panel-body-default x-border-layout-ct x-panel-body-default x-docked-noborder-top x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="width: 2560px; height: 759px; left: 0px; top: 0px;"><div class="x-panel x-unselectable x-border-item x-box-item x-panel-default" style="height: 64px; right: auto; left: 0px; top: 0px; margin: 0px; width: 2560px;" id="header"><div id="header-body" class="x-panel-body x-panel-body-default x-abs-layout-ct x-panel-body-default x-docked-noborder-top x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="height: 64px; width: 2560px; left: 0px; top: 0px;"><span id="header-outerCt" style="display: table; width: 100%; table-layout: fixed; height: 100%;"><div id="header-innerCt" style="display:table-cell;height:100%;vertical-align:top;" class=""><div class="x-component x-abs-layout-item x-component-default" id="logo"><div id="logo-img"></div><div id="oligo">Oligoscan</div><div id="sub"></div></div><div class="x-component os-navbar x-abs-layout-item x-component-default" style="padding:0px 0px 0px 0px;" id="crumb"><div id="crumb-back" class="button prev disabled"></div><div id="crumb-next" class="button next disabled"></div><div id="crumb-text" class="text">Synthèse</div><div id="crumb-menu" class="button menu">Options</div><div id="crumb-placeholder" class="placeholder"></div></div><div class="x-component user-icon x-abs-layout-item x-component-default" id="user-name">- Administrateur</div></div></span></div></div><div class="x-panel x-unselectable x-border-item x-box-item x-panel-default" style="height: 21px; right: auto; left: 0px; top: 738px; margin: 0px; width: 2560px;" id="footer"><div id="footer-body" class="x-panel-body x-panel-body-default x-panel-body-default x-docked-noborder-top x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="height: 20px; width: 2560px; left: 0px; top: 0px;"><span id="footer-outerCt" style="display: table; width: 100%; table-layout: fixed; height: 100%;"><div id="footer-innerCt" style="display:table-cell;height:100%;vertical-align:top;" class=""><div id="footer-content"><table class="os-statusbar browsing" id="os-statusbar" style="width: 100%"><tbody><tr><td style="text-align:left; padding-left: 16px"> Oligoscan&nbsp;2.0.i6&nbsp;&nbsp;© 2018</td><td id="state-text" class="">Working in web browser</td></tr></tbody></table><div id="footer-message"></div></div></div></span></div></div><div class="x-panel os-jb-multibar main-bar x-unselectable x-border-item x-box-item x-panel-default" style="padding: 4px; width: 240px; right: auto; left: 0px; top: 64px; margin: 0px; height: 674px;" id="panel-1014"><div id="panel-1014-body" class="x-panel-body x-panel-body-default x-box-layout-ct x-panel-body-default" style="overflow: auto; width: 232px; height: 666px; left: 0px; top: 0px;"><div id="panel-1014-innerCt" class="x-box-inner " role="presentation" style="height: 666px; width: 232px;"><div id="panel-1014-targetEl" class="x-box-target" style="width: 232px;"><div class="x-panel first x-box-item x-panel-default el-panel" style="width: 232px; right: auto; left: 0px; margin: 0px; top: 0px; height: 43px;" id="ep-3"><div id="ep-3-body" class="x-panel-body x-panel-body-default x-layout-fit x-panel-body-default" style="width: 232px; left: 0px; top: 0px; height: 43px;"><div class="x-component el-list x-fit-item x-component-default" id="dataview-1010" tabindex="-1" style="margin: 0px; width: 224px;"><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61668"></div></td><td><div class="text">Tableau de bord</div><div class="overlay hidden"></div></td></tr></tbody></table></div></div></div><div class="x-panel x-box-item x-panel-default el-panel" style="width: 232px; right: auto; left: 0px; margin: 0px; top: 43px; height: 218px;" id="ep-1"><div class="x-panel-header lime x-header x-header-horizontal x-docked x-unselectable x-panel-header-default x-horizontal x-panel-header-horizontal x-panel-header-default-horizontal x-top x-panel-header-top x-panel-header-default-top x-docked-top x-panel-header-docked-top x-panel-header-default-docked-top" id="ep-1_header" style="width: 232px; right: auto; left: 0px; top: 0px;"><div id="ep-1_header-body" class="x-header-body x-panel-header-body x-panel-header-body-default x-panel-header-body-horizontal x-panel-header-body-default-horizontal x-panel-header-body-top x-panel-header-body-default-top x-panel-header-body-docked-top x-panel-header-body-default-docked-top x-box-layout-ct x-panel-header-body-default-horizontal x-panel-header-body-default-top x-panel-header-body-default-docked-top" style="width: 212px;"><div id="ep-1_header-innerCt" class="x-box-inner " role="presentation" style="width: 212px; height: 21px;"><div id="ep-1_header-targetEl" class="x-box-target" style="width: 212px;"><div class="x-component x-header-text-container x-panel-header-text-container x-panel-header-text-container-default x-box-item x-component-default" unselectable="on" id="ep-1_header_hd" style="right: auto; left: 0px; top: 0px; margin: 0px; width: 212px;"><span id="ep-1_header_hd-textEl" class="x-header-text x-panel-header-text x-panel-header-text-default" unselectable="on">Utilisateurs</span></div></div></div></div></div><div id="ep-1-body" class="x-panel-body x-panel-body-default x-layout-fit x-panel-body-default" style="width: 232px; left: 0px; top: 31px; height: 187px;"><div class="x-component el-list x-fit-item x-component-default" id="dataview-1011" tabindex="-1" style="margin: 0px; width: 224px;"><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61672"></div></td><td><div class="text">Synthèse</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-62060"></div></td><td><div class="text">Prospection</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item " id="navb-messages"><tbody><tr><td class="ic"><div class="glyph glyph-61443"></div></td><td><div class="text">Messages</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61686"></div></td><td><div class="text">Documents</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61981"></div></td><td><div class="text">Recherche de praticiens</div><div class="overlay hidden"></div></td></tr></tbody></table></div></div></div><div class="x-panel x-box-item x-panel-default el-panel" style="width: 232px; right: auto; left: 0px; margin: 0px; top: 261px; height: 218px;" id="ep-2"><div class="x-panel-header purple x-header x-header-horizontal x-docked x-unselectable x-panel-header-default x-horizontal x-panel-header-horizontal x-panel-header-default-horizontal x-top x-panel-header-top x-panel-header-default-top x-docked-top x-panel-header-docked-top x-panel-header-default-docked-top" id="ep-2_header" style="width: 232px; right: auto; left: 0px; top: 0px;"><div id="ep-2_header-body" class="x-header-body x-panel-header-body x-panel-header-body-default x-panel-header-body-horizontal x-panel-header-body-default-horizontal x-panel-header-body-top x-panel-header-body-default-top x-panel-header-body-docked-top x-panel-header-body-default-docked-top x-box-layout-ct x-panel-header-body-default-horizontal x-panel-header-body-default-top x-panel-header-body-default-docked-top" style="width: 212px;"><div id="ep-2_header-innerCt" class="x-box-inner " role="presentation" style="width: 212px; height: 21px;"><div id="ep-2_header-targetEl" class="x-box-target" style="width: 212px;"><div class="x-component x-header-text-container x-panel-header-text-container x-panel-header-text-container-default x-box-item x-component-default" unselectable="on" id="ep-2_header_hd" style="right: auto; left: 0px; top: 0px; margin: 0px; width: 212px;"><span id="ep-2_header_hd-textEl" class="x-header-text x-panel-header-text x-panel-header-text-default" unselectable="on">Facturation</span></div></div></div></div></div><div id="ep-2-body" class="x-panel-body x-panel-body-default x-layout-fit x-panel-body-default" style="width: 232px; left: 0px; top: 31px; height: 187px;"><div class="x-component el-list x-fit-item x-component-default" id="dataview-1012" tabindex="-1" style="margin: 0px; width: 224px;"><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61932"></div></td><td><div class="text">Facturation des praticiens</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61597"></div></td><td><div class="text">Factures/règlements clients</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61680"></div></td><td><div class="text">Factures/règlements praticiens</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-62030"></div></td><td><div class="text">Comptabilité</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61632"></div></td><td><div class="text">Facturation/Com. revendeurs</div><div class="overlay hidden"></div></td></tr></tbody></table></div></div></div><div class="x-panel x-box-item x-panel-default el-panel" style="width: 232px; right: auto; left: 0px; margin: 0px; top: 479px; height: 184px;" id="ep-0"><div class="x-panel-header yellow x-header x-header-horizontal x-docked x-unselectable x-panel-header-default x-horizontal x-panel-header-horizontal x-panel-header-default-horizontal x-top x-panel-header-top x-panel-header-default-top x-docked-top x-panel-header-docked-top x-panel-header-default-docked-top" id="ep-0_header" style="width: 232px; right: auto; left: 0px; top: 0px;"><div id="ep-0_header-body" class="x-header-body x-panel-header-body x-panel-header-body-default x-panel-header-body-horizontal x-panel-header-body-default-horizontal x-panel-header-body-top x-panel-header-body-default-top x-panel-header-body-docked-top x-panel-header-body-default-docked-top x-box-layout-ct x-panel-header-body-default-horizontal x-panel-header-body-default-top x-panel-header-body-default-docked-top" style="width: 212px;"><div id="ep-0_header-innerCt" class="x-box-inner " role="presentation" style="width: 212px; height: 21px;"><div id="ep-0_header-targetEl" class="x-box-target" style="width: 212px;"><div class="x-component x-header-text-container x-panel-header-text-container x-panel-header-text-container-default x-box-item x-component-default" unselectable="on" id="ep-0_header_hd" style="right: auto; left: 0px; top: 0px; margin: 0px; width: 212px;"><span id="ep-0_header_hd-textEl" class="x-header-text x-panel-header-text x-panel-header-text-default" unselectable="on">Compte</span></div></div></div></div></div><div id="ep-0-body" class="x-panel-body x-panel-body-default x-layout-fit x-panel-body-default" style="width: 232px; left: 0px; top: 31px; height: 153px;"><div class="x-component el-list x-fit-item x-component-default" id="dataview-1013" tabindex="-1" style="margin: 0px; width: 224px;"><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61506"></div></td><td><div class="text">Préférences</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item  menu"><tbody><tr><td class="ic"><div class="glyph glyph-61579"></div></td><td><div class="text">Sites</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61867"></div></td><td><div class="text">Build translations</div><div class="overlay hidden"></div></td></tr></tbody></table><table class="el-list-item "><tbody><tr><td class="ic"><div class="glyph glyph-61457"></div></td><td><div class="text">Déconnexion</div><div class="overlay hidden"></div></td></tr></tbody></table></div></div></div></div></div></div></div><div class="x-splitter x-border-item x-box-item x-splitter-default x-splitter-vertical x-unselectable" style="width: 5px; height: 674px; right: auto; left: 240px; top: 64px; margin: 0px;" id="panel-1014-splitter"><div id="panel-1014-splitter-collapseEl" class="x-collapse-el x-layout-split-left">&nbsp;</div></div><div class="x-panel x-border-item x-box-item x-panel-default" id="spa-content" style="right: auto; left: 245px; top: 64px; margin: 0px; height: 674px; width: 2315px;"><div id="spa-content-body" class="x-panel-body x-panel-body-default x-layout-fit x-panel-body-default x-docked-noborder-top x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="width: 2315px; height: 674px; left: 0px; top: 0px;"><div class="x-panel x-fit-item x-panel-default" style="padding: 0px; margin: 0px; width: 2315px; height: 674px;" id="module-synthesis" tabindex="-1"><div id="module-synthesis-body" class="x-panel-body x-panel-body-default x-border-layout-ct x-panel-body-default x-docked-noborder-top x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="width: 2315px; height: 674px; left: 0px; top: 0px;"><div class="x-panel x-border-item x-box-item x-panel-default" style="padding: 0px; right: auto; left: 0px; top: 0px; margin: 0px; height: 674px; width: 2315px;" id="form-1036"><div class="x-panel-header x-header x-header-horizontal x-docked x-unselectable x-panel-header-default x-horizontal x-panel-header-horizontal x-panel-header-default-horizontal x-top x-panel-header-top x-panel-header-default-top x-horizontal-noborder x-panel-header-horizontal-noborder x-panel-header-default-horizontal-noborder x-docked-top x-panel-header-docked-top x-panel-header-default-docked-top x-docked-noborder-top x-docked-noborder-right x-docked-noborder-left" id="form-1036_header" style="right: auto; left: 0px; top: 0px; width: 2315px;"><div id="form-1036_header-body" class="x-header-body x-panel-header-body x-panel-header-body-default x-panel-header-body-horizontal x-panel-header-body-default-horizontal x-panel-header-body-top x-panel-header-body-default-top x-panel-header-body-horizontal-noborder x-panel-header-body-default-horizontal-noborder x-panel-header-body-docked-top x-panel-header-body-default-docked-top x-box-layout-ct x-panel-header-body-default-horizontal x-panel-header-body-default-top x-panel-header-body-default-horizontal-noborder x-panel-header-body-default-docked-top" style="width: 2293px;"><div id="form-1036_header-innerCt" class="x-box-inner " role="presentation" style="width: 2293px; height: 28px;"><div id="form-1036_header-targetEl" class="x-box-target" style="width: 2293px;"><table class="x-field os-search-edit x-table-plain x-form-item x-form-type-text x-box-item x-field-default x-hbox-form-item x-field-before-title" style="margin: 0px; width: 500px; table-layout: fixed; right: auto; left: 0px; top: 1px;" cellpadding="0" id="ext-comp-1023" data-qtip="Vous pouvez utiliser des filtres étendus pour améliorer la recherche: <ul><li>email:xxx</li><li>tag:xxx</li><li>city:xxx</li><li>country:[code pays]</li><li>login:xxx</li><li>company:xxx</li><li>spectro:nnn</li><li>type:[standard,prepaid,wellness,nutrition,pharmacy]</li></ul>"><tbody><tr role="presentation" id="ext-comp-1023-inputRow" class="x-form-item-input-row"><td role="presentation" id="ext-comp-1023-labelCell" style="display:none;" valign="top" halign="left" width="105" class="x-field-label-cell"><label id="ext-comp-1023-labelEl" for="ext-comp-1023-inputEl" class="x-form-item-label x-unselectable x-form-item-label-left" style="width:100px;margin-right:5px;" unselectable="on"></label></td><td role="presentation" class="x-form-item-body  " id="ext-comp-1023-bodyEl" colspan="3" style="width: 100%;"><table id="ext-comp-1023-triggerWrap" class="x-form-trigger-wrap" cellpadding="0" cellspacing="0" style="width: 100%; table-layout: fixed;"><tbody><tr><td id="ext-comp-1023-inputCell" class="x-form-trigger-input-cell" style="width: 100%;"><input id="ext-comp-1023-inputEl" type="text" size="1" name="ext-comp-1023-inputEl" class="x-form-field x-form-text" autocomplete="off" aria-invalid="false" data-errorqtip="" style="width: 100%;"></td><td valign="top" class=" x-trigger-cell x-unselectable" style="width:0px;" id="ext-gen1152"><div class="x-trigger-index-0 x-form-trigger x-form-clear-trigger x-form-trigger-first" id="ext-comp-1023-btn-0" role="button" style="display: none;"></div></td><td valign="top" class=" x-trigger-cell x-unselectable" style="width:0px;" id="ext-gen1153"><div class="x-trigger-index-1 x-form-trigger x-form-search-trigger" id="ext-comp-1023-btn-1" role="button"></div></td></tr></tbody></table></td></tr></tbody></table><div class="x-toolbar-spacer x-box-item x-toolbar-spacer-default x-toolbar-spacer-before-title" style="width: 10px; right: auto; left: 508px; top: 14px; margin: 0px;" id="tbspacer-1071"></div><a class="x-btn os-hilite x-unselectable x-box-item x-btn-default-small x-icon-text-left x-btn-icon-text-left x-btn-default-small-icon-text-left x-btn-before-title" role="button" hidefocus="on" unselectable="on" tabindex="0" id="button-1072" style="right: auto; left: 518px; top: 0px; margin: 0px;"><span id="button-1072-btnWrap" class="x-btn-wrap" unselectable="on"><span id="button-1072-btnEl" class="x-btn-button"><span id="button-1072-btnInnerEl" class="x-btn-inner x-btn-inner-center" unselectable="on">Nouveau praticien</span><span role="img" id="button-1072-btnIconEl" class="x-btn-icon-el  " unselectable="on" style="background-image:url(/resources/img/doctor_add.png);">&nbsp;</span></span></span></a><a class="x-btn os-hilite x-unselectable x-box-item x-btn-default-small x-icon-text-left x-btn-icon-text-left x-btn-default-small-icon-text-left x-btn-before-title" role="button" hidefocus="on" unselectable="on" tabindex="0" id="button-1073" style="right: auto; left: 661px; top: 0px; margin: 0px;"><span id="button-1073-btnWrap" class="x-btn-wrap" unselectable="on"><span id="button-1073-btnEl" class="x-btn-button"><span id="button-1073-btnInnerEl" class="x-btn-inner x-btn-inner-center" unselectable="on">Nouveau revendeur</span><span role="img" id="button-1073-btnIconEl" class="x-btn-icon-el  " unselectable="on" style="background-image:url(/resources/img/dealer_add.png);">&nbsp;</span></span></span></a><a class="x-btn os-hilite x-unselectable x-box-item x-btn-default-small x-icon-text-left x-btn-icon-text-left x-btn-default-small-icon-text-left x-btn-before-title" role="button" hidefocus="on" unselectable="on" tabindex="0" id="button-1074" style="right: auto; left: 812px; top: 0px; margin: 0px;"><span id="button-1074-btnWrap" class="x-btn-wrap" unselectable="on"><span id="button-1074-btnEl" class="x-btn-button"><span id="button-1074-btnInnerEl" class="x-btn-inner x-btn-inner-center" unselectable="on">Nouveau distributeur</span><span role="img" id="button-1074-btnIconEl" class="x-btn-icon-el  " unselectable="on" style="background-image:url(/resources/img/distrib_add.png);">&nbsp;</span></span></span></a><div class="x-component x-header-text-container x-panel-header-text-container x-panel-header-text-container-default x-box-item x-component-default" unselectable="on" id="form-1036_header_hd" style="right: auto; left: 969px; top: 3px; margin: 0px; width: 1324px;"><span id="form-1036_header_hd-textEl" class="x-header-text x-panel-header-text x-panel-header-text-default" unselectable="on">&nbsp;</span></div></div></div></div></div><div id="form-1036-body" class="x-panel-body x-panel-body-default x-border-layout-ct x-panel-body-default x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="width: 2315px; height: 627px; left: 0px; top: 47px;"><div class="x-panel dis-tree x-grid-no-row-lines x-border-item x-box-item x-panel-default x-tree-panel x-tree-lines x-grid" style="width: 445px; height: 626px; right: auto; left: 0px; top: 0px; margin: 0px;" id="treepanel-1024"><div class="x-grid-header-ct x-docked x-grid-header-ct-default x-docked-top x-grid-header-ct-docked-top x-grid-header-ct-default-docked-top x-box-layout-ct x-docked-noborder-top x-docked-noborder-right x-docked-noborder-left" style="border-width: 1px; right: auto; left: 0px; top: 0px; width: 445px;" id="headercontainer-1025"><div id="headercontainer-1025-innerCt" class="x-box-inner " role="presentation" style="width: 445px; height: 29px;"><div id="headercontainer-1025-targetEl" class="x-box-target" style="width: 445px;"><div class="x-column-header x-column-header-align-left x-box-item x-column-header-default x-unselectable x-column-header-first x-column-header-last" style="border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; right: auto; left: 0px; top: 0px; margin: 0px; width: 431px;" id="treecolumn-1026"><div id="treecolumn-1026-titleEl" class="x-column-header-inner"><span id="treecolumn-1026-textEl" class="x-column-header-text">Distributeurs</span></div></div></div></div></div><div id="treepanel-1024-body" class="x-panel-body x-grid-body x-panel-body-default x-layout-fit x-panel-body-default x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="width: 445px; height: 596px; left: 0px; top: 30px;"><div class="x-tree-view x-fit-item x-tree-view-default x-unselectable" id="treeview-1027" tabindex="-1" style="overflow: auto; margin: 0px; width: 445px; height: 596px;"><table role="presentation" id="treeview-1027-table" class="x-treeview-1027-table x-grid-table" border="0" cellspacing="0" cellpadding="0" style="width: 431px;" tabindex="-1"><colgroup><col class="x-grid-cell-treecolumn-1026" style="width: 431px;"></colgroup><tbody id="treeview-1027-body"><tr role="row" id="treeview-1027-record-97" data-boundview="treeview-1027" data-recordid="97" data-recordindex="0" class="x-grid-row admin x-grid-tree-node-expanded x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn admin" id="ext-gen1160"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-end-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Administrator<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-98" data-boundview="treeview-1027" data-recordid="98" data-recordindex="1" class="x-grid-row archive disa x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn archive" id="ext-gen1161"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Archives<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-2628" data-boundview="treeview-1027" data-recordid="2628" data-recordindex="2" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1162"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">ELANHURST<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-2595" data-boundview="treeview-1027" data-recordid="2595" data-recordindex="3" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1163"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">Element Ô<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-671" data-boundview="treeview-1027" data-recordid="671" data-recordindex="4" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1164"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">EliteMaster<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-649" data-boundview="treeview-1027" data-recordid="649" data-recordindex="5" class="x-grid-row distrib x-grid-tree-node-expanded x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1177"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Global Springdale Health Management<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1262" data-boundview="treeview-1027" data-recordid="1262" data-recordindex="6" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1199"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">Bosotina d.o.o.<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-3649" data-boundview="treeview-1027" data-recordid="3649" data-recordindex="7" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1200"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Celtac Co., Ltd<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-3429" data-boundview="treeview-1027" data-recordid="3429" data-recordindex="8" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1201"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Human Bridge<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1597" data-boundview="treeview-1027" data-recordid="1597" data-recordindex="9" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1202"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">JP Durga LLC<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-811" data-boundview="treeview-1027" data-recordid="811" data-recordindex="10" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1203"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Karuna Health Care Ltd<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1374" data-boundview="treeview-1027" data-recordid="1374" data-recordindex="11" class="x-grid-row distrib x-grid-data-row x-grid-row-before-selected x-grid-row-before-focused" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1204"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Oligoscan Asean via Springdale<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1020" data-boundview="treeview-1027" data-recordid="1020" data-recordindex="12" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row x-grid-row-selected x-grid-row-focused" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1205"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">Pure North S'Energy Foundation<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-174" data-boundview="treeview-1027" data-recordid="174" data-recordindex="13" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1206"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">QE4norway<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-176" data-boundview="treeview-1027" data-recordid="176" data-recordindex="14" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1207"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">QE4safrica<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1401" data-boundview="treeview-1027" data-recordid="1401" data-recordindex="15" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1208"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">SDH dba Oligoscan Intl<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1595" data-boundview="treeview-1027" data-recordid="1595" data-recordindex="16" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1209"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">SouthBridge Incorporated<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-3650" data-boundview="treeview-1027" data-recordid="3650" data-recordindex="17" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1210"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">Springdale Americas<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-129" data-boundview="treeview-1027" data-recordid="129" data-recordindex="18" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1211"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Springdale Health<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-3659" data-boundview="treeview-1027" data-recordid="3659" data-recordindex="19" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1212"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Springdale Health America<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-138" data-boundview="treeview-1027" data-recordid="138" data-recordindex="20" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1213"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Springdale Health Japan<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-139" data-boundview="treeview-1027" data-recordid="139" data-recordindex="21" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1214"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Springdale Health UK<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1021" data-boundview="treeview-1027" data-recordid="1021" data-recordindex="22" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1215"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Z bad accts dump here<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-3762" data-boundview="treeview-1027" data-recordid="3762" data-recordindex="23" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1216"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">z Mini Tests<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-2910" data-boundview="treeview-1027" data-recordid="2910" data-recordindex="24" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1217"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Z Oligoscan Demo Worldwide<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-182" data-boundview="treeview-1027" data-recordid="182" data-recordindex="25" class="x-grid-row dealer x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn dealer" id="ext-gen1218"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Quantalia<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1026" data-boundview="treeview-1027" data-recordid="1026" data-recordindex="26" class="x-grid-row dealer x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn dealer" id="ext-gen1219"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-line"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-end"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Springdale of America<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1010" data-boundview="treeview-1027" data-recordid="1010" data-recordindex="27" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1166"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">Global Springdale Health Management / Demo<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-3492" data-boundview="treeview-1027" data-recordid="3492" data-recordindex="28" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1167"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">Health Optimisation Devices B.V.<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-659" data-boundview="treeview-1027" data-recordid="659" data-recordindex="29" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1168"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">IMC<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-99" data-boundview="treeview-1027" data-recordid="99" data-recordindex="30" class="x-grid-row internal disa x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn internal" id="ext-gen1169"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">Internal<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-107" data-boundview="treeview-1027" data-recordid="107" data-recordindex="31" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1170"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">jmbudistr<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-111" data-boundview="treeview-1027" data-recordid="111" data-recordindex="32" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1171"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">P.H.S. SARL<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-117" data-boundview="treeview-1027" data-recordid="117" data-recordindex="33" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1172"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">PhysioQuanta<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-135" data-boundview="treeview-1027" data-recordid="135" data-recordindex="34" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1173"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">PROMOPHEUS 2 SL<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1889" data-boundview="treeview-1027" data-recordid="1889" data-recordindex="35" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1174"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">RESPIRE<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1319" data-boundview="treeview-1027" data-recordid="1319" data-recordindex="36" class="x-grid-row distrib x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1175"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-plus x-tree-expander"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-parent "><span class="x-tree-node-text ">SPIREN Ltd<div class="opener"></div></span></div></td></tr><tr role="row" id="treeview-1027-record-1636" data-boundview="treeview-1027" data-recordid="1636" data-recordindex="37" class="x-grid-row distrib x-grid-tree-node-leaf x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-treecolumn-1026 x-grid-cell-treecolumn x-grid-cell-first x-grid-cell-last x-unselectable x-grid-cell-treecolumn distrib" id="ext-gen1176"><div unselectable="on" class="x-grid-cell-inner x-grid-cell-inner-treecolumn" style="text-align:left;"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-empty"><img src="/resources/img/1x1.gif" class=" x-tree-elbow-img x-tree-elbow-end"><img src="/resources/img/1x1.gif" class=" x-tree-icon x-tree-icon-leaf "><span class="x-tree-node-text ">WINCODE S.A.<div class="opener"></div></span></div></td></tr></tbody></table></div></div></div><div class="x-splitter x-border-item x-box-item x-splitter-default x-splitter-vertical x-unselectable" style="width: 5px; height: 626px; right: auto; left: 445px; top: 0px; margin: 0px;" id="treepanel-1024-splitter"></div><div class="x-panel doc-list x-grid-with-col-lines x-grid-with-row-lines x-border-item x-box-item x-panel-default x-grid" id="gridpanel-1028" style="right: auto; left: 450px; top: 0px; margin: 0px; width: 1865px; height: 626px;"><div class="x-grid-header-ct x-docked x-grid-header-ct-default x-docked-top x-grid-header-ct-docked-top x-grid-header-ct-default-docked-top x-box-layout-ct x-docked-noborder-top x-docked-noborder-right x-docked-noborder-left" style="border-width: 1px; right: auto; left: 0px; top: 0px; width: 1865px;" id="headercontainer-1029"><div id="headercontainer-1029-innerCt" class="x-box-inner " role="presentation" style="width: 1879px; height: 29px;"><div id="headercontainer-1029-targetEl" class="x-box-target" style="width: 1879px;"><div class="x-column-header x-column-header-align-left x-box-item x-column-header-default x-unselectable x-column-header-first" style="border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; width: 454px; right: auto; left: 0px; top: 0px; margin: 0px;" id="gridcolumn-1030"><div id="gridcolumn-1030-titleEl" class="x-column-header-inner"><span id="gridcolumn-1030-textEl" class="x-column-header-text">Nom</span></div></div><div class="x-column-header x-column-header-align-left x-box-item x-column-header-default x-unselectable" style="border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; right: auto; left: 454px; top: 0px; margin: 0px; width: 471px;" id="gridcolumn-1031"><div id="gridcolumn-1031-titleEl" class="x-column-header-inner"><span id="gridcolumn-1031-textEl" class="x-column-header-text">Adresse</span></div></div><div class="x-column-header x-column-header-align-left x-box-item x-column-header-default x-unselectable" style="border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; right: auto; left: 925px; top: 0px; margin: 0px; width: 470px;" id="gridcolumn-1032"><div id="gridcolumn-1032-titleEl" class="x-column-header-inner"><span id="gridcolumn-1032-textEl" class="x-column-header-text">Contact</span></div></div><div class="x-column-header x-column-header-align-left x-box-item x-column-header-default x-unselectable" style="border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; width: 235px; right: auto; left: 1395px; top: 0px; margin: 0px;" id="gridcolumn-1033"><div id="gridcolumn-1033-titleEl" class="x-column-header-inner"><span id="gridcolumn-1033-textEl" class="x-column-header-text">Connexion</span></div></div><div class="x-column-header x-column-header-align-left x-box-item x-column-header-default x-unselectable x-column-header-last" style="border-top-width: 1px; border-bottom-width: 1px; border-left-width: 1px; width: 235px; right: auto; left: 1630px; top: 0px; margin: 0px;" id="gridcolumn-1034"><div id="gridcolumn-1034-titleEl" class="x-column-header-inner"><span id="gridcolumn-1034-textEl" class="x-column-header-text">Facturation</span></div></div></div></div></div><div id="gridpanel-1028-body" class="x-panel-body x-grid-body x-panel-body-default x-layout-fit x-panel-body-default x-docked-noborder-right x-docked-noborder-bottom x-docked-noborder-left" style="width: 1865px; height: 596px; left: 0px; top: 30px;"><div class="x-grid-view x-fit-item x-grid-view-default x-unselectable" id="gridview-1035" tabindex="-1" style="overflow: auto; margin: 0px; width: 1865px; height: 596px;"><div style="width: 1px; height: 1px; margin-top: 320px; left: 0px; position: absolute;" id="ext-gen1159"></div><table role="presentation" id="gridview-1035-table" class="x-gridview-1035-table x-grid-table x-grid-with-col-lines x-grid-with-row-lines x-grid-table-focused-first" border="0" cellspacing="0" cellpadding="0" style="position: absolute; top: 0px; width: 1865px;" tabindex="-1"><colgroup><col class="x-grid-cell-gridcolumn-1030" style="width:454px"></colgroup><colgroup><col class="x-grid-cell-gridcolumn-1031" style="width:471px"></colgroup><colgroup><col class="x-grid-cell-gridcolumn-1032" style="width:470px"></colgroup><colgroup><col class="x-grid-cell-gridcolumn-1033" style="width:235px"></colgroup><colgroup><col class="x-grid-cell-gridcolumn-1034" style="width:235px"></colgroup><tbody id="gridview-1035-body"><tr role="row" id="gridview-1035-record-1123" data-boundview="gridview-1035" data-recordid="1123" data-recordindex="0" class="x-grid-row cnt-undefined other x-grid-data-row x-grid-row-focused" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1030 cname x-grid-cell-first x-unselectable cname" id="ext-gen1221"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="other-txt rotated">alias</div><div class="col"><div class="cell head"><div class="left"><div class="opener"><span class="name left">PureNorth Web Client</span><span class="fname left"> </span></div></div><div class="parent right"><span>Pure North S'Energy Foundation</span></div></div><div class="extra-infos"><span class="right"> - 1123</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1031 x-unselectable " id="ext-gen1222"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon place"><span class="text x-selectable"></span></div><div class="cell icon "><span class="text x-selectable">  (FR)</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1032 x-unselectable " id="ext-gen1223"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon email"><span class="text x-selectable">&nbsp;</span></div><div class="cell icon phone"><span class="text x-selectable"></span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1033 x-unselectable " id="ext-gen1224"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell"><div class="text x-selectable icon login left">PureNorthWeb</div><div class="text icon pass right">y6KjN9A9cHCe</div></div><div class="cell icon serial warning"><span class="text">---</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1034 x-grid-cell-last x-unselectable " id="ext-gen1225"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col accounting"><div class="cell icon mode"><span class="text">?</span></div><div class="cell horz"><div class="count with-icon pcount zero">0</div><div class="count with-icon tcount zero">0</div></div></div></div></td></tr><tr role="row" id="gridview-1035-record-998" data-boundview="gridview-1035" data-recordid="998" data-recordindex="1" class="x-grid-row cnt-normal x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1030 cname x-grid-cell-first x-unselectable cname" id="ext-gen1226"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell head"><div class="left"><div class="opener"><span class="name left">Unit 1</span><span class="fname left">Pure North</span></div></div><div class="parent right"><span>Pure North S'Energy Foundation</span></div></div><div class="extra-infos"><span class="right">12/05/2014 - 998</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1031 x-unselectable " id="ext-gen1227"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon place"><span class="text x-selectable">326 11th Avenue SW, Suite 800</span></div><div class="cell icon "><span class="text x-selectable">AB T2R0C5 Calgary,  (CA)</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1032 x-unselectable " id="ext-gen1228"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon email"><span class="text x-selectable">Kara.Lipischak@purenorth.ca</span></div><div class="cell icon phone"><span class="text x-selectable">403-457-5077 / 403-984-5078</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1033 x-unselectable " id="ext-gen1229"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell"><div class="text x-selectable icon login left">PureNorth1</div><div class="text icon pass right">GfXRD9</div></div><div class="cell icon serial"><span class="text">1010992</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1034 x-grid-cell-last x-unselectable " id="ext-gen1230"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col accounting"><div class="cell icon mode"><span class="text">Standard</span></div><div class="cell horz"><div class="count with-icon pcount">7262</div><div class="count with-icon tcount">9347</div></div></div></div></td></tr><tr role="row" id="gridview-1035-record-1018" data-boundview="gridview-1035" data-recordid="1018" data-recordindex="2" class="x-grid-row cnt-normal x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1030 cname x-grid-cell-first x-unselectable cname" id="ext-gen1231"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell head"><div class="left"><div class="opener"><span class="name left">Unit 2</span><span class="fname left">Pure North</span></div></div><div class="parent right"><span>Pure North S'Energy Foundation</span></div></div><div class="extra-infos"><span class="right">17/05/2014 - 1018</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1031 x-unselectable " id="ext-gen1232"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon place"><span class="text x-selectable">326 11th Avenue SW, Suite 800</span></div><div class="cell icon "><span class="text x-selectable">AB T2R0C5 Calgary (CA)</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1032 x-unselectable " id="ext-gen1233"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon email"><span class="text x-selectable">Kara.Lipischak@purenorth.ca</span></div><div class="cell icon phone"><span class="text x-selectable">403-457-5077 / 403-984-5078</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1033 x-unselectable " id="ext-gen1234"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell"><div class="text x-selectable icon login left">PureNorth2</div><div class="text icon pass right">P8vrFa</div></div><div class="cell icon serial"><span class="text">1010993</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1034 x-grid-cell-last x-unselectable " id="ext-gen1235"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col accounting"><div class="cell icon mode"><span class="text">Standard</span></div><div class="cell horz"><div class="count with-icon pcount">96</div><div class="count with-icon tcount">96</div></div></div></div></td></tr><tr role="row" id="gridview-1035-record-1019" data-boundview="gridview-1035" data-recordid="1019" data-recordindex="3" class="x-grid-row cnt-normal x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1030 cname x-grid-cell-first x-unselectable cname" id="ext-gen1236"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell head"><div class="left"><div class="opener"><span class="name left">Unit 3</span><span class="fname left">Pure North</span></div></div><div class="parent right"><span>Pure North S'Energy Foundation</span></div></div><div class="extra-infos"><span class="right">17/05/2014 - 1019</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1031 x-unselectable " id="ext-gen1237"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon place"><span class="text x-selectable">326 11th Avenue SW, Suite 800</span></div><div class="cell icon "><span class="text x-selectable">AB T2R0C5 Calgary (CA)</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1032 x-unselectable " id="ext-gen1238"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon email"><span class="text x-selectable">Kara.Lipischak@purenorth.ca</span></div><div class="cell icon phone"><span class="text x-selectable">403-457-5077 / 403-984-5078</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1033 x-unselectable " id="ext-gen1239"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell"><div class="text x-selectable icon login left">PureNorth3</div><div class="text icon pass right">T5aHby</div></div><div class="cell icon serial"><span class="text">1010994</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1034 x-grid-cell-last x-unselectable " id="ext-gen1240"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col accounting"><div class="cell icon mode"><span class="text">Standard</span></div><div class="cell horz"><div class="count with-icon pcount">1414</div><div class="count with-icon tcount">1653</div></div></div></div></td></tr><tr role="row" id="gridview-1035-record-1053" data-boundview="gridview-1035" data-recordid="1053" data-recordindex="4" class="x-grid-row cnt-normal x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1030 cname x-grid-cell-first x-unselectable cname" id="ext-gen1241"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell head"><div class="left"><div class="opener"><span class="name left">Unit 4</span><span class="fname left">Pure North</span></div></div><div class="parent right"><span>Pure North S'Energy Foundation</span></div></div><div class="extra-infos"><span class="right">27/05/2014 - 1053</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1031 x-unselectable " id="ext-gen1242"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon place"><span class="text x-selectable">326 11th Avenue SW, Suite 800</span></div><div class="cell icon "><span class="text x-selectable">AB T2R0C5 Calgary (CA)</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1032 x-unselectable " id="ext-gen1243"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon email"><span class="text x-selectable">Kara.Lipischak@purenorth.ca</span></div><div class="cell icon phone"><span class="text x-selectable">403-457-5077 / 403-984-5078</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1033 x-unselectable " id="ext-gen1244"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell"><div class="text x-selectable icon login left">PureNorth4</div><div class="text icon pass right">RH57YY</div></div><div class="cell icon serial"><span class="text">1010995</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1034 x-grid-cell-last x-unselectable " id="ext-gen1245"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col accounting"><div class="cell icon mode"><span class="text">Standard</span></div><div class="cell horz"><div class="count with-icon pcount">4</div><div class="count with-icon tcount">4</div></div></div></div></td></tr><tr role="row" id="gridview-1035-record-1054" data-boundview="gridview-1035" data-recordid="1054" data-recordindex="5" class="x-grid-row cnt-normal x-grid-data-row" tabindex="-1"><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1030 cname x-grid-cell-first x-unselectable cname" id="ext-gen1246"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell head"><div class="left"><div class="opener"><span class="name left">Unit 5</span><span class="fname left">Pure North</span></div></div><div class="parent right"><span>Pure North S'Energy Foundation</span></div></div><div class="extra-infos"><span class="right">27/05/2014 - 1054</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1031 x-unselectable " id="ext-gen1247"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon place"><span class="text x-selectable">326 11th Avenue SW, Suite 800</span></div><div class="cell icon "><span class="text x-selectable">T2R0C5 Calgary (CA)</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1032 x-unselectable " id="ext-gen1248"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell icon email"><span class="text x-selectable">Kara.Lipischak@purenorth.ca</span></div><div class="cell icon phone"><span class="text x-selectable">403-457-5077 / 403-984-5078</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1033 x-unselectable " id="ext-gen1249"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col"><div class="cell"><div class="text x-selectable icon login left">PureNorth5</div><div class="text icon pass right">ngZqGP</div></div><div class="cell icon serial"><span class="text">1010996</span></div></div></div></td><td role="gridcell" class="x-grid-cell x-grid-td x-grid-cell-gridcolumn-1034 x-grid-cell-last x-unselectable " id="ext-gen1250"><div unselectable="on" class="x-grid-cell-inner " style="text-align:left;"><div class="col accounting"><div class="cell icon mode"><span class="text">Standard</span></div><div class="cell horz"><div class="count with-icon pcount">1073</div><div class="count with-icon tcount">1572</div></div></div></div></td></tr></tbody></table></div></div></div></div></div></div></div></div></div></div></div></div>
+		</div>
+
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-75421154-1', 'auto');
+			ga('send', 'pageview');
+		</script>
+
+		<script>
+			Ext.onReady(function () {
+
+				Ext.get( 'os-loading').remove( );
+
+				// convertion from old to new Oligoscan
+				//	map sync -> async
+				//	rename Oli to OliV2
+
+				if( window.Oli )
+				{
+					window.OliV2 = window.Oli;
+					window.Oli = null;
+
+					window.Oligoscan = {
+
+						setTitle: function( title ) {
+							if( OliV2.setTitle )
+								OliV2.setTitle( title );
+						},
+						exit: function( ) {
+							OliV2.exit();
+						},
+						getOS: function( cb ) {
+							cb( OliV2.getOS( ) );
+						},
+						getVersion: function( cb ) {
+							cb(  OliV2.getVersion() );
+						},
+						selectSite: function( site ) {
+							OliV2.selectSite( site );
+						},
+						isDebug: function( cb ) {
+							cb( OliV2.isDebug ? OliV2.isDebug( ) : false );
+						},
+						getSerial: function( cb ) {
+							cb( OliV2.getSerial( ) );
+						},
+						getState: function( cb ) {
+							cb( OliV2.getState( ) );
+						},
+						calibrate: function( ) {
+							OliV2.calibrate( );
+						},
+						openUrl: function( url )  {
+							OliV2.openUrl( url );
+						},
+						setLocale: function( locale ) {
+							if ( OliV2.setLocale ) {
+								OliV2.setLocale(locale);
+							}
+						},
+						appLoaded: function( ) {
+							if ( OliV2.appLoaded ) {
+								OliV2.appLoaded( );
+							}
+						}
+					}
+
+					Oligoscan.downloadProgress  = window.OliV2.downloadProgress;
+					Oligoscan.downloadDone		= window.OliV2.downloadDone;
+					Oligoscan.stateChanged		= window.OliV2.stateChanged;
+					Oligoscan.startMeasure		= window.OliV2.startMeasure;
+					Oligoscan.cancelMeasure		= window.OliV2.cancelMeasure;
+					Oligoscan.measureDone		= window.OliV2.measureDone;
+					Oligoscan.measureFail		= window.OliV2.measureFail;
+					Oligoscan.flushButton		= window.OliV2.flushButton;
+
+					if( OliV2.appLoaded ) {
+						OliV2.appLoaded( );
+					}
+
+					check_version( );
+				}
+				//	new Oligoscan system
+				else if( window.qt ) {
+					new QWebChannel(qt.webChannelTransport, function (channel) {
+						window.Oligoscan = channel.objects.host;
+						check_version( );
+					});
+				}
+				//	browser
+				else {
+					window.Oligoscan = false;
+					main( );
+				}
+			});
+
+
+			function check_version( ) {
+
+				var modal;
+
+				function downloadStart( ) {
+
+					modal.hide( );
+
+					Ext.MessageBox.show({
+						title: '',
+						progressText: '',
+						width:300,
+						cls: 'os-progress',
+						icon: 'progress-icon',
+						iconHeight: 48,
+						progress:true,
+						closable:false,
+					});
+				}
+
+				function downloadProgress( pos, total ) {
+
+					var perc = 0;
+					if( total ) {
+						perc = pos / total;
+					}
+
+					var unit;
+					if (pos < 1024) {
+						unit = 'b';
+					}
+					else if (pos < 1024*1024) {
+						pos /= 1024;
+						unit = tr("Kb");
+					}
+					else {
+						pos /= 1024*1024;
+						unit = "Mb";
+					}
+
+					Ext.MessageBox.updateProgress(perc, Math.round(pos) + unit );
+				}
+
+				function downloadDone( success ) {
+					Oligoscan.exit();
+				}
+
+				function downloadIt( rec ) {
+
+					Oligoscan.getOS( function(os) {
+
+						debugger;
+						var 	path;
+						if ( os.indexOf('mac')>=0 ) {
+							path = '/downloads/file/mac-setup';
+						}
+						else {
+							var ua = navigator.userAgent.toLowerCase(),
+								xp_re = /windows nt 5\.1/;
+
+							if ( xp_re.test(ua) ) {
+								//alert( < ? =js_quote(L::xp_not_supported) ? > );
+								return;
+							}
+
+							path = '/downloads/file/win-update';
+						}
+
+						var	b1 = Ext.getCmp('download-b1'),
+							b2 = Ext.getCmp('download-b2');
+
+						b1.disable( );
+						b2.disable( );
+
+						if( Oligoscan.downloadFile ) {
+							Oligoscan.downloadFile( path );
+						}
+						else {
+							downloadStart( );
+							Oligoscan.downloadProgress.connect( downloadProgress );
+							Oligoscan.downloadDone.connect( downloadDone );
+							Utils.navigateTo( path );
+						}
+					});
+				}
+
+				Oligoscan.getVersion( function( oli_version ) {
+
+					Oligoscan.setTitle( 'Oligoscan' );
+
+					if ( oli_version < '2.0.i6' ) {
+
+						var need_exit = false;
+						if( oli_version < '2.0.i' ) {
+							need_exit = true;
+						}
+
+						if ( Oligoscan ) {
+							Oligoscan.appLoaded( );
+						}
+
+						modal = Ext.create('Ext.window.Window', {
+							width: 480,
+							height: 190,
+							closable: false,
+							modal: true,
+							border: 0,
+							resizable: false,
+							bodyPadding: 8,
+							title: 'Nouvelle version',
+							layout: 'hbox',
+							items: [
+								{
+									xtype: 'image',
+									height: 100,
+									width: 100,
+									style: { 'float': 'left' },
+									src: '/resources/img/Download-icon.png'
+								},
+								{
+									xtype: 'component',
+									autoEl: {
+										html: '<span>'+'Une nouvelle version (2.0.i6) est disponible, vous devez la télécharger pour continuer.'+'</span>'
+										},
+									cls: 'text'
+								},
+							],
+							dockedItems: [
+								{
+									xtype: 'toolbar',
+									dock: 'bottom',
+									items: [
+										{
+											xtype: 'button',
+											id: 'download-b1',
+											hidden: need_exit ? true : false,
+											text: 'Plus tard',
+											handler: function() {
+												modal.close( );
+												main( );
+											}
+										},
+										'->',
+										{
+											xtype: 'button',
+											id: 'download-b2',
+											text: 'Télécharger',
+											handler: downloadIt
+										},
+									]
+								}
+							]
+						});
+
+						Ext.EventManager.onWindowResize( function() {
+							modal.center( );
+						} );
+
+						modal.show( );
+					}
+					else {
+						main( );
+					}
+				} );
+			}
+
+
+			function main( )
+			{
+				if ( Oligoscan ) {
+					Oligoscan.appLoaded( );
+				}
+
+				Ext.QuickTips.init( false );
+				Ext.QuickTips.placer = function( el, target ) {
+					//return el.getAlignToXY(app.statusBar, 'tl-tl');
+					return	el.getAlignToXY( target, 'tr-br');
+				}
+
+				Ext.setGlyphFontFamily( 'FontAwesome' );
+
+				Ext.state.Manager.setProvider( new Ext.state.LocalStorageProvider({prefix:'97.'}) );
+				Ext.state.Cloud = Ext.create( 'CloudStorageProvider', {url: 'http://www.myoligoscan.com/cloud/',userId: 97} );
+
+				//	disable backspace = history.back
+
+				var last_key_down = 0,
+					last_key_time = 0;
+
+				Ext.EventManager.addListener(Ext.getBody(), 'keydown', function(e){
+
+					var key = e.getKey(),
+						now = new Date( );
+
+
+					if( key == '8' ) {
+						var type = e.getTarget().type;
+						if( type != 'text' && type != 'textarea' && type != 'password' ){
+							e.preventDefault();
+						}
+					}
+					else if( key==27 && last_key_down==27 && (now.getTime()-last_key_time)< 1000 /*ms*/ ) {
+
+						if ( Ext.application.navBar ) {
+							Ext.application.navBar.goPrev( );
+						}
+
+						last_key_down = key = 0;
+					}
+
+					last_key_time = now;
+					last_key_down = key;
+					//console.log( 'keydown: ' + key );
+				});
+
+				// ------------------------- german keyboard @ bug
+
+				if( Ext.isMac )
+				{
+					Ext.EventManager.addListener(Ext.getBody(), 'keypress', function(e){
+
+						if( e.getKey()==64 ) {
+
+							var el = e.target;
+							if( el.type == 'text' || el.type == 'textarea' || el.type == 'password' ){
+								el.setRangeText( '@' );
+								el.selectionEnd = el.selectionStart+1;
+							}
+						}
+
+	//					console.log( 'keypress: ' + e.getKey() );
+					});
+				}
+
+				// ----------------- MISC GLOBAL MODELS -----------------------------
+
+				Ext.define('CountryModel', {
+					extend: 'Ext.data.Model',
+					fields: [
+						{ name: 'code', type: 'string' },
+						{ name: 'name', type: 'string' }
+					]
+				});
+
+				Ext.define('SimpleComboModel', {
+					extend: 'Ext.data.Model',
+					fields: [
+						{ name: 'id', type: 'string' },
+						{ name: 'name', type: 'string' }
+					]
+				});
+
+				// ----------------- CONTENT -----------------------------
+
+				var logbtn = null;
+				var navbar = Ext.create( 'NavBar', {
+					id: 			'crumb',
+					icon: 			'/resources/img/ic_backspace_black_24dp.png',
+					option_text:	'Options'				} );
+
+
+				var tbar = Ext.create( 'Ext.panel.Panel', {
+					region: 'north',
+					cls: 'x-unselectable',
+					id: 'header',
+					border: 0,
+					height: 64,
+					layout: 'absolute',
+					items: [
+						{
+							xtype: 	'component',
+							id: 	'logo',
+							autoEl: 'div',
+							html: 	'<div id="logo-img"></div><div id="oligo">Oligoscan</div><div id="sub"></div>',
+							listeners: {
+								el: {
+									dblclick: function() {
+										document.location.reload(true);
+									 },
+									 scope: this
+								}
+							}
+						},
+						navbar,
+						{
+							xtype: 	'component',
+							id:		'user-name',
+							autoEl:	'div',
+							cls: 	'user-icon',
+							html: 	"- Administrateur",
+							listeners: {
+								afterrender: function( ) {
+
+									var btn = this.getEl();
+
+									contextMenu = new Ext.menu.Menu({
+										items: [
+											{
+												text: 'Compte / Préférences',
+												glyph: 0xf042,
+												handler: function( ) { navigate( 'my_account' ); }
+											},
+											{
+												text: 'Déconnexion',
+												glyph: 0xf011,
+												handler: function( ) { Utils.navigateTo( '/auth/logout' );}
+											}
+										]
+									});
+
+									btn.on('click', function( e ) {
+										e.preventDefault();
+										contextMenu.show( btn );
+									});
+								}
+							}
+						}
+					]
+				});
+
+				var bbar = Ext.create( 'Ext.panel.Panel', {
+					region: 'south',
+					id: 'footer',
+					cls:  'x-unselectable',
+					border: 0,
+					height: 21,
+					html: '<div id="footer-content">'+
+								'<table class="os-statusbar" id="os-statusbar" style="width: 100%">'+
+									'<tr><td style="text-align:left; padding-left: 16px"> Oligoscan&nbsp;2.0.i6&nbsp;&nbsp;© 2018</td>'+
+										'<td id="state-text"></td>'+
+									'</tr>'+
+								'</table>'+
+								'<div id="footer-message"></div>'+
+							'</div>',
+
+					net: function( on ) {
+						var me = this,
+							el = me.el.down('#state-text');
+
+						if( on ) {
+							el.addCls( 'net-activity' );
+						}
+						else {
+							el.removeCls( 'net-activity' );
+						}
+					},
+
+					msg: function( text ) {
+
+						var me = this;
+							msg = me.el.down('#footer-message');
+
+						setTimeout( function() {
+
+							msg.update( text );
+							msg.fadeIn( );
+
+							if ( me.timer ) {
+								clearTimeout( me.timer );
+							}
+
+							me.fn = Ext.Function.bind( me._hide_msg, me);
+							me.timer = setTimeout( me.fn, 3000 );
+						}, 100 );
+					},
+
+					_hide_msg: function ( ) {
+						var me = this;
+							msg = me.el.down('#footer-message');
+
+						//msg.hide( );
+						msg.fadeOut( {duration: 1000} );
+					}
+				});
+
+								function selectSite( prefix, path ) {
+					if( Oligoscan ) {
+						Oligoscan.selectSite( prefix+'@'+path );
+					}
+					else {
+						Utils.navigateTo( path );
+					}
+				}
+
+				function navigate( route ) {
+
+					if ( arguments.length==1 ) {
+						app.navigate( route );
+					}
+					else {
+						var args = Ext.Array.slice(arguments,1);
+						app.navigate( route, { args: args } );
+					}
+				}
+
+				// -------------------------------------- DOCTORS --------------------------------------------------
+
+
+				// -------------------------------------- DISTRIBS --------------------------------------------------
+
+				//	HOME
+				var item0 = Ext.create('ElementsPanel', {
+					title: 'Tableau de bord',
+					id: 'ep-3',
+					cls: 'first',
+
+					//icon: '/resources/img/luxologo3.png',
+					header: false,
+
+					width:	'100%',
+					elements: [
+						{ 	glyph: 0xf0e4,		text: 'Tableau de bord',					handler: function( ) { navigate( 'home' ); } },	//icon: '/resources/img/ic_home_black_24dp.png'
+					]
+				});
+
+				//	USERS
+				var item1 = Ext.create('ElementsPanel', {
+					title: 'Utilisateurs',
+					//icon: '/resources/img/ic_person_black_24dp.png',
+					header: { cls: 'lime' },
+					id: 'ep-1',
+					width:	'100%',
+					elements: [
+						{ glyph: 0xf0e8, 	text: 'Synthèse', 	handler: function( ) { navigate('synthesis'); }  },	//icon: '/resources/img/ic_folder_shared_black_24dp.png',
+						{ glyph: 0xf26c, 	text: 'Prospection', 	handler: function( ) { navigate( 'prospection' ); } },	//icon: '/resources/img/ic_people_black_24dp.png'
+						{ glyph: 0xf003,	text: 'Messages',			handler: function( ) { navigate( 'messages' ); }, id: 'messages' },	//icon: '/resources/img/ic_email_black_24dp.png',
+						{ glyph: 0xf0f6,	text: 'Documents',			handler: function( ) { navigate( 'browser' ); } },							//icon: '/resources/img/ic_cloud_download_black_24dp.png'
+						{ glyph: 0xf21d,	text: 'Recherche de praticiens',		handler: function( ) { navigate( 'doc_map' ); } },							//icon: '/resources/img/ic_cloud_download_black_24dp.png'
+					]
+				});
+
+				//	ACCOUNTING
+				var item2 = Ext.create('ElementsPanel', {
+					title: 'Facturation',
+					//icon: '/resources/img/ic_account_balance_black_24dp.png',
+					header: { cls: 'purple' },
+					id: 'ep-2',
+					width:	'100%',
+					elements: [
+
+
+													{ glyph: 0xf1ec, 			text: 'Facturation des praticiens', 			handler: function( ) { navigate( 'doc-invoicing' ); } },		//icon: '/resources/img/card_money.png'
+							{ glyph: 0xf09d, 			text: 'Factures/règlements clients', 			handler: function( ) { navigate( 'customer_bills' ); } },		//icon: '/resources/img/user_excel.png',
+							{ glyph: 0xf0f0, 			text: 'Factures/règlements praticiens', 			handler: function( ) { navigate( 'doctors_bills' ); } },		//icon: '/resources/img/doc_excel.png'
+							{ glyph: 0xf24e, 			text: 'Comptabilité', 				handler: function( ) { navigate( 'account_resume' ); } },	//icon: '/resources/img/card_money.png'
+
+											{ glyph: 0xf0c0, 		text: 'Facturation/Com. revendeurs', 			handler: function( ) { navigate( 'distribs_bills' ); } },		//icon: '/resources/img/doc_excel.png'
+					]
+				});
+
+				//	COMPTE
+				var item3 = Ext.create('ElementsPanel', {
+					title: 	'Compte',
+					//icon: '/resources/img/ic_settings_applications_black_24dp.png',
+					header: { cls: 'yellow' },
+					id: 	'ep-0',
+					width:	'100%',
+					elements: [
+						{ glyph: 0xf042,	text: 	'Préférences',	handler: function( ) { navigate('my_account'); }, },	//icon: 	'/resources/img/ic_settings_black_24dp.png'
+
+
+
+												{
+							//icon: '/resources/img/ic_input_black_24dp.png',
+							glyph: 0xf08b,
+							text: 'Sites',
+							menu: {
+								items: [
+									{text: 'standard site', 	icon: '/resources/img/globe_network.png', 		handler: function( ) {selectSite('', 'https://myoligoscan.com' );} },
+									{text: 'dev site',			icon: '/resources/img/server_components.png',	handler: function( ) {selectSite('dev', 'https://dev.myoligoscan.com' );} },
+									{text: 'preprod site',		icon: '/resources/img/server_components.png',	handler: function( ) {selectSite('preprod','https://preprod.myoligoscan.com' );} },
+									//{text: 'translation site',	icon: '/resources/img/server_components.png',	handler: function( ) {selectSite('translation', 'https://i18n.myoligoscan.com' );} },
+									//{text: 'local site',		icon: '/resources/img/server_components.png',	handler: function( ) {selectSite('local, 'http://127.0.0.1/www' );} }
+							] }
+						},
+
+												{
+							glyph: 0xf1ab,
+							text: 'Build translations',
+							handler: function( ) {translate_all();}
+							//menu: {
+							//	items: [
+							//		{text: 'translate ES', 		icon: '/resources/img/flag_es.png', 				handler: function( ) {navigate( 'translation', 'es' );} },
+							//		{text: 'translate DE',		icon: '/resources/img/flag_de.png',					handler: function( ) {navigate( 'translation', 'de' );} },
+							//		{text: 'translate US',		icon: '/resources/img/flag_us.png',					handler: function( ) {navigate( 'translation', 'us' );} },
+							//		{text: 'translate JP',		icon: '/resources/img/flag_jp.png',					handler: function( ) {navigate( 'translation', 'jp' );} },
+							//		{text: 'translate IT',		icon: '/resources/img/flag_it.png',					handler: function( ) {navigate( 'translation', 'it' );} },
+							//		{text: 'translate RU',		icon: '/resources/img/flag_ru.png',					handler: function( ) {navigate( 'translation', 'ru' );} },
+							//		{text: 'translate NL',		icon: '/resources/img/flag_nl.png',					handler: function( ) {navigate( 'translation', 'nl' );} },
+							//		{text: 'translate CN',		icon: '/resources/img/flag_cn.png',					handler: function( ) {navigate( 'translation', 'cn' );} },
+							//		'-',
+							//		{text: 'Buil all',			glyph: 0xf021,	handler: function( ) {translate_all();} },	//icon: '/resources/img/ic_autorenew_black_24dp.png'
+							//] }
+							//< ? php } else { ? >
+							//text: "Open translation editor (< ? = L::language? >)",
+							//handler: function( ) { navigate( 'translation' ); }
+							//< ? php } ? >
+						},
+
+							{ text: 'Déconnexion', glyph: 0xf011, handler: function(){ Utils.navigateTo( '/auth/logout' );} },	//icon: '/resources/img/ic_power_black_24dp.png'
+					]
+				});
+
+
+				var menu = Ext.create('Ext.panel.Panel', {
+					region: 'west',
+					cls: 'os-jb-multibar main-bar x-unselectable',
+					width: 240,
+					minWidth: 140,
+					padding: 4,
+					layout: 'vbox',
+					autoScroll: true,
+
+					stateful: true,
+					stateId: 'mainbar',
+
+					split: true,
+					header: false,
+					collapsible: true,
+					collapseDirection: 'left',
+					animCollapse: 0,
+					titlePosition: 0,
+					headerCls: 'b-tool',
+
+					items: [
+											item0,
+						item1,
+						item2,
+						item3
+										],
+
+					getState: function( ) {
+
+						var me = this,
+							state = { collapsed: false, width: me.width };
+
+						if( me.collapsed || me.floated ) {
+							state.collapsed = true;
+						}
+
+						return state;
+					},
+
+					applyState: function( state ) {
+						if (state) {
+							Ext.apply(this, state);
+							//debugger;
+							//Ext.apply(this, state);
+							//this.updateLayout( );
+						}
+					},
+
+
+				});
+
+
+				/*
+				var map = new Ext.util.KeyMap({
+					target: Ext.getBody(),
+
+					binding: [
+						{
+							key: Ext.EventObject.SPACE,
+							ctrl: true,
+							fn: function( ) {
+								debugger;
+							},
+						},
+						{
+							key: Ext.EventObject.LEFT,
+							ctrl: true,
+							fn: function( ) {
+								debugger;
+							},
+						},
+						{
+							key: Ext.EventObject.RIGHT,
+							ctrl: true,
+							fn: function( ) {
+								debugger;
+							},
+						}
+					]
+				});
+				*/
+
+				var content = Ext.create( 'Ext.panel.Panel', {
+					region: 'center',
+					id: 'spa-content',
+					border: 0,
+					layout: 'card',
+				});
+
+				// -- full desk
+				var desk = Ext.create( 'Ext.panel.Panel', {
+					renderTo: 'content',
+					width: '100%',
+					height: '100%',
+					padding: 0,
+					border: 0,
+					layout: 'border',
+					cls: 'desktop x-unselectable',
+					bodyCls: 'desktop-body',
+					items: [
+						tbar,
+						bbar,
+						menu,
+						content
+					]
+				});
+
+				Ext.EventManager.onWindowResize( function() {
+					desk.updateLayout( );
+				} );
+
+				Ext.Ajax.on( 'requestexception', function(cnx,response,opt) {
+					if ( !opt.failure && !response.aborted ) {
+						Utils.showError(null,response.statusText);
+					}
+				});
+
+				Ext.Ajax.on('beforerequest', function(cnx,opt) {
+					bbar.net( true );
+				});
+
+				Ext.Ajax.on('requestcomplete', function(cnx,opt) {
+					bbar.net( false );
+				});
+
+				var app = Ext.application = Ext.create( 'os.application', {
+					context: content,
+					listeners: {
+						error: function( ) {
+							app.navigate( 'home' );
+						},
+					}
+				} );
+
+				app.user_id	= 97;
+				app.main_brand	= 'oligoscan';
+
+				app.menuBar = menu;
+				app.navBar = navbar;
+				app.statusBar = bbar;
+				app.contentView = content;
+				app.is_debug = 1;
+
+				if ( Oligoscan ) {
+					Oligoscan.isDebug( function( debug ) {
+						app.is_debug = debug;
+					});
+				}
+
+				app.setBaseRoute( 'http://www.myoligoscan.com/' );
+
+
+				app.renderers = {
+
+					formatInt: null,
+					formatFloat: null,
+					formatMoney: null,
+
+					init: function( ) {
+
+						this.locale = 'fr_FR';
+
+						this.locale = this.locale.replace('_','-');
+						if ( Oligoscan ) {
+							Oligoscan.setLocale( this.locale );
+						}
+
+						// oscan V2
+						if ( window.OliV2 && OliV2.setLocale ) {
+
+							this.formatInt = function( value ) {
+								if( Ext.isString(value) ) {
+									value = parseFloat( value );
+								}
+								return OliV2.formatInt( value );
+							}
+
+							this.formatFloat = function( value ) {
+								if( Ext.isString(value) ) {
+									value = parseFloat( value );
+								}
+								return OliV2.formatNumber( value, 2 );
+							}
+
+							this.formatMoney = function( value ) {
+								if( Ext.isString(value) ) {
+									value = parseFloat( value );
+								}
+								return OliV2.formatCurrency( value );
+							}
+
+							this.formatDate = function( value ) {
+								return OliV2.formatDate( value, 0 );
+							}
+						}
+						//	chrome && v3
+						else if ( typeof Intl=='object' && Intl ) {
+
+							if ( Oligoscan ) {
+								Oligoscan.setLocale( this.locale );
+							}
+
+							this.intl_num = new Intl.NumberFormat( this.locale, {minimumFractionDigits: 2} );
+							this.intl_mon = new Intl.NumberFormat( this.locale, {style: 'currency', currency: 'EUR',minimumFractionDigits: 2} );
+							this.intl_int = new Intl.NumberFormat( this.locale, {maximumFractionDigits: 0} );
+
+							this.formatInt = function( value ) {
+								return this.intl_int.format( value );
+							}
+
+							this.formatFloat = function( value ) {
+								return this.intl_num.format( value );
+							}
+
+							this.formatMoney = function( value ) {
+								return this.intl_mon.format( value );
+							}
+
+							this.formatDate = function( value ) {
+								return Utils.renderDate(value, 'd/m/Y' );
+							}
+						}
+						else {
+							// v3 code called from V2 ???
+							this.formatInt = function( value ) {
+								if( Ext.isString(value) ) {
+									value = parseFloat( value );
+								}
+								return value.toFixed(0);
+							}
+
+							this.formatFloat = function( value ) {
+								if( Ext.isString(value) ) {
+									value = parseFloat( value );
+								}
+								return value.toFixed(2);
+							}
+
+							this.formatMoney = function( value ) {
+								if( Ext.isString(value) ) {
+									value = parseFloat( value );
+								}
+								return value.toFixed(2);
+							}
+
+							this.formatDate = function( value ) {
+								return Utils.renderDate(value, 'd/m/Y' );
+							}
+						}
+					},
+
+					renderMoney: function( value )	{
+						if ( !this['formatMoney'] ) 	debugger;
+						return this.formatMoney( value );
+					}
+				};
+
+				app.renderers.init( );
+
+				app.addRoute( 'doc-accounting', 'doctors/accounting' );
+
+									app.addRoute( 'home',			'distribs' );
+					app.addRoute( 'synthesis',		'distribs/synthesis' );
+					app.addRoute( 'doctors',		'doctors' );
+					app.addRoute( 'prospection',	'training' );
+					app.addRoute( 'messages', 		'doctors/messages' );			//TODO: doctors -> generic
+					app.addRoute( 'new_msg', 		'doctors/new_msg' );
+					app.addRoute( 'doc_map',  		'distribs/doc_map' );
+
+					app.addRoute( 'doc-invoicing',	'distribs/doc_invoicing' );
+					//app.addRoute( 'accounting_us',	'distribs/accounting_us' );
+					app.addRoute( 'customer_bills',	'distribs/cust_bill_list' );
+					app.addRoute( 'doctors_bills',	'distribs/doc_bill_list' );
+					app.addRoute( 'distribs_bills',	'distribs/distr_bill_list' );
+					//app.addRoute( 'doctors_recall',	'distribs/doc_recall' );
+					app.addRoute( 'account_resume',	'distribs/bill_resume' );
+					app.addRoute( 'export',			'distribs/exports' );
+					app.addRoute( 'browser', 		'doctors/browser' );					//TODO: doctors -> generic
+
+					app.addRoute( 'distrib_card', 	'distribs/card' );
+					app.addRoute( 'dealer_card', 	'dealers/card' );
+					app.addRoute( 'doctor_card', 	'doctors/card' );
+					app.addRoute( 'other_card', 	'others/card' );
+					app.addRoute( 'burst_view', 	'distribs/burst_view' );
+
+					app.addRoute( 'translator', 	'translation/translate' );
+					app.addRoute( 'translation', 	'translation/language' );
+
+					app.addRoute( 'bilan', 	  		'bilan/card' );	// for prospection
+
+					// avoid visibility
+										//app.addRoute( 'profiles', 				'distribs/profiles/97' );
+					//app.addRoute( 'user_log', 				'admins/user_log' );
+					//app.addRoute( 'auto_test', 				'tests/t_CF2D4CE6_E4E8_4C4B_AB73_38BF83CC9047' );
+
+				function askPass( cb ) {
+
+					var msgBox = new Ext.window.MessageBox();
+					msgBox.textField.inputType = 'password';
+					msgBox.prompt( 'Accès restreint', 'Mot de passe', function(btn,text) {
+						if( btn=='ok' ) {
+							var hash = CryptoJS.MD5(text.toLowerCase());
+							if ( hash=='2cd5b533927cc17e0ade991c6d79672a' ) {
+								cb( );
+							}
+						}
+					} );
+				}
+
+				// account (stupid 's' at the end)
+								app.addRoute( 'my_account', 		'admins/account' );
+
+				app.on('activate', function( a, mod ) {
+
+					switch ( mod.name ) {
+						case 'home':
+						case 'synthesis':
+						case 'doc-invoicing':
+						case 'patients':
+						case 'messages':
+						case 'customer_bills':
+						case 'doctors_bills':
+						case 'distribs_bills':
+						case 'anon_patient':
+						case 'translator':
+						case 'browser':
+						case 'account_resume':
+						case 'doc_map':
+						{
+							Ext.state.Manager.set( 'board', mod.name );
+							break;
+						}
+					}
+				});
+
+								var def_route = Ext.state.Manager.get( 'board' );
+				if ( !def_route ) {
+					def_route = 'home';
+				}
+
+								if( def_route=='anon_patient' ) {
+					// ceci peut arriver quand on passe de phbas vers std
+					def_route = 'home';
+				}
+
+
+				setTimeout( function() {
+					app.navigate( def_route );
+				}, 0 );
+
+				app.next_req = 0;
+				app.idle = function( ) {
+
+
+					var now = new Date().getTime( );
+
+					if ( app.next_req < now && !Ext.Ajax.isLoading() )
+					{
+						//	check emails
+						Utils.Request({
+							url: '/messages/js_countmsg',
+							method: 'POST',
+							params: { id: app.user_id },
+							success: function(response, opts) {
+																item1.setOverlayCount( 'messages', response.count );
+
+								app.next_req = new Date().getTime( ) + 5*60*1000; 	// next 5 minutes
+							},
+							failure: function(response, opts) {
+								// avoid std messsage
+
+								//	clearInterval( app.idle_timer ); -> cannot do that, because inactivity will clear the session on the server in few minutes
+								//	Ext.MessageBox.alert( 'Erreur', 'Connexion avec le serveur perdue.', function( ) {
+									// remove, because it's not important
+									//	Utils.navigateTo( '/auth/logout' );
+								//} );
+								return true;
+							}
+						});
+					}
+					else {
+						//console.log( 'skip' );
+					}
+									}
+
+				app.idle_timer = setInterval( app.idle, 30*1000 );	// every 30 sec
+				app.idle( );
+
+				app.on( 'datachanged', function(kind) {
+					if ( kind=='messages' ) {
+						app.idle( );
+					}
+									} );
+
+
+
+								function translate_all( ) {
+					Utils.Request({
+						url: '/translation/js_build_all',
+						method: 'POST',
+						waitOwner: content,
+						waitMsg: '&nbsp;',
+						success: function(response, opts) {
+							//Utils.showError( 'Sucess', 'Translation done.' );
+							Ext.MessageBox.alert( 'Succès', 'Modifications enregistrées.' );
+						},
+					});
+				}
+
+
+
+				var oldState = -1;
+				var calibrate = false;
+				var modal = null;
+
+				function showWaitBox( ) {
+
+					/*
+					var cfg = {
+						title: 'Calibration en cours...',
+						msg: 'Veuillez vérifier que l\'appareil est bien sur son socle.',
+						closable: false,
+						wait: true,
+						modal: true,
+						width: 350,
+						icon: 'calibrate-icon',
+						iconHeight: 50,
+						cls: 'hilite',
+					};
+
+					Ext.MessageBox.wait( cfg );
+					*/
+
+					if ( !modal ) {
+
+													modal = Ext.create('Ext.window.Window', {
+								closable: 	true,
+								resizable: 	false,
+								modal: 		true,
+								title: 		'Calibration en cours...',
+								bodyPadding: 0,
+								cls: 		'calibration',
+								bodyCls:    'x-unselectable',
+
+								width:		320,
+								height:		240,
+								layout:     'absolute',
+								items: [
+									{
+										xtype: 'label',
+										x: 10,
+										y: 160,
+										width: 300,
+										height: 24,
+										text: 'Veuillez vérifier que l\'appareil est bien sur son socle.',
+									},
+									{
+										xtype: 'image',
+										x: 64,
+										y: 3,
+										width: 180,
+										height: 140,
+										src: '/resources/img/calibrate.png'
+									},
+									{
+										xtype: 'progressbar',
+										itemId: 'progress',
+										x: 10,
+										y: 200,
+										width: 300,
+										height: 3,
+									}
+								],
+								listeners: {
+									afterrender: function( ) {
+										this.down('#progress').wait( );
+									}
+								}
+							});
+
+
+						Ext.EventManager.onWindowResize( function() {
+							modal.center( );
+						} );
+					}
+
+					modal.show( );
+				}
+
+				function hideWaitBox( ) {
+					modal.hide( );
+					//Ext.MessageBox.hide( );
+				}
+
+				function showState( state ) {
+
+					var statusText = Ext.get("state-text");
+					var statusState = Ext.get("os-statusbar");
+
+					if ( state!=oldState ) {
+
+						if ( calibrate ) {
+							setTimeout( hideWaitBox, 0 );
+							calibrate = false;
+						}
+
+						switch ( state ) {
+						case 0:
+							statusText.update( 'Initialisation...' );
+							statusState.removeCls( "warning" );
+							statusState.removeCls( "working" );
+							statusState.removeCls( "ready" );
+							break;
+
+						case 1:
+							statusText.update( 'Spectrophotomètre non connecté.' );
+							statusState.removeCls( "working" );
+							statusState.removeCls( "ready" );
+							statusState.addCls( "warning" );
+							break;
+
+						case 2:
+							statusText.update( 'Veuillez vérifier que l\'appareil est bien sur son socle.' );
+							statusState.removeCls( "warning" );
+							statusState.removeCls( "ready" );
+							statusState.addCls( "working" );
+
+							setTimeout( showWaitBox, 0 );
+
+							calibrate = true;
+							break;
+
+						case 3:
+							Oligoscan.getSerial( function(serial) {
+								statusText.update( Ext.util.Format.format('Spectrophotomètre prêt - n° série: {0}', serial) );
+								statusState.removeCls( "warning" );
+								statusState.removeCls( "working" );
+								statusState.addCls( "ready" );
+							} );
+							break;
+
+						case 4:
+						case 5:
+							statusText.update( 'En attente de mesure.' );
+							statusState.removeCls( "warning" );
+							statusState.removeCls( "ready" );
+							statusState.addCls( "working" );
+							break;
+
+						case 6:
+							if ( statusText ) {
+								statusText.update( 'Working in web browser' );
+								statusState.removeCls( "working" );
+								statusState.removeCls( "ready" );
+								statusState.addCls( "browsing" );
+							}
+							break;
+						}
+
+						oldState = state;
+					}
+				}
+
+				if ( Oligoscan ) {
+					Oligoscan.stateChanged.connect( showState ); 	// Connect signal sent from Qt to javascript function
+					Oligoscan.getState( showState );
+
+					setTimeout( function() {
+						Oligoscan.calibrate( );
+					}, 1000 );
+				}
+				else {
+					showState( 6 );
+				}
+
+			}
+		</script>
+
+		<!-- script type="text/javascript" src="/lib/debug.js" ></script -->
+
+
+
+
+<!--	page build in 0.0248s -->
+<!-- 	memory usage 2.67MB --><div hidden="true" id="elements-loader"><div id="ext-gen1068">
+
+
+</div></div><div class="x-mask" style="z-index: 18999; width: 1865px; height: 596px; right: auto; left: 695px; top: 142px; display: none;" id="ext-gen1220"></div><div class="x-mask-msg x-layer x-mask-msg-default x-border-box" id="loadmask-1075" style="right: auto; left: 1628px; top: 440px; z-index: 19000; display: none;"><div id="loadmask-1075-msgEl" class=" x-mask-msg-inner"><div id="loadmask-1075-msgTextEl" class="x-mask-msg-text"></div></div></div></body></html>

@@ -1,0 +1,2 @@
+xsc timer.js -d -c -e -r timer
+xsl -s "*" timer.xsb
