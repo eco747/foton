@@ -120,11 +120,18 @@ namespace litehtml
 			__realloc( len );
 			__len	= len;
 
-			if( lewercase==false ) {
-				memcpy( __ptr, txt, __len*sizeof(tchar_t) );
-			}
-			else {
+			if( len ) {
+				if( lowercase==false ) {
+					memcpy( __ptr, txt, __len*sizeof(tchar_t) );
+				}
+				else {
+					int32_t l = __len;
+					tchar_t* p = __ptr;
 
+					while( l-- ) {
+						*p++ = tolower(*txt++);
+					}
+				}
 			}
 
 			__ptr[__len] = 0;
