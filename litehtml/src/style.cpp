@@ -8,10 +8,12 @@
 
 namespace litehtml {
 
+	/*
 	attr_map style::m_valid_values =
 	{
 		{ atom_white_space, white_space_strings }
 	};
+	*/
 
 	style::style()
 	{
@@ -24,7 +26,6 @@ namespace litehtml {
 
 	style::~style()
 	{
-
 	}
 
 	void style::parse( const tchar_t* txt, const tchar_t* baseurl )
@@ -32,7 +33,7 @@ namespace litehtml {
 		std::vector<tstring> properties;
 		split_string(txt, properties, _t(";"));
 
-		for(std::vector<tstring>::const_iterator i = properties.begin(); i != properties.end(); i++)
+		for( std::vector<tstring>::const_iterator i = properties.begin(); i != properties.end(); i++ )
 		{
 			parse_property(*i, baseurl);
 		}

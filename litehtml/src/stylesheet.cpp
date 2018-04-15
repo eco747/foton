@@ -3,236 +3,373 @@
 #include <algorithm>
 #include "document.h"
 
-
-void litehtml::css::parse_stylesheet(const tchar_t* str, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media)
+namespace litehtml
 {
-	tstring text = str;
+	/**
+	 * @brief extract_string
+	 * @param text - must be on the separator
+	 * @param result
+	 * @return next text position
+	 */
 
-	// remove comments
-	tstring::size_type c_start = text.find(_t("/*"));
-	while(c_start != tstring::npos)
-	{
-		tstring::size_type c_end = text.find(_t("*/"), c_start + 2);
-		text.erase(c_start, c_end - c_start + 2);
-		c_start = text.find(_t("/*"));
+	const tchar_t* extract_string( const tchar_t* text, xstring& result ) {
+
+		tchar_t	sep = *text++;
+		const tchar_t* start = text;
+
+		while( *text && *text!=sep ) {
+			text++;
+		}
+
+		if( *text==sep ) {
+			result.set( start, text-start );
+			text++;
+		}
+		else {
+			//todo: warning unterminated string
+		}
+
+		return text;
 	}
 
-	tstring::size_type pos = text.find_first_not_of(_t(" \n\r\t"));
-	while(pos != tstring::npos)
-	{
-		while(pos != tstring::npos && text[pos] == _t('@'))
-		{
-			tstring::size_type sPos = pos;
-			pos = text.find_first_of(_t("{"), pos);
-			if(pos != tstring::npos && text[pos] == _t('{'))
-			{
-				pos = find_close_bracket(text, pos, _t('{'), _t('}'));
-			}
-			if(pos != tstring::npos)
-			{
-				parse_atrule(text.substr(sPos, pos - sPos + 1), baseurl, doc, media);
-			} else
-			{
-				parse_atrule(text.substr(sPos), baseurl, doc, media);
-			}
+	/**
+	 * @brief extract_url
+	 * @param text
+	 * @param result
+	 * @return
+	 */
 
-			if(pos != tstring::npos)
-			{
-				pos = text.find_first_not_of(_t(" \n\r\t"), pos + 1);
-			}
+	const tchar_t* extract_url( const tchar_t* text, xstring& result ) {
+
+		// direct string
+		if( *text=='\'' || *text=='"' ) {
+			return extract_string( text, url );
 		}
 
-		if(pos == tstring::npos)
-		{
-			break;
-		}
+		// url( ... )
+		if( t_strncmp(text,"url")==0 ) {
+			text = skip_sp( text+3 );
 
-		tstring::size_type style_start = text.find(_t("{"), pos);
-		tstring::size_type style_end	= text.find(_t("}"), pos);
-		if(style_start != tstring::npos && style_end != tstring::npos)
-		{
-			style::ptr st = std::make_shared<style>();
-			st->add(text.substr(style_start + 1, style_end - style_start - 1).c_str(), baseurl);
+			if( *text=='(' ) {
+				text = skip_sp( text+1 );
 
-			parse_selectors(text.substr(pos, style_start - pos), st, media);
+				// string
+				if( *text=='\'' || *text=='"' ) {
+					text = extract_string( text, url );
 
-			if(media && doc)
-			{
-				doc->add_media_list(media);
-			}
-
-			pos = style_end + 1;
-		} else
-		{
-			pos = tstring::npos;
-		}
-
-		if(pos != tstring::npos)
-		{
-			pos = text.find_first_not_of(_t(" \n\r\t"), pos);
-		}
-	}
-}
-
-void litehtml::css::parse_css_url( const xstring& str, xstring& url )
-{
-	url.clear( );
-
-	//	todo check that we get 'url...'
-	const tchar_t*	p = str.c_str();
-	while( *p && *p!='(' ) {
-		p++;
-	}
-
-	if( *p=='(' ) {
-		p++;
-
-		// trim spaces
-		while( *p==' ' || *p=='\t' )
-			p++;
-
-		// skip ' or "
-		if( *p=='\'' || *p=='"' )
-			p++;
-
-		//	find )
-		const tchar_t*	q = p+1;
-		while( *q && *q!=')' ) {
-			q++;
-		}
-
-		if( *q==')' ) {
-
-			// trim spaces
-			while( q>q && *q==' ' || *q=='\t' )
-				q--;
-
-			// skip ' or "
-			if( q>p && (*q=='\'' || *q=='"') )
-				q--;
-
-			url.set( p, q-p );
-		}
-	}
-}
-
-bool litehtml::css::parse_selectors( const tstring& txt, const litehtml::style::ptr& styles, const media_query_list::ptr& media )
-{
-	tstring selector = txt;
-	trim(selector);
-	string_vector tokens;
-	split_string(selector, tokens, _t(","));
-
-	bool added_something = false;
-
-	for(string_vector::iterator tok = tokens.begin(); tok != tokens.end(); tok++)
-	{
-		css_selector::ptr selector = std::make_shared<css_selector>(media);
-		selector->m_style = styles;
-		trim(*tok);
-		if(selector->parse(*tok))
-		{
-			selector->calc_specificity();
-			add_selector(selector);
-			added_something = true;
-		}
-	}
-
-	return added_something;
-}
-
-void litehtml::css::sort_selectors()
-{
-	std::sort(m_selectors.begin(), m_selectors.end(),
-		 [](const css_selector::ptr& v1, const css_selector::ptr& v2)
-		 {
-			 return (*v1) < (*v2);
-		 }
-	);
-}
-
-void litehtml::css::parse_atrule(const tstring& text, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media)
-{
-	if(text.substr(0, 7) == _t("@import"))
-	{
-		int sPos = 7;
-		tstring iStr;
-		iStr = text.substr(sPos);
-		if(iStr[iStr.length() - 1] == _t(';'))
-		{
-			iStr.erase(iStr.length() - 1);
-		}
-		trim(iStr);
-		string_vector tokens;
-		split_string(iStr, tokens, _t(" "), _t(""), _t("(\""));
-		if(!tokens.empty())
-		{
-			// todo: do not use token.front.c_str() but token.front
-			xstring url;
-			parse_css_url( tokens.front().c_str(), url);
-
-			if(url.empty()) {
-				url = tokens.front().c_str();
-			}
-
-			tokens.erase(tokens.begin());
-			if(doc)
-			{
-				document_container* doc_cont = doc->container();
-				if(doc_cont)
-				{
-					xstring css_text;
-					xstring css_baseurl;
-					if(baseurl) {
-						css_baseurl = baseurl;
+					// skip to ')'
+					while( *text && *text!=')' ) {
+						text++;
 					}
 
-					doc_cont->import_css(css_text, url, css_baseurl);
-					if(!css_text.empty())
-					{
-						media_query_list::ptr new_media = media;
-						if(!tokens.empty())
-						{
-							tstring media_str;
-							for(string_vector::iterator iter = tokens.begin(); iter != tokens.end(); iter++)
-							{
-								if(iter != tokens.begin())
-								{
-									media_str += _t(" ");
-								}
-								media_str += (*iter);
-							}
-							new_media = media_query_list::create_from_string(media_str, doc);
-							if(!new_media)
-							{
-								new_media = media;
-							}
+					if( *text==')' ) {
+						text;;
+					}
+
+					return text;
+				}
+
+				// direct value
+				const tchar_t* start = text;
+
+				while( *text && *text!=')' ) {
+					text++;
+				}
+
+				if( *text==')' ) {
+					const tchar_t* q = text-1;
+					while( q>start && (q==' ' || q=='\t') ) {
+						q--;
+					}
+
+					url.set( start, q );
+					return text;
+				}
+				else {
+					//todo: warning malformed url
+				}
+			}
+			else {
+				//todo: warning malformed url
+			}
+		}
+		else {
+			//todo: warning malformed url
+		}
+
+		return text;
+	}
+
+
+
+
+	/**
+	 * @brief css::parse_stylesheet
+	 * @param str
+	 * @param baseurl
+	 * @param doc
+	 * @param media
+	 */
+
+	void css::parse_stylesheet( const tchar_t* str, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media )
+	{
+		//todo: memory optim, think about not creating xstring but using directly str
+		xstring		text( str );
+
+		bool			cmt = false;
+		const tchar_t*	p = text.c_str( );
+
+		while( *p )
+		{
+			p = skip_sp( p );
+			if( *p==0 ) {
+				break;
+			}
+
+			if( !cmt ) {
+
+				//	start of comment
+				if( *p=='/' && p[1]=='*' ) {
+					cmt = true;
+					p += 2;
+					continue;
+				}
+
+				//  @import
+				//	@media ...
+
+				if( *p=='@' ) {
+					p = parse_at_rule( p, baseurl, doc, media);
+					continue;
+				}
+
+				// standard rule
+
+				//	selector
+				const tchar_t* sel_p = p;
+				while( *p && *p!='{ ') {
+					p++;
+				}
+
+				//	rule
+				if( *p=='{' ) {
+
+					xstring		selector( sel_p, p-sel_p );
+
+					const tchar_t* rule_p = ++p;
+					while( *p && *p!='}' ) {
+						p++;
+					}
+
+					if( *p=='}' ) {
+
+						xstring		rule( rule_p, p-rule_p );
+
+						style::ptr st = std::make_shared<style>();
+						st->add( rule.c_str(), baseurl);
+
+						parse_selectors(selector, st, media);
+
+						if( media && doc ) {
+							doc->add_media_list(media);
 						}
-						parse_stylesheet(css_text.c_str(), css_baseurl.c_str(), doc, new_media);
+
+						p++;
+					}
+				}
+			}
+			else {
+
+				if( ch=='*' && p[1]=='/' ) {
+					cmt = false;
+					p += 2;
+					continue;
+				}
+
+				p++;
+			}
+		}
+	}
+
+	/**
+	 * @brief css::parse_css_url
+	 * @param str
+	 * @param url
+	 */
+
+	void	css::parse_css_url( const xstring& str, xstring& url )
+	{
+		url.clear( );
+		extract_url( str.c_str(), url );
+	}
+
+	/**
+	 * @brief css::parse_selectors
+	 * @param txt
+	 * @param styles
+	 * @param media
+	 * @return true if something added
+	 */
+
+	bool css::parse_selectors( const xstring& txt, const style::ptr& styles, const media_query_list::ptr& media )
+	{
+		const tchar_t*	p = txt;
+
+		while( *p ) {
+
+			p = skip_sp( p );
+
+			tchar_t*	start = p;
+			while( *p && *p!=',' ) {
+				p++;
+			}
+
+			if( p>start ) {
+
+				// trim
+				const tchar_t* q = p-1;
+				while( q>start && (*q==' ' || *q=='\t') ) {
+					q--;
+				}
+
+				if( q>start ) {
+
+					// parse selector
+					css_selector::ptr selector = std::make_shared<css_selector>(media);
+					selector->m_style = styles;
+
+					tstring	tok( start, q-start );
+					if(selector->parse(tok))
+					{
+						selector->calc_specificity();
+						add_selector(selector);
+						added_something = true;
 					}
 				}
 			}
 		}
-	} else if(text.substr(0, 6) == _t("@media"))
-	{
-		tstring::size_type b1 = text.find_first_of(_t('{'));
-		tstring::size_type b2 = text.find_last_of(_t('}'));
-		if(b1 != tstring::npos)
-		{
-			tstring media_type = text.substr(6, b1 - 6);
-			trim(media_type);
-			media_query_list::ptr new_media = media_query_list::create_from_string(media_type, doc);
 
-			tstring media_style;
-			if(b2 != tstring::npos)
-			{
-				media_style = text.substr(b1 + 1, b2 - b1 - 1);
-			} else
-			{
-				media_style = text.substr(b1 + 1);
+		return added_something;
+	}
+
+	/**
+	 * @brief css::sort_selectors
+	 */
+
+	void css::sort_selectors()
+	{
+		std::sort(m_selectors.begin(), m_selectors.end(),
+			 [](const css_selector::ptr& v1, const css_selector::ptr& v2)
+			 {
+				 return (*v1) < (*v2);
+			 }
+		);
+	}
+
+	/**
+	 * @brief css::parse_atrule
+	 * @param text
+	 * @param baseurl
+	 * @param doc
+	 * @param media
+	 */
+
+	void css::parse_atrule( const tchar_t* text, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media)
+	{
+		if( t_strncmp(text,"@import",7)==0 ) {
+
+			text += 7;
+
+			//	@import url;
+			//	@import url liste-requetes-media;
+
+			xstring	url;
+			text = extract_url( text, url );
+			text = skip_sp( text );
+
+			const tchar_t*	start = text;
+			while( *text && *text!=';' ) {
+				text++;
 			}
 
-			parse_stylesheet(media_style.c_str(), baseurl, doc, new_media);
+			/*
+			trim(iStr);
+			string_vector tokens;
+			split_string(iStr, tokens, _t(" "), _t(""), _t("(\""));
+
+			if(!tokens.empty())
+			{
+				// todo: do not use token.front.c_str() but token.front
+				xstring url;
+				parse_css_url( tokens.front().c_str(), url);
+
+				if(url.empty()) {
+					url = tokens.front().c_str();
+				}
+
+				tokens.erase(tokens.begin());
+				if(doc)
+				{
+					document_container* doc_cont = doc->container();
+					if(doc_cont)
+					{
+						xstring css_text;
+						xstring css_baseurl;
+						if(baseurl) {
+							css_baseurl = baseurl;
+						}
+
+						doc_cont->import_css(css_text, url, css_baseurl);
+						if(!css_text.empty())
+						{
+							media_query_list::ptr new_media = media;
+							if(!tokens.empty())
+							{
+								tstring media_str;
+								for(string_vector::iterator iter = tokens.begin(); iter != tokens.end(); iter++)
+								{
+									if(iter != tokens.begin())
+									{
+										media_str += _t(" ");
+									}
+									media_str += (*iter);
+								}
+								new_media = media_query_list::create_from_string(media_str, doc);
+								if(!new_media)
+								{
+									new_media = media;
+								}
+							}
+							parse_stylesheet(css_text.c_str(), css_baseurl.c_str(), doc, new_media);
+						}
+					}
+				}
+			}
+			*/
+		}
+
+		if( t_strncmp(text,"@media",6)==0 ) {
+
+			tstring::size_type b1 = text.find_first_of(_t('{'));
+			tstring::size_type b2 = text.find_last_of(_t('}'));
+
+			if(b1 != tstring::npos)
+			{
+				tstring media_type = text.substr(6, b1 - 6);
+				trim(media_type);
+				media_query_list::ptr new_media = media_query_list::create_from_string(media_type, doc);
+
+				tstring media_style;
+				if(b2 != tstring::npos)
+				{
+					media_style = text.substr(b1 + 1, b2 - b1 - 1);
+				}
+				else {
+					media_style = text.substr(b1 + 1);
+				}
+
+				parse_stylesheet(media_style.c_str(), baseurl, doc, new_media);
+			}
 		}
 	}
 }

@@ -35,7 +35,7 @@ namespace litehtml
 		static void	parse_css_url(const litehtml::xstring& str, litehtml::xstring& url);
 
 	private:
-		void	parse_atrule(const tstring& text, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media);
+		void	parse_atrule(const tchar_t* text, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media);
 		void	add_selector(css_selector::ptr selector);
 		bool	parse_selectors(const tstring& txt, const litehtml::style::ptr& styles, const media_query_list::ptr& media);
 

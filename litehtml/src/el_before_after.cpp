@@ -157,10 +157,11 @@ void litehtml::el_before_after_base::add_style(const litehtml::style& st)
 	}
 }
 
-void litehtml::el_before_after_base::add_text( const char* txt, int len=-1 )
+void litehtml::el_before_after_base::add_text( const char* txt, int len )
 {
 	tstring word;
 	tstring esc;
+
 	for(tstring::size_type i = 0; i < txt.length(); i++)
 	{
 		if( (txt.at(i) == _t(' ')) || (txt.at(i) == _t('\t')) || (txt.at(i) == _t('\\') && !esc.empty()) )
@@ -176,33 +177,30 @@ void litehtml::el_before_after_base::add_text( const char* txt, int len=-1 )
 
 				element::ptr el = std::make_shared<el_space>(txt.substr(i, 1).c_str(), get_document());
 				appendChild(el);
-			} else
-			{
+			}
+			else {
 				word += convert_escape(esc.c_str() + 1);
 				esc.clear();
-				if(txt.at(i) == _t('\\'))
-				{
+				if(txt.at(i) == _t('\\')) {
 					esc += txt.at(i);
 				}
 			}
 		}
 		else {
-			if(!esc.empty() || txt.at(i) == _t('\\'))
-			{
+			if(!esc.empty() || txt.at(i) == _t('\\')) {
 				esc += txt.at(i);
-			} else
-			{
+			}
+			else {
 				word += txt.at(i);
 			}
 		}
 	}
 
-	if(!esc.empty())
-	{
+	if(!esc.empty()) {
 		word += convert_escape(esc.c_str() + 1);
 	}
-	if(!word.empty())
-	{
+
+	if(!word.empty()) {
 		element::ptr el = std::make_shared<el_text>(word.c_str(), get_document());
 		appendChild(el);
 		word.clear();

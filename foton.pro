@@ -134,7 +134,8 @@ SOURCES += main.cpp\
     qhtmlrenderer.cpp \
     litehtml/src/atoms.cpp \
     modules/dom/xsDOM.cpp \
-    qxsrunner.cpp
+    qxsrunner.cpp \
+    litehtml/src/xstring.cpp
 
 HEADERS  += mainwindow.h \
     xs/includes/xs.h \
