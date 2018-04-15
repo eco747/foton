@@ -51,11 +51,10 @@ litehtml::media_query::ptr litehtml::media_query::create_from_string(const tstri
 					{
 						trim(expr_tokens[1]);
 						expr.check_as_bool = false;
-						if(expr.feature == media_feature_orientation)
-						{
-							expr.val = atom_index(expr_tokens[1], media_orientation_landscape, media_orientation_strings);
-						} else
-						{
+						if(expr.feature == media_feature_orientation) {
+							expr.val = atom_index(expr_tokens[1], media_orientation_landscape, media_orientation_atoms );
+						}
+						else {
 							tstring::size_type slash_pos = expr_tokens[1].find(_t('/'));
 							if( slash_pos != tstring::npos )
 							{
@@ -91,7 +90,7 @@ litehtml::media_query::ptr litehtml::media_query::create_from_string(const tstri
 			}
 		}
 		else {
-			query->m_media_type = (media_type) atom_index((*tok), media_type_all, media_type_strings );
+			query->m_media_type = (media_type) atom_index((*tok), media_type_all, media_type_atoms);
 		}
 	}
 

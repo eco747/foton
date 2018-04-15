@@ -25,6 +25,7 @@ int GT[] = {
 	-118, -128, 0, -130, 0, -150, 0, -165, -180, -206, -227, 10, -362, -420, 1, 27, 0, 0, -289, -426,
 	-114, -317, 0, -394,
 };
+
 int VT[] = {
 	-41, -1, -104, -94, -112, -244, -305, -90, -297, -186, -16, -67, -434, -373, -372, -440, -431, -376, -92, -115,
 	-231, -133, -191, -265, -400, -248, -453, -360, -390, -250, -218, -229, -312, -459, -316, -452, -45, -405, -128, -46,
@@ -52,6 +53,7 @@ int VT[] = {
 	-395, -411, -432, -77,
 };
 
+/*
 static const char input[] =
 	"%\0*\0-xx-border-spacing-x\0-xx-border-spacing-y\0::after\0::before\0a\0abbr\0absolute\0" \
 	"address\0after\0align\0align-content\0align-items\0align-self\0alt\0area\0armenian\0article\0" \
@@ -100,6 +102,7 @@ static const char input[] =
 	"uppercase\0user_drag\0valign\0value\0var\0vertical-align\0vh\0video\0visibility\0visible\0" \
 	"vmax\0vmin\0vw\0white-space\0width\0word-break\0word-spacing\0word-wrap\0x-large\0x-small\0" \
 	"xmp\0xx-large\0xx-small\0z-index\0zoom\0";
+*/
 
 uint32_t	RH[] = {
 	0x11c9dc5,0x50c5d3a,0x50c5d35,0x3fa6a53e,0x3fa6a53f,0x1a021dcd,0x3ce37cd8,0x50c5d7e,0x38de710c,0x1b081786, \

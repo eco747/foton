@@ -345,7 +345,7 @@ namespace litehtml
 	};
 
 //#define  list_style_type_strings	_t("none;circle;disc;square;armenian;cjk-ideographic;decimal;decimal-leading-zero;georgian;hebrew;hiragana;hiragana-iroha;katakana;katakana-iroha;lower-alpha;lower-greek;lower-latin;lower-roman;upper-alpha;upper-latin;upper-roman")
-	#define  list_style_type_atoms	atom_none,atom_circle,atom_disc,atom_square,atom_armenian,atom_cjk_ideographic,atom_decimal,atom_decimal_leading_zero,atom_georgian,atom_hebrew,atom_hiragana\
+	#define  list_style_type_atoms	atom_none,atom_circle,atom_disc,atom_square,atom_armenian,atom_cjk_ideographic,atom_decimal,atom_decimal_leading_zero,atom_georgian,atom_hebrew,atom_hiragana,\
 									atom_hiragana_iroha,atom_katakana,atom_katakana_iroha,atom_lower_alpha,atom_lower_greek,atom_lower_latin,atom_lower_roman,atom_upper_alpha,atom_upper_latin,atom_upper_roman,0
 
 	enum list_style_type

@@ -130,7 +130,7 @@ namespace litehtml {
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
-				idx = value_index(tok->c_str(), border_style_strings, -1);
+				idx = atom_index(tok->c_str(), -1, border_style_atoms );
 				if(idx >= 0)
 				{
 					add_property(atom_border_left_style, tok->c_str(), baseurl, important);
@@ -168,7 +168,7 @@ namespace litehtml {
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
-				idx = value_index(tok->c_str(), border_style_strings, -1);
+				idx = atom_index(tok->c_str(), -1, border_style_atoms);
 				if(idx >= 0)
 				{
 					str = name;
@@ -354,14 +354,14 @@ namespace litehtml {
 			split_string(val, tokens, _t(" "), _t(""), _t("("));
 			for(string_vector::iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
-				int idx = value_index(tok->c_str(), list_style_type_strings, -1);
+				int idx = atom_index(tok->c_str(), -1, list_style_type_atoms);
 				if(idx >= 0)
 				{
 					add_parsed_property(atom_list_style_type, *tok, important);
 				}
 				else
 				{
-					idx = value_index(tok->c_str(), list_style_position_strings, -1);
+					idx = atom_index(tok->c_str(), -1, list_style_position_atoms);
 					if(idx >= 0)
 					{
 						add_parsed_property(atom_list_style_position, *tok, important);
@@ -474,7 +474,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || value_index(val, border_width_strings) >= 0)
+				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms ) >= 0)
 				{
 					add_parsed_property(atom_border_left_width,	tokens[0], important);
 					add_parsed_property(atom_border_left_style,	tokens[1], important);
@@ -498,7 +498,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || value_index(val, border_width_strings) >= 0)
+				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms ) >= 0)
 				{
 					add_parsed_property(atom_border_right_width,	tokens[0], important);
 					add_parsed_property(atom_border_right_style,	tokens[1], important);
@@ -521,7 +521,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || value_index(val, border_width_strings) >= 0)
+				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms) >= 0)
 				{
 					add_parsed_property(atom_border_top_width,	tokens[0], important);
 					add_parsed_property(atom_border_top_style,	tokens[1], important);
@@ -546,7 +546,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || value_index(val, border_width_strings) >= 0)
+				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms) >= 0)
 				{
 					add_parsed_property(atom_border_bottom_width,	tokens[0], important);
 					add_parsed_property(atom_border_bottom_style,	tokens[1], important);
@@ -728,15 +728,15 @@ namespace litehtml {
 				}
 
 			}
-			else if( value_in_list(tok->c_str(), background_repeat_strings) )
+			else if( atom_in_list(tok->c_str(), background_repeat_atoms) )
 			{
 				add_parsed_property( atom_background_repeat, *tok, important);
 			}
-			else if( value_in_list(tok->c_str(), background_attachment_strings) )
+			else if( atom_in_list(tok->c_str(), background_attachment_atoms) )
 			{
 				add_parsed_property(atom_background_attachment, *tok, important);
 			}
-			else if( value_in_list(tok->c_str(), background_box_strings) )
+			else if( atom_in_list(tok->c_str(), background_box_atoms) )
 			{
 				if(!origin_found)
 				{
@@ -747,7 +747,7 @@ namespace litehtml {
 					add_parsed_property(atom_background_clip,*tok, important);
 				}
 			}
-			else if(	value_in_list(tok->c_str(), _t("left;right;top;bottom;center")) ||
+			else if(	atom_in_list(tok->c_str(), atom_left, atom_right,atom_top,atom_bottom,atom_center,0 ) ||
 						iswdigit((*tok)[0]) ||
 						(*tok)[0] == _t('-')	||
 						(*tok)[0] == _t('.')	||
@@ -787,7 +787,7 @@ namespace litehtml {
 		tstring font_family;
 		for(string_vector::iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 		{
-			idx = value_index(tok->c_str(), font_style_strings);
+			idx = atom_index(tok->c_str(), -1, font_style_atoms);
 			if(!is_family)
 			{
 				if(idx >= 0)
@@ -811,7 +811,7 @@ namespace litehtml {
 					}
 					else
 					{
-						if(value_in_list(tok->c_str(), font_variant_strings))
+						if(atom_in_list(tok->c_str(), font_variant_atoms))
 						{
 							add_parsed_property(atom_font_variant,	*tok, important);
 						}

@@ -339,30 +339,30 @@ void html_tag::parse_styles(bool is_reparse)
 	init_font();
 	document::ptr doc = get_document();
 
-	m_el_position	= (element_position)	atom_index( get_style_property(atom_position,		false,	_t("static")),		element_position_fixed, element_position_atoms );
-	m_text_align	= (text_align)			atom_index( get_style_property(atom_text_align,		true,	_t("left")),		text_align_left,		text_align_atoms );
-	m_overflow		= (overflow)			atom_index( get_style_property(atom_overflow,		false,	_t("visible")),		overflow_visible,		overflow_atoms );
-	m_white_space	= (white_space)			atom_index( get_style_property(atom_white_space,	true,	_t("normal")),		white_space_normal,		white_space_atoms );
-	m_display		= (style_display)		atom_index( get_style_property(atom_display,		false,	_t("inline")),		display_inline,			border_style_atoms );
-	m_visibility	= (visibility)			atom_index( get_style_property(atom_visibility,		true,	_t("visible")),		visibility_visible,		visibility_atoms );
-	m_box_sizing	= (box_sizing)			atom_index( get_style_property(atom_box_sizing,		false,	_t("content-box")),	box_sizing_content_box,	box_sizing_atoms );
+	m_el_position	= (element_position)	atom_index( get_style_property(atom_position,		false,	atom_static ),		element_position_fixed, element_position_atoms );
+	m_text_align	= (text_align)			atom_index( get_style_property(atom_text_align,		true,	atom_left ),		text_align_left,		text_align_atoms );
+	m_overflow		= (overflow)			atom_index( get_style_property(atom_overflow,		false,	atom_visible ),		overflow_visible,		overflow_atoms );
+	m_white_space	= (white_space)			atom_index( get_style_property(atom_white_space,	true,	atom_normal ),		white_space_normal,		white_space_atoms );
+	m_display		= (style_display)		atom_index( get_style_property(atom_display,		false,	atom_inline ),		display_inline,			border_style_atoms );
+	m_visibility	= (visibility)			atom_index( get_style_property(atom_visibility,		true,	atom_visible ),		visibility_visible,		visibility_atoms );
+	m_box_sizing	= (box_sizing)			atom_index( get_style_property(atom_box_sizing,		false,	atom_content_box ),	box_sizing_content_box,	box_sizing_atoms );
 
 	if(m_el_position != element_position_static)
 	{
-		const tchar_t* val = get_style_property(atom_z_index, false, 0);
+		const tchar_t* val = get_style_property(atom_z_index, false, (atom)0);
 		if(val)
 		{
 			m_z_index = t_atoi(val);
 		}
 	}
 
-	const tchar_t* va	= get_style_property(atom_vertical_align, true,	_t("baseline"));
+	const tchar_t* va	= get_style_property(atom_vertical_align, true,	atom_baseline );
 	m_vertical_align = (vertical_align) atom_index(va, va_baseline, vertical_align_atoms);
 
-	const tchar_t* fl	= get_style_property(atom_float, false,	_t("none"));
+	const tchar_t* fl	= get_style_property(atom_float, false,	atom_none );
 	m_float = (element_float) atom_index(fl, float_none, element_float_atoms );
 
-	m_clear = (element_clear) atom_index(get_style_property(atom_clear, false, _t("none")), clear_none, element_clear_atoms );
+	m_clear = (element_clear) atom_index(get_style_property(atom_clear, false, atom_none), clear_none, element_clear_atoms );
 
 	if (m_float != float_none)
 	{
@@ -398,8 +398,8 @@ void html_tag::parse_styles(bool is_reparse)
 
 	m_css_text_indent.fromString(	get_style_property(atom_text_indent,	true,	_t("0")),	_t("0"));
 
-	m_css_width.fromString(			get_style_property(atom_width,			false,	_t("auto")), _t("auto"));
-	m_css_height.fromString(		get_style_property(atom_height,			false,	_t("auto")), _t("auto"));
+	m_css_width.fromString(			get_style_property(atom_width,			false,	atom_auto), _t("auto"));
+	m_css_height.fromString(		get_style_property(atom_height,			false,	atom_auto), _t("auto"));
 
 	doc->cvt_units(m_css_width, m_font_size);
 	doc->cvt_units(m_css_height, m_font_size);
@@ -407,16 +407,16 @@ void html_tag::parse_styles(bool is_reparse)
 	m_css_min_width.fromString(		get_style_property(atom_min_width,		false,	_t("0")));
 	m_css_min_height.fromString(	get_style_property(atom_min_height,		false,	_t("0")));
 
-	m_css_max_width.fromString(		get_style_property(atom_max_width,		false,	_t("none")),	_t("none"));
-	m_css_max_height.fromString(	get_style_property(atom_max_height,		false,	_t("none")),	_t("none"));
+	m_css_max_width.fromString(		get_style_property(atom_max_width,		false,	atom_none ),	_t("none"));
+	m_css_max_height.fromString(	get_style_property(atom_max_height,		false,	atom_none ),	_t("none"));
 	
 	doc->cvt_units(m_css_min_width, m_font_size);
 	doc->cvt_units(m_css_min_height, m_font_size);
 
-	m_css_offsets.left.fromString(		get_style_property(atom_left,				false,	_t("auto")), _t("auto"));
-	m_css_offsets.right.fromString(		get_style_property(atom_right,				false,	_t("auto")), _t("auto"));
-	m_css_offsets.top.fromString(		get_style_property(atom_top,				false,	_t("auto")), _t("auto"));
-	m_css_offsets.bottom.fromString(	get_style_property(atom_bottom,			false,	_t("auto")), _t("auto"));
+	m_css_offsets.left.fromString(		get_style_property(atom_left,		false,	atom_auto ), _t("auto"));
+	m_css_offsets.right.fromString(		get_style_property(atom_right,		false,	atom_auto ), _t("auto"));
+	m_css_offsets.top.fromString(		get_style_property(atom_top,		false,	atom_auto ), _t("auto"));
+	m_css_offsets.bottom.fromString(	get_style_property(atom_bottom,		false,	atom_auto ), _t("auto"));
 
 	doc->cvt_units(m_css_offsets.left,	m_font_size);
 	doc->cvt_units(m_css_offsets.right, m_font_size);
@@ -433,24 +433,24 @@ void html_tag::parse_styles(bool is_reparse)
 	m_css_padding.top.fromString(		get_style_property(atom_padding_top,		false,	_t("0")), _t(""));
 	m_css_padding.bottom.fromString(	get_style_property(atom_padding_bottom,		false,	_t("0")), _t(""));
 
-	m_css_borders.left.width.fromString(	get_style_property(atom_border_left_width,		false,	_t("medium")), border_width_strings);
-	m_css_borders.right.width.fromString(	get_style_property(atom_border_right_width,		false,	_t("medium")), border_width_strings);
-	m_css_borders.top.width.fromString(		get_style_property(atom_border_top_width,		false,	_t("medium")), border_width_strings);
-	m_css_borders.bottom.width.fromString(	get_style_property(atom_border_bottom_width,	false,	_t("medium")), border_width_strings);
+	m_css_borders.left.width.fromString(	get_style_property(atom_border_left_width,		false,	atom_medium ), border_width_strings);
+	m_css_borders.right.width.fromString(	get_style_property(atom_border_right_width,		false,	atom_medium ), border_width_strings);
+	m_css_borders.top.width.fromString(		get_style_property(atom_border_top_width,		false,	atom_medium ), border_width_strings);
+	m_css_borders.bottom.width.fromString(	get_style_property(atom_border_bottom_width,	false,	atom_medium ), border_width_strings);
 
 	// todo: optim: avoid color definition for everything
 
 	m_css_borders.left.color = web_color::from_string(get_style_property(atom_border_left_color,	false,	_t("")), doc->container());
-	m_css_borders.left.style = (border_style) value_index_atom(get_style_property(atom_border_left_style, false, _t("none")), a_border_style, border_style_none);
+	m_css_borders.left.style = (border_style) value_index_atom(get_style_property(atom_border_left_style, false, atom_none), a_border_style, border_style_none);
 
 	m_css_borders.right.color = web_color::from_string(get_style_property(atom_border_right_color, false, _t("")), doc->container());
-	m_css_borders.right.style = (border_style) value_index(get_style_property(atom_border_right_style, false, _t("none")), border_style_strings, border_style_none);
+	m_css_borders.right.style = (border_style) value_index(get_style_property(atom_border_right_style, false, atom_none ), border_style_strings, border_style_none);
 
 	m_css_borders.top.color = web_color::from_string(get_style_property(atom_border_top_color, false, _t("")), doc->container());
-	m_css_borders.top.style = (border_style) value_index(get_style_property(atom_border_top_style, false, _t("none")), border_style_strings, border_style_none);
+	m_css_borders.top.style = (border_style) value_index(get_style_property(atom_border_top_style, false, atom_none ), border_style_strings, border_style_none);
 
 	m_css_borders.bottom.color = web_color::from_string(get_style_property(atom_border_bottom_color, false, _t("")), doc->container());
-	m_css_borders.bottom.style = (border_style) value_index(get_style_property(atom_border_bottom_style, false, _t("none")), border_style_strings, border_style_none);
+	m_css_borders.bottom.style = (border_style) value_index(get_style_property(atom_border_bottom_style, false, atom_none), border_style_strings, border_style_none);
 
 	m_css_borders.radius.top_left_x.fromString(get_style_property( atom_border_top_left_radius_x, false, _t("0")));
 	m_css_borders.radius.top_left_y.fromString(get_style_property(atom_border_top_left_radius_y, false, _t("0")));
@@ -470,28 +470,28 @@ void html_tag::parse_styles(bool is_reparse)
 	doc->cvt_units(m_css_borders.radius.bottom_right_y,			m_font_size);
 	doc->cvt_units(m_css_borders.radius.top_left_x,				m_font_size);
 	doc->cvt_units(m_css_borders.radius.top_left_y,				m_font_size);
-	doc->cvt_units(m_css_borders.radius.top_right_x,				m_font_size);
-	doc->cvt_units(m_css_borders.radius.top_right_y,				m_font_size);
+	doc->cvt_units(m_css_borders.radius.top_right_x,			m_font_size);
+	doc->cvt_units(m_css_borders.radius.top_right_y,			m_font_size);
 
-	doc->cvt_units(m_css_text_indent,								m_font_size);
+	doc->cvt_units(m_css_text_indent,							m_font_size);
 
-	m_margins.left		= doc->cvt_units(m_css_margins.left,		m_font_size);
-	m_margins.right		= doc->cvt_units(m_css_margins.right,		m_font_size);
+	m_margins.left		= doc->cvt_units(m_css_margins.left,	m_font_size);
+	m_margins.right		= doc->cvt_units(m_css_margins.right,	m_font_size);
 	m_margins.top		= doc->cvt_units(m_css_margins.top,		m_font_size);
 	m_margins.bottom	= doc->cvt_units(m_css_margins.bottom,	m_font_size);
 
-	m_padding.left		= doc->cvt_units(m_css_padding.left,		m_font_size);
-	m_padding.right		= doc->cvt_units(m_css_padding.right,		m_font_size);
+	m_padding.left		= doc->cvt_units(m_css_padding.left,	m_font_size);
+	m_padding.right		= doc->cvt_units(m_css_padding.right,	m_font_size);
 	m_padding.top		= doc->cvt_units(m_css_padding.top,		m_font_size);
 	m_padding.bottom	= doc->cvt_units(m_css_padding.bottom,	m_font_size);
 
-	m_borders.left		= doc->cvt_units(m_css_borders.left.width,	m_font_size);
-	m_borders.right		= doc->cvt_units(m_css_borders.right.width,	m_font_size);
+	m_borders.left		= doc->cvt_units(m_css_borders.left.width,		m_font_size);
+	m_borders.right		= doc->cvt_units(m_css_borders.right.width,		m_font_size);
 	m_borders.top		= doc->cvt_units(m_css_borders.top.width,		m_font_size);
 	m_borders.bottom	= doc->cvt_units(m_css_borders.bottom.width,	m_font_size);
 
 	css_length line_height;
-	line_height.fromString(get_style_property(atom_line_height,	true,	_t("normal")), _t("normal"));
+	line_height.fromString(get_style_property(atom_line_height,	true,	atom_normal ), _t("normal"));
 	if(line_height.is_predefined())
 	{
 		m_line_height = m_font_metrics.height;
@@ -509,11 +509,11 @@ void html_tag::parse_styles(bool is_reparse)
 
 	if(m_display == display_list_item)
 	{
-		const tchar_t* list_type = get_style_property(atom_list_style_type, true, _t("disc"));
+		const tchar_t* list_type = get_style_property(atom_list_style_type, true, atom_disc );
 		m_list_style_type = (list_style_type) atom_index(list_type, list_style_type_disc, list_style_type_atoms);
 
-		const tchar_t* list_pos = get_style_property(atom_list_style_position, true, _t("outside"));
-		m_list_style_position = (list_style_position) value_index(list_pos, list_style_position_outside, list_style_position_atoms);
+		const tchar_t* list_pos = get_style_property(atom_list_style_position, true, atom_outside );
+		m_list_style_position = (list_style_position) atom_index(list_pos, list_style_position_outside, list_style_position_atoms);
 
 		const tchar_t* list_image = get_style_property(atom_list_style_image, true, 0);
 		if(list_image && list_image[0])
@@ -1478,35 +1478,35 @@ void html_tag::parse_background()
 
 			if( *right==0 )
 			{
-				if( atom_in_list(a_left, 3, atom_left, atom_right, atom_center ) )
+				if( atom_in_list(a_left, 3, atom_left, atom_right, atom_center,(atom)0 ) )
 				{
 					m_bg.m_position.x.fromString(res[0], _t("left;right;center"));
 					m_bg.m_position.y.set_value(50, css_units_percentage);
 				}
-				else if( value_in_list(res[0].c_str(), _t("top;bottom;center")) ) {
+				else if( atom_in_list(res[0].c_str(), atom_tom, atom_bottom, atom_center, (atom)0 ) ) {
 					m_bg.m_position.y.fromString(res[0], _t("top;bottom;center"));
 					m_bg.m_position.x.set_value(50, css_units_percentage);
 				}
 				else {
-					m_bg.m_position.x.fromString(res[0], _t("left;right;center"));
+					m_bg.m_position.x.fromString(res[0], atom_left, atom_right, atom_center, (atom)0 );
 					m_bg.m_position.y.set_value(50, css_units_percentage);
 				}
 			}
 			else {
-				if(value_in_list(res[0].c_str(), _t("left;right")))
+				if(atom_in_list(res[0].c_str(), atom_left, atom_right, (atom)0 ))
 				{
 					m_bg.m_position.x.fromString(res[0], _t("left;right;center"));
 					m_bg.m_position.y.fromString(res[1], _t("top;bottom;center"));
 				}
-				else if(value_in_list(res[0].c_str(), _t("top;bottom"))) {
+				else if(atom_in_list(res[0].c_str(), atom_top, atom_bottom, (atom)0 )) {
 					m_bg.m_position.x.fromString(res[1], _t("left;right;center"));
 					m_bg.m_position.y.fromString(res[0], _t("top;bottom;center"));
 				}
-				else if(value_in_list(res[1].c_str(), _t("left;right"))) {
+				else if(atom_in_list(res[1].c_str(), atom_left, atom_right, (atom)0 )) {
 					m_bg.m_position.x.fromString(res[1], _t("left;right;center"));
 					m_bg.m_position.y.fromString(res[0], _t("top;bottom;center"));
 				}
-				else if(value_in_list(res[1].c_str(), _t("top;bottom"))) {
+				else if(atom_in_list(res[1].c_str(), atom_top, atom_bottom, (atom)0 )) {
 					m_bg.m_position.x.fromString(res[0], _t("left;right;center"));
 					m_bg.m_position.y.fromString(res[1], _t("top;bottom;center"));
 				}
@@ -1557,17 +1557,17 @@ void html_tag::parse_background()
 		m_bg.m_position.x.set_value(0, css_units_percentage);
 	}
 
-	str = get_style_property(atom_background_size, false, _t("auto"));
+	str = get_style_property(atom_background_size, false, atom_auto );
 	if(str)
 	{
 		string_vector res;
 		split_string(str, res, _t(" \t"));
 		if(!res.empty())
 		{
-			m_bg.m_position.width.fromString(res[0], background_size_strings);
+			m_bg.m_position.width.fromString(res[0], background_size_atoms);
 			if(res.size() > 1)
 			{
-				m_bg.m_position.height.fromString(res[1], background_size_strings);
+				m_bg.m_position.height.fromString(res[1], background_size_atoms);
 			} else
 			{
 				m_bg.m_position.height.predef(background_size_auto);
@@ -1587,16 +1587,16 @@ void html_tag::parse_background()
 	doc->cvt_units(m_bg.m_position.height,	m_font_size);
 
 	// parse background_attachment
-	m_bg.m_attachment = (background_attachment) atom_index( get_style_property(atom_background_attachment, false, _t("scroll")), background_attachment_scroll, background_attachment_atoms);
+	m_bg.m_attachment = (background_attachment) atom_index( get_style_property(atom_background_attachment, false, atom_scroll), background_attachment_scroll, background_attachment_atoms);
 
 	// parse background_attachment
-	m_bg.m_repeat = (background_repeat) atom_index( get_style_property(atom_background_repeat, false, _t("repeat")), background_repeat_repeat, background_repeat_atoms );
+	m_bg.m_repeat = (background_repeat) atom_index( get_style_property(atom_background_repeat, false, atom_repeat), background_repeat_repeat, background_repeat_atoms );
 
 	// parse background_clip
-	m_bg.m_clip = (background_box) atom_index( get_style_property(atom_background_clip, false, _t("border-box")), background_box_border, background_box_atoms );
+	m_bg.m_clip = (background_box) atom_index( get_style_property(atom_background_clip, false, atom_border_box), background_box_border, background_box_atoms );
 
 	// parse background_origin
-	m_bg.m_origin = (background_box) value_index( get_style_property(atom_background_origin, false, _t("padding-box")), background_box_content, background_box_atoms );
+	m_bg.m_origin = (background_box) atom_index( get_style_property(atom_background_origin, false, atom_padding_box), background_box_content, background_box_atoms );
 
 	// parse background-image
 	css::parse_css_url( get_style_property(atom_background_image, false, _t("")), m_bg.m_image );
@@ -2961,12 +2961,12 @@ void html_tag::draw_list_marker( uint_ptr hdc, const position &pos )
 {
 	list_marker lm;
 
-	const tchar_t* list_image = get_style_property(atom_list_style_image, true, 0);
+	const tchar_t* list_image = get_style_property(atom_list_style_image, true, (atom)0);
 	size img_size;
 	if(list_image)
 	{
 		css::parse_css_url(list_image, lm.image);
-		lm.baseurl = get_style_property(atom_list_style_baseurl, true, 0);
+		lm.baseurl = get_style_property(atom_list_style_baseurl, true, (atom)0);
 		get_document()->container()->get_image_size(lm.image.c_str(), lm.baseurl, img_size);
 	} else
 	{
