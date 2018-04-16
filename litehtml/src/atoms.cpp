@@ -3,7 +3,6 @@
 #include <qDebug>
 
 namespace litehtml {
-	#include "atoms_internal.cpp"
 
 	struct	symbol
 	{
@@ -53,8 +52,7 @@ namespace litehtml {
 		return d & 0x7fffffff;
 	}
 
-	atom atom_create( const tchar_t* text, bool create_it )
-	{
+	atom atom_create( const tchar_t* text, bool create_it ) {
 		if( *text==0 ) {
 			return atom_null;
 		}
@@ -125,19 +123,90 @@ namespace litehtml {
 		return (atom)h;
 	}
 
-	tstring atom_get( const tchar_t* v ) {
+	/**
+	 * 
+	 **/
 
-		/*
-		int		d = GT[ hash(0,text) % countof(G) ];
-		if( d<0 )	{
-			return input + VT[ 0-d-1 ];
+	int hash_find(const tchar_t* text, int len,
+						int* GT, int GT_len,
+						int* VT, int VT_len,
+						uint32_t* RH, int RH_len,
+						int def )
+	{
+		if( len==0 || *text==0 ) {
+			return def;
 		}
 
-		return input + VT[hash(d,text) % countof(V)];
+		char	lowercase[128];
+		if( len<0 ) {
+			//	lowercase it
+			len 	= 0;
+			while( len<countof(lowercase)-1 && *text ) {
+				lowercase[len] = tolower(*text);
+				len++;
+				text++;
+			}
+		}
+		else {
+			if( len>countof(lowercase)-1 ) {
+				len = countof(lowercase)-1;
+			}
 
-		//symbol*	x = (symbol*)v;
-		//return	std::string((const char*)x->value,x->len);
-		*/
-		return "";
+			char* lc = lowercase;
+			while( len ) {
+				lc++ = tolower(*text);
+				len--;
+				text++;
+			}
+		}
+
+		lowercase[len] = 0;
+
+//		if( strcmp(lowercase,"section)")==0 ) {
+//			__asm int 3;
+//		}
+
+		//	looking for our known elements (fast hash)
+		int			a;
+		uint32_t	h = hash(0,lowercase);
+		int			d = GT[ h % GT_len ];
+		if( d<0 )	{
+			a = VT[ 0-d-1 ];
+		}
+		else {
+			a = VT[hash(d,lowercase) % VT_len];
+		}
+
+		//	known element ?
+		if( h==RH[0-1-a] ) {
+			return a;
+		}
+
+		return def;
+	}
+
+	/**
+	 * 
+	 */
+	
+	int 	string_find( const tchar_t* text, int len, const tchar_t* inputs, int def )
+	{
+		int idx = 1;
+		tchar_t	c1 = text[0];
+		tchar_t	c2 = text[len-1];
+
+		while( *inputs )  {
+			int 	l = *inputs++;
+			if( len==l && inputs[0]==c1 && inputs[l-1]==c2 ) {
+				if( t_strncasecmp(inputs+1,text+1,l-2)==0 ) {
+					return idx;
+				}
+			}
+
+			inputs += l;
+			idx++;
+		}
+
+		return def;
 	}
 }

@@ -32,7 +32,7 @@ namespace litehtml
 	class document_container
 	{
 	public:
-		virtual litehtml::uint_ptr	create_font(const litehtml::tchar_t* faceName, int size, int weight, litehtml::font_style italic, unsigned int decoration, litehtml::font_metrics* fm) = 0;
+		virtual litehtml::uint_ptr	create_font(const litehtml::tchar_t* faceName, int size, int weight, bool italic, unsigned int decoration, litehtml::font_metrics* fm) = 0;
 		virtual void				delete_font(litehtml::uint_ptr hFont) = 0;
 		virtual int					text_width(const litehtml::tchar_t* text, litehtml::uint_ptr hFont) = 0;
 		virtual void				draw_text(litehtml::uint_ptr hdc, const litehtml::tchar_t* text, litehtml::uint_ptr hFont, litehtml::web_color color, const litehtml::position& pos) = 0;
@@ -116,6 +116,4 @@ namespace litehtml
 	void		atom_init( );
 	atom		atom_create(const tchar_t* text , bool create_it=true);
 	tstring		atom_get( atom v );
-
-	#include "atoms_enum.h"
 }

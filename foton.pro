@@ -135,7 +135,8 @@ SOURCES += main.cpp\
     litehtml/src/atoms.cpp \
     modules/dom/xsDOM.cpp \
     qxsrunner.cpp \
-    litehtml/src/xstring.cpp
+    litehtml/src/xstring.cpp \
+    litehtml/src/_keywords.cpp
 
 HEADERS  += mainwindow.h \
     xs/includes/xs.h \
@@ -211,7 +212,8 @@ HEADERS  += mainwindow.h \
     litehtml/src/web_color.h \
 	prebuild_js.xs.h \
     qhtmlrenderer.h \
-    qxsrunner.h
+    qxsrunner.h \
+    litehtml/src/_keywords.h
 
 win32:LIBS += -luser32
 

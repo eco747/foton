@@ -5,6 +5,8 @@
 #include <map>
 #include <vector>
 
+#include "_keywords.h"
+
 namespace litehtml
 {
 	#define		countof( x )		((sizeof(x))	/ (sizeof((x)[0])))
@@ -257,6 +259,7 @@ namespace litehtml
 		draw_positioned,
 	};
 
+	/*
 //#define  style_display_strings		_t("none;block;inline;inline-block;inline-table;list-item;table;table-caption;table-cell;table-column;table-column-group;table-footer-group;table-header-group;table-row;table-row-group;flex")
 #define		style_display_atoms			atom_none,atom_block,atom_inline,atom_inline_block,atom_inline_table,atom_list_item,atom_table,atom_table_caption,atom_table_cell,atom_table_column,atom_table_column_group,atom_table_footer_group,\
 										atom_table_header_group,atom_table_row,atom_table_row_group,atom_flex,0
@@ -618,7 +621,7 @@ namespace litehtml
 		content_property_no_open_quote,
 		content_property_no_close_quote,
 	};
-
+*/
 
 	struct floated_box
 	{
@@ -729,7 +732,7 @@ namespace litehtml
 		}
 	};
 
-
+/*
 //#define media_orientation_strings		_t("portrait;landscape")
 	#define media_orientation_atoms		atom_portrait,atom_landscape,0
 
@@ -819,6 +822,7 @@ namespace litehtml
 		media_type_tty,
 		media_type_tv,
 	};
+*/
 
 	struct media_features
 	{

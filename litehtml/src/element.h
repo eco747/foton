@@ -175,7 +175,7 @@ namespace litehtml
 		virtual void				get_content_size(size& sz, int max_width);
 		virtual void				init();
 		virtual bool				is_floats_holder() const;
-		virtual int					get_floats_height(element_float el_float = float_none) const;
+		virtual int					get_floats_height(element_float el_float = element_float_none) const;
 		virtual int					get_left_floats_height() const;
 		virtual int					get_right_floats_height() const;
 		virtual int					get_line_left(int y);
@@ -296,7 +296,7 @@ namespace litehtml
 
 	inline bool litehtml::element::in_normal_flow() const
 	{
-		if(get_element_position() != element_position_absolute && get_display() != display_none)
+		if(get_element_position() != element_position_absolute && get_display() != style_display_none)
 		{
 			return true;
 		}
@@ -386,7 +386,7 @@ namespace litehtml
 
 	inline bool litehtml::element::is_visible() const
 	{
-		return !(m_skip || get_display() == display_none || get_visibility() != visibility_visible);
+		return !(m_skip || get_display() == style_display_none || get_visibility() != visibility_visible);
 	}
 
 	inline position& litehtml::element::get_position()

@@ -160,30 +160,28 @@ namespace litehtml
 
 		if(m_fonts.find(key) == m_fonts.end())
 		{
-			font_style fs = (font_style) atom_index(style, fontStyleNormal, font_style_atoms );
-			int	fw = value_index(weight, font_weight_strings, -1);
-			if(fw >= 0)
-			{
+			int fs = get_font_style(style, -1, font_style_normal );
+			int	fw = get_font_weight(weight, -1, -1 );
+			if(fw >= 0) {
 				switch(fw)
 				{
-				case fontWeightBold:
+				case font_weight_bold:
 					fw = 700;
 					break;
-				case fontWeightBolder:
+				case font_weight_bolder:
 					fw = 600;
 					break;
-				case fontWeightLighter:
+				case font_weight_lighter:
 					fw = 300;
 					break;
 				default:
 					fw = 400;
 					break;
 				}
-			} else
-			{
+			}
+			else {
 				fw = t_atoi(weight);
-				if(fw < 100)
-				{
+				if(fw < 100) {
 					fw = 400;
 				}
 			}
@@ -196,15 +194,17 @@ namespace litehtml
 				split_string(decoration, tokens, _t(" "));
 				for(std::vector<tstring>::iterator i = tokens.begin(); i != tokens.end(); i++)
 				{
-					if(!t_strcasecmp(i->c_str(), _t("underline")))
-					{
-						decor |= font_decoration_underline;
-					} else if(!t_strcasecmp(i->c_str(), _t("line-through")))
-					{
-						decor |= font_decoration_linethrough;
-					} else if(!t_strcasecmp(i->c_str(), _t("overline")))
-					{
-						decor |= font_decoration_overline;
+					int decoration = get_text_decoration( i->c_str(), i->length(), -1 );
+					switch( decoration ) {
+						case text_decoration_underline:
+							decor |= font_decoration_underline;
+							break;
+						case text_decoration_line_through:
+							decor |= font_decoration_linethrough;
+							break;
+						case text_decoration_overline:
+							decor |= font_decoration_overline;
+							break;
 					}
 				}
 			}
@@ -214,11 +214,12 @@ namespace litehtml
 			fi.font = m_container->create_font(name, size, fw, fs, decor, &fi.metrics);
 			m_fonts[key] = fi;
 			ret = fi.font;
-			if(fm)
-			{
+
+			if(fm) {
 				*fm = fi.metrics;
 			}
 		}
+
 		return ret;
 	}
 
@@ -302,7 +303,7 @@ namespace litehtml
 		css_length val;
 		val.fromString(str,0);
 
-		if(is_percent && val.units() == css_units_percentage && !val.is_predefined()) {
+		if(is_percent && val.units() == css_units_perc && !val.is_predefined()) {
 			*is_percent = true;
 		}
 
@@ -318,7 +319,7 @@ namespace litehtml
 		int ret = 0;
 		switch(val.units())
 		{
-		case css_units_percentage:
+		case css_units_perc:
 			ret = val.calc_percent(size);
 			break;
 		case css_units_em:
@@ -746,27 +747,27 @@ namespace litehtml
 
 			switch (el_ptr->get_display())
 			{
-			case display_inline_table:
-			case display_table:
-				fix_table_children(el_ptr, display_table_row_group, _t("table-row-group"));
+			case style_display_inline_table:
+			case style_display_table:
+				fix_table_children(el_ptr, style_display_table_row_group, _t("table-row-group"));
 				break;
-			case display_table_footer_group:
-			case display_table_row_group:
-			case display_table_header_group:
-				fix_table_parent(el_ptr, display_table, _t("table"));
-				fix_table_children(el_ptr, display_table_row, _t("table-row"));
+			case style_display_table_footer_group:
+			case style_display_table_row_group:
+			case style_display_table_header_group:
+				fix_table_parent(el_ptr, style_display_table, _t("table"));
+				fix_table_children(el_ptr, style_display_table_row, _t("table-row"));
 				break;
-			case display_table_row:
-				fix_table_parent(el_ptr, display_table_row_group, _t("table-row-group"));
-				fix_table_children(el_ptr, display_table_cell, _t("table-cell"));
+			case style_display_table_row:
+				fix_table_parent(el_ptr, style_display_table_row_group, _t("table-row-group"));
+				fix_table_children(el_ptr, style_display_table_cell, _t("table-cell"));
 				break;
-			case display_table_cell:
-				fix_table_parent(el_ptr, display_table_row, _t("table-row"));
+			case style_display_table_cell:
+				fix_table_parent(el_ptr, style_display_table_row, _t("table-row"));
 				break;
 			// TODO: make table layout fix for table-caption, table-column etc. elements
-			case display_table_caption:
-			case display_table_column:
-			case display_table_column_group:
+			case style_display_table_caption:
+			case style_display_table_column:
+			case style_display_table_column_group:
 			default:
 				break;
 			}

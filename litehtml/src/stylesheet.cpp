@@ -43,11 +43,11 @@ namespace litehtml
 
 		// direct string
 		if( *text=='\'' || *text=='"' ) {
-			return extract_string( text, url );
+			return extract_string( text, result );
 		}
 
 		// url( ... )
-		if( t_strncmp(text,"url")==0 ) {
+		if( t_strncmp(text,"url",3)==0 ) {
 			text = skip_sp( text+3 );
 
 			if( *text=='(' ) {
@@ -55,7 +55,7 @@ namespace litehtml
 
 				// string
 				if( *text=='\'' || *text=='"' ) {
-					text = extract_string( text, url );
+					text = extract_string( text, result );
 
 					// skip to ')'
 					while( *text && *text!=')' ) {
@@ -78,11 +78,11 @@ namespace litehtml
 
 				if( *text==')' ) {
 					const tchar_t* q = text-1;
-					while( q>start && (q==' ' || q=='\t') ) {
+					while( q>start && (*q==' ' || *q=='\t') ) {
 						q--;
 					}
 
-					url.set( start, q );
+					result.set( start, q );
 					return text;
 				}
 				else {
@@ -97,6 +97,7 @@ namespace litehtml
 			//todo: warning malformed url
 		}
 
+		result.clear();
 		return text;
 	}
 

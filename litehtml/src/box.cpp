@@ -194,7 +194,7 @@ void litehtml::line_box::finish(bool last_box)
 	// find line box baseline and line-height
 	for(const auto& el : m_items)
 	{
-		if(el->get_display() == display_inline_text)
+		if(el->get_display() == style_display_inline_text)
 		{
 			font_metrics fm;
 			el->get_font(&fm);
@@ -217,7 +217,7 @@ void litehtml::line_box::finish(bool last_box)
 
 	for (const auto& el : m_items)
 	{
-		if(el->get_display() == display_inline_text)
+		if(el->get_display() == style_display_inline_text)
 		{
 			font_metrics fm;
 			el->get_font(&fm);
@@ -226,24 +226,24 @@ void litehtml::line_box::finish(bool last_box)
 		{
 			switch(el->get_vertical_align())
 			{
-			case va_super:
-			case va_sub:
-			case va_baseline:
+			case vertical_align_super:
+			case vertical_align_sub:
+			case vertical_align_baseline:
 				el->m_pos.y = m_height - base_line - el->height() + el->get_base_line() + el->content_margins_top();
 				break;
-			case va_top:
+			case vertical_align_top:
 				el->m_pos.y = y1 + el->content_margins_top();
 				break;
-			case va_text_top:
+			case vertical_align_text_top:
 				el->m_pos.y = m_height - base_line - m_font_metrics.ascent + el->content_margins_top();
 				break;
-			case va_middle:
+			case vertical_align_middle:
 				el->m_pos.y = m_height - base_line - m_font_metrics.x_height / 2 - el->height() / 2 + el->content_margins_top();
 				break;
-			case va_bottom:
+			case vertical_align_bottom:
 				el->m_pos.y = y2 - el->height() + el->content_margins_top();
 				break;
-			case va_text_bottom:
+			case vertical_align_text_bottom:
 				el->m_pos.y = m_height - base_line + m_font_metrics.descent - el->height() + el->content_margins_top();
 				break;
 			}
@@ -258,32 +258,32 @@ void litehtml::line_box::finish(bool last_box)
 	{
 		el->m_pos.y -= y1;
 		el->m_pos.y += m_box_top;
-		if(el->get_display() != display_inline_text)
+		if(el->get_display() != style_display_inline_text)
 		{
 			switch(el->get_vertical_align())
 			{
-			case va_top:
+			case vertical_align_top:
 				el->m_pos.y = m_box_top + el->content_margins_top();
 				break;
-			case va_bottom:
+			case vertical_align_bottom:
 				el->m_pos.y = m_box_top + (y2 - y1) - el->height() + el->content_margins_top();
 				break;
-			case va_baseline:
+			case vertical_align_baseline:
 				//TODO: process vertical align "baseline"
 				break;
-			case va_middle:
+			case vertical_align_middle:
 				//TODO: process vertical align "middle"
 				break;
-			case va_sub:
+			case vertical_align_sub:
 				//TODO: process vertical align "sub"
 				break;
-			case va_super:
+			case vertical_align_super:
 				//TODO: process vertical align "super"
 				break;
-			case va_text_bottom:
+			case vertical_align_text_bottom:
 				//TODO: process vertical align "text-bottom"
 				break;
-			case va_text_top:
+			case vertical_align_text_top:
 				//TODO: process vertical align "text-top"
 				break;
 			}

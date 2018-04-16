@@ -35,8 +35,13 @@ function create_hash(inp) {
 		dict[ inp[j] ] = j+1;
 	}
 
-	var size = Object.keys(dict).length,
-		buckets = [],
+	var size = Object.keys(dict).length;
+	if( size<7 ) {
+		size = 7;
+	}
+
+
+	var	buckets = [],
 		G = new Array(size),
 		values = new Array(size),
 		i, b, bucket;
@@ -120,15 +125,23 @@ function lookup_hash(G, V, key) {
 // -webkit-margin-before,webkit-margin-after,-webkit-margin-start,-webkit-margin-end,-webkit-columns ,-webkit-text-emphasis ,-webkit-text-security ,-webkit-align-self ,-webkit-user-modify ,-webkit-user-select ,-webkit-rtl-ordering ,-webkit-writing-mode ,-webkit-appearance ,-webkit-padding-after ,-webkit-padding-before ,-webkit-padding-end ,-webkit-padding-start 
 
 
-function pad( x, n ) {
+function pad( x, n, ch=' ' ) {
 	
 	x = ''+x;
 	while( x.length<n ) {
-		x = ' '+x;
+		x = ch+x;
 	}
 
 	return x;
 }
+
+
+let __cpp_output = '#include "html.h"\n\nnamespace litehtml {\n\n'+
+					'int 	string_find( const tchar_t* text, int len, const tchar_t* inputs, int def );\n'+
+					'int 	hash_find( const tchar_t* text, int len, int* GT, int GT_len, int* VT, int VT_len, int* RH, RH_len, int def );\n\n';
+
+let __h_output = '#ifndef __KEYWORDS_H\n#define __KEYWORDS_H\n\n\nnamespace litehtml {\n\n';
+					
 
 function generate( input, output_name, sort_it, gen_zero ) {
 
@@ -136,98 +149,125 @@ function generate( input, output_name, sort_it, gen_zero ) {
 	if( sort_it ) {
 		input.sort();
 	}
-	
-	let tables = create_hash(input);
-	console.log( output_name+': '+tables[0].length );
-
-	fs.open('src/_'+output_name+'.cpp', 'w', function (err, file) {
-				
-		if( err ) throw err;
-
+		
+	{
 		let line = '';
-		let text = '	int '+output_name+'_GT[] = {\n';
+		let text = '\n\n// -------------------------------------------------\n\n';
 		let x;
+		
+		if( input.length>7 )  {
+		
+			let tables = create_hash(input);
+			console.log( output_name+': '+tables[0].length );
+		
+			line = '';
+			text = 'int '+output_name+'_GT[] = {\n';
+			
+			for ( x = 0; x < tables[0].length; x++) {
 
-		for ( x = 0; x < tables[0].length; x++) {
+				if (x > 0 && (x % 20 == 0)) {
+					text += '\t\t' + line + '\n';
+					line = '';
+				}
 
-			if (x > 0 && (x % 20 == 0)) {
-				text += '\t\t' + line + '\n';
-				line = '';
+				let t = tables[0][x];
+				line += pad( (t === undefined ? 0 : t), 4) + ', ';
 			}
 
-			let t = tables[0][x];
-			line += pad( (t === undefined ? 0 : t), 4) + ', ';
-		}
+			text += '\t\t' + line + '\n\t};\n\n';
+			
+			////////////////////////
 
-		text += '\t\t' + line + '\n\t};\n\n';
-		
-		////////////////////////
+			text += 'int '+output_name+'_VT[] = {\n';
+			line = '';
 
-		text += '	int '+output_name+'_VT[] = {\n';
-		line = '';
+			for ( x = 0; x < tables[1].length; x++) {
 
-		for ( x = 0; x < tables[1].length; x++) {
+				if (x > 0 && (x % 20 == 0)) {
+					text += '\t\t' + line + '\n';
+					line = '';
+				}
 
-			if (x > 0 && (x % 20 == 0)) {
-				text += '\t\t' + line + '\n';
-				line = '';
+				let vpos = tables[1][x];
+				if( vpos===undefined )  {
+					vpos = 0;
+				}
+				line += pad(vpos,4) + ', ';
+			}
+			
+			text += '\t\t' + line + '\n\t};\n\n';
+
+			///////////////////
+
+			text += 'uint32_t	'+output_name+'_RH[] = {\n';
+			line = '';
+
+			for ( x = 0; x < input.length - 1; x++) {
+
+				if (x > 0 && (x % 10 == 0)) {
+					text += '\t\t' + line + ' \\\n';
+					line = '';
+				}
+
+				line += pad( '0x' + hash(0, input[x]).toString(16), 8 ) + ', ';
 			}
 
-			let vpos = tables[1][x];
-			line += pad(vpos,4) + ', ';
+			text += '\t\t' + line + '\n';
+			text += '};\n\n';
 		}
 		
-		text += '\t\t' + line + '\n\t};\n\n';
-
-
 		//////////////////////
 
-		//	console.log('\nstatic const char input[] = ');
-		//	line = '';
-		//	
-		//	for (var x = 0; x < input.length; x++) {
-		//	
-		//		if (x > 0 && (x % 10 == 0)) {
-		//			console.log('\t\t\'' + line + '\' \\');
-		//			line = '';
-		//		}
-		//	
-		//		let v = input[x];
-		//		if (v.length > 0) {
-		//			line += v + '\\0';
-		//		}
-		//	}
-		//	console.log('\t\t\'' + line + '\';');
-
-		///////////////////
-
-		text += '\n	uint32_t	'+output_name+'_RH[] = {\n';
-		
-		for ( x = 0; x < input.length - 1; x++) {
-
-			if (x > 0 && (x % 10 == 0)) {
-				text += '\t\t' + line + ' \\\n';
-				line = '';
-			}
-
-			line += pad( '0x' + hash(0, input[x]).toString(16), 8 ) + ', ';
+		if( input.length>7 )  {
+			text += '/*\n';
 		}
 
-		text += '\t\t' + line + '\n';
-		text += '};\n\n';
+		text += '\nstatic const char '+output_name+'_input[] = {\n';
+		line = '';
+		
+		for ( x = 0; x < input.length; x++) {
+		
+			//if (x > 0 && (x % 10 == 0)) {
+			//	text += '\t\t\'' + line + '\' \\\n';
+			//	line = '';
+			//}
+		
+			let v = input[x];
+			if (v.length > 0) {
+				text += '\t"\\x' + v.length.toString(16) + '""' + v + '" \\\n';
+			}
+		}
+		text += '};\n';
+		
+		if( input.length>7 )  {
+			text += '*/\n';
+		}
+			
+		text += '\nint get_'+output_name+'( const tchar_t* text, int len, int def )\n{\n';
 
-		fs.write( file, text );
+		if( input.length>7 )  {
+			text += '	return hash_find( text, len, '+output_name+'_GT, countof('+output_name+'_GT),\n\t\t\t\t\t\t'+output_name+'_VT, countof('+output_name+'_VT),\n\t\t\t\t\t\t'+output_name+'_RH, countof('+output_name+'_RH), def );\n';
+		}
+		else {
+			text += '	return string_find( text, len, '+output_name+'_input, def );\n';
+		}
 
-		fs.close( file );
-	});
+		text += '}\n\n\n';
 
+		__cpp_output += text;
+	}
+	
 	//////////////////
 
-	fs.open('src/_'+output_name+'.h', 'w', function( err, file ) {
+	{
+		text = '\n\n// -------------------------------------------------\n\n';
 
-		if( err )	throw err;
-
-		let text = 'enum '+output_name+' {\n';
+		//text += '#ifndef __' + output_name.toUpperCase( ) + '\n';
+		//text += '#define __' + output_name.toUpperCase( ) + '\n\n';
+		
+		text += 'int get_'+output_name+'( const tchar_t* text, int len = -1, int def = 0 );\n\n';
+		
+		text += 'enum '+output_name+' {\n';
 
 		if( gen_zero ) {
 			text += '	'+output_name+'_null = 0,\n';
@@ -241,15 +281,17 @@ function generate( input, output_name, sort_it, gen_zero ) {
 				let name = v.replace(/[-:]/gi, '_');
 				name = name.replace(/[*]/gi, 'star');
 				name = name.replace(/[%]/gi, 'perc');
-				text += '	'+output_name+'_' + name + ' = ' + (x+1) + ',\n';
+				text += '	'+output_name+'_' + name + ' = ' + x + ',\n';
 			}
 		}
 
 		text += '};\n\n';
-		fs.write( file, text );
+		//text += '#endif //__' + output_name.toUpperCase( ) + '\n';
 
-		fs.close( file );
-	});
+		__h_output += text;
+	}
+
+	console.log( "done" );
 }
 
 
@@ -260,7 +302,7 @@ generate( 'none;all;screen;print;braille;embossed;handheld;projection;speech;tty
 	'media_type', false, false  );
 
 
-generate( 'pseudo-el;before;after;pseudo;id;class;inherit;underline;line-through;overline;auto;br;p;table;td;th;img;link;title;a;tr;style;base;body;div;script;' +
+generate( 'pseudo-el;before;after;pseudo;id;class;inherit;auto;br;p;table;td;th;img;link;title;a;tr;style;base;body;div;script;' +
 	'font;::before;::after;tbody;thead;tfoot;*;href;src;align;text-align;display;color;face;font-face;size;font-size;height;width;rel;media;cellspacing;cellpadding;border-spacing;' +
 	'border-width;border;bgcolor;background-color;background;valign;vertical-align;border-left-style;border-right-style;border-top-style;border-bottom-style;border-left-width;' +
 	'border-right-width;border-top-width;border-bottom-width;border-left-color;border-right-color;border-top-color;border-bottom-color;colspan;rowspan;border-collapse;text-transform;' +
@@ -292,7 +334,7 @@ generate( 'pseudo-el;before;after;pseudo;id;class;inherit;underline;line-through
 );
 
 
-generate( 'none;block;inline;inline-block;inline-table;list-item;table;table-caption;table-cell;table-column;table-column-group;table-footer-group;table-header-group;table-row;table-row-group;flex;',
+generate( 'none;block;inline;inline-block;inline-table;list-item;table;table-caption;table-cell;table-column;table-column-group;table-footer-group;table-header-group;table-row;table-row-group;inline-text;flex;',
 	'style_display', false, false 
 );
 
@@ -317,12 +359,6 @@ generate( 'normal;italic;',
 
 generate( 'normal;small-caps;',
 	'font_variant', false, false  );
-
-generate( 'normal;bold;bolder;lighter;100;200;300;400;500;600;700;',
-	'font_weight', false, false  );
-
-generate( 'inside;outside;',
-	'list_style_position', false, false  );
 
 generate( 'thin;medium;thick;',
 	'border_width', false, false  );
@@ -393,3 +429,33 @@ generate( 'transparent;aliceblue;antiquewhite;aqua;aquamarine;azure;beige;bisque
 			'purple;red;rosybrown;royalblue;saddlebrown;salmon;sandybrown;seagreen;seashell;sienna;silver;skyblue;slateblue;slategray;slategrey;snow;springgreen;steelblue;tan;teal;thistle;tomato;turquoise;violet;wheat;'+
 			'white;whitesmoke;yellow;yellowgreen;',
 	'web_colors', false, false );
+
+generate( 'inside;outside;',
+	'list_style_position', false, false  );
+
+generate( 'normal;bold;bolder;lighter;100;200;300;400;500;600;700;',
+	'font_weight', false, false  );
+
+generate( 'none;hidden;dotted;dashed;solid;double;',
+	'style_border', false, false );	//<why ?
+
+generate( 'underline;line-through;overline;',
+	'text_decoration', false, false );
+
+generate( 'left;right;top,bottom;center;',
+	'background_position', false, false );
+	
+__cpp_output += '\n\n}\n';
+__h_output += '\n\n}\n\n#endif';
+
+
+var file;
+
+file = fs.openSync('src/_keywords.cpp', 'w' );
+fs.writeSync( file, __cpp_output );
+fs.closeSync( file );
+		
+file = fs.openSync('src/_keywords.h', 'w' );
+fs.writeSync( file, __h_output );
+fs.closeSync( file );
+		

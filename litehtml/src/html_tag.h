@@ -216,7 +216,7 @@ namespace litehtml
 		virtual void				init() override;
 		virtual void				get_inline_boxes(position::vector& boxes) override;
 		virtual bool				is_floats_holder() const override;
-		virtual int					get_floats_height(element_float el_float = float_none) const override;
+		virtual int					get_floats_height(element_float el_float = element_float_none) const override;
 		virtual int					get_left_floats_height() const override;
 		virtual int					get_right_floats_height() const override;
 		virtual int					get_line_left(int y) override;

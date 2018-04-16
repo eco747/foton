@@ -40,20 +40,19 @@ void litehtml::el_table::parse_styles(bool is_reparse)
 {
 	html_tag::parse_styles(is_reparse);
 
-	m_table_infos->m_border_collapse = (border_collapse) atom_index(get_style_property(atom_border_collapse, true, _t("separate")), border_collapse_separate, border_collapse_atoms );
+	m_table_infos->m_border_collapse = get_border_collapse( get_style_property(atom_border_collapse, true, _t("separate")), -1, border_collapse_separate );
 
-	if(m_table_infos->m_border_collapse == border_collapse_separate)
-	{
-		m_table_infos->m_css_border_spacing_x.fromString(get_style_property(atom__xx_border_spacing_x, true, _t("0px")));
-		m_table_infos->m_css_border_spacing_y.fromString(get_style_property(atom__xx_border_spacing_y, true, _t("0px")));
+	if(m_table_infos->m_border_collapse == border_collapse_separate) {
+
+		m_table_infos->m_css_border_spacing_x.fromString( get_style_property(atom__xx_border_spacing_x, true, _t("0px")) );
+		m_table_infos->m_css_border_spacing_y.fromString( get_style_property(atom__xx_border_spacing_y, true, _t("0px")) );
 
 		int fntsz = get_font_size();
 		document::ptr doc = get_document();
 		m_table_infos->m_border_spacing_x = doc->cvt_units(m_table_infos->m_css_border_spacing_x, fntsz);
 		m_table_infos->m_border_spacing_y = doc->cvt_units(m_table_infos->m_css_border_spacing_y, fntsz);
 	}
-	else
-	{
+	else {
 		m_table_infos->m_border_spacing_x	= 0;
 		m_table_infos->m_border_spacing_y	= 0;
 		m_padding.bottom	= 0;
@@ -70,14 +69,12 @@ void litehtml::el_table::parse_styles(bool is_reparse)
 void litehtml::el_table::parse_attributes()
 {
 	const tchar_t* str = get_attr(atom_width);
-	if(str)
-	{
+	if(str)	{
 		m_style.add_property(atom_width, str, 0, false);
 	}
 
 	str = get_attr(atom_align);
-	if(str)
-	{
+	if(str)	{
 		int align = value_index(str, _t("left;center;right"));
 		switch(align)
 		{
@@ -93,8 +90,7 @@ void litehtml::el_table::parse_attributes()
 	}
 
 	str = get_attr(atom_cellspacing);
-	if(str)
-	{
+	if(str)	{
 		tstring val = str;
 		val += _t(" ");
 		val += str;
@@ -102,14 +98,12 @@ void litehtml::el_table::parse_attributes()
 	}
 	
 	str = get_attr(atom_border);
-	if(str)
-	{
+	if(str)	{
 		m_style.add_property(atom_border_width, str, 0, false);
 	}
 
 	str = get_attr(atom_bgcolor);
-	if (str)
-	{
+	if (str) {
 		m_style.add_property(atom_background_color, str, 0, false);
 	}
 

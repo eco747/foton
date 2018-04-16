@@ -49,9 +49,8 @@ void litehtml::el_before_after_base::add_style(const litehtml::style& st)
 	//<eco: bad old code: if( content.empty() )
 	if( content && *content!=0 )
 	{
-		int idx = atom_index(content, -1, content_property_atoms );
-		if(idx < 0)
-		{
+		int idx = get_content_property(content, -1, -1 );
+		if(idx < 0) {
 			const tchar_t*	p = skip_sp( content );
 			if( *p=='"' || *p=='\'' ) {
 

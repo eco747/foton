@@ -27,7 +27,7 @@ namespace litehtml
 		float		val() const;
 		css_units	units() const;
 		int			calc_percent(int width) const;
-		void		fromString(const tstring& str, int defValue, ... );
+		void		fromString(const tstring& str, int defValue );
 	};
 
 	// css_length inlines
@@ -42,26 +42,26 @@ namespace litehtml
 
 	inline css_length::css_length(const css_length& val)
 	{
-		if(val.is_predefined())
-		{
+		if(val.is_predefined()) {
 			m_predef	= val.m_predef;
-		} else
-		{
+		}
+		else {
 			m_value		= val.m_value;
 		}
+
 		m_units			= val.m_units;
 		m_is_predefined	= val.m_is_predefined;
 	}
 
 	inline css_length&	css_length::operator=(const css_length& val)
 	{
-		if(val.is_predefined())
-		{
+		if(val.is_predefined()) {
 			m_predef	= val.m_predef;
-		} else
-		{
+		}
+		else {
 			m_value		= val.m_value;
 		}
+
 		m_units			= val.m_units;
 		m_is_predefined	= val.m_is_predefined;
 		return *this;
@@ -88,10 +88,10 @@ namespace litehtml
 
 	inline int css_length::predef() const
 	{ 
-		if(m_is_predefined)
-		{
+		if(m_is_predefined) {
 			return m_predef; 
 		}
+
 		return 0;
 	}
 
@@ -104,10 +104,10 @@ namespace litehtml
 
 	inline float css_length::val() const
 	{
-		if(!m_is_predefined)
-		{
+		if(!m_is_predefined) {
 			return m_value;
 		}
+
 		return 0;
 	}
 
@@ -118,16 +118,15 @@ namespace litehtml
 
 	inline int css_length::calc_percent(int width) const
 	{
-		if(!is_predefined())
-		{
-			if(units() == css_units_percentage)
-			{
+		if(!is_predefined()) {
+			if(units() == css_units_perc) {
 				return (int) ((double) width * (double) m_value / 100.0);
-			} else
-			{
+			}
+			else {
 				return (int) val();
 			}
 		}
+
 		return 0;
 	}
 }

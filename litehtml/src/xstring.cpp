@@ -1,3 +1,5 @@
+#include "html.h"
+
 namespace litehtml
 {
 	/**
@@ -31,7 +33,7 @@ namespace litehtml
 	 * @param len
 	 */
 
-	xstring::xstring( const tchar_t* txt, int32_t len=-1 )
+	xstring::xstring( const tchar_t* txt, int32_t len/*=-1*/ )
 	{
 		if( len<0 ) {
 			len = strlen( txt );
@@ -78,7 +80,7 @@ namespace litehtml
 	 * @return
 	 */
 
-	xstring& xstring::set( const tchar_t* txt, int32_t len=-1, bool lowercase=false )
+	xstring& xstring::set( const tchar_t* txt, int32_t len/*=-1*/, bool lowercase/*=false*/ )
 	{
 		if( txt>=__ptr && txt<=__ptr+__len ) {
 			__asm int 3;

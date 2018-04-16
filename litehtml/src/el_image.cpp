@@ -4,7 +4,7 @@
 
 litehtml::el_image::el_image(const std::shared_ptr<litehtml::document>& doc) : html_tag(doc)
 {
-	m_display = display_inline_block;
+	m_display = style_display_inline_block;
 }
 
 litehtml::el_image::~el_image( void )

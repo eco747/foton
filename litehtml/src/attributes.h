@@ -23,7 +23,7 @@ namespace litehtml
 
 		attr_border()
 		{
-			border	= borderNone;
+			border	= style_border_none;
 			width	= 0;
 		}
 	};

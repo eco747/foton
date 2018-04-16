@@ -19,12 +19,12 @@ html_tag::html_tag(const std::shared_ptr<document>& doc)
 	m_box					= 0;
 	m_text_align			= text_align_left;
 	m_el_position			= element_position_static;
-	m_display				= display_inline;
-	m_vertical_align		= va_baseline;
+	m_display				= style_display_inline;
+	m_vertical_align		= vertical_align_baseline;
 	m_list_style_type		= list_style_type_none;
 	m_list_style_position	= list_style_position_outside;
-	m_float					= float_none;
-	m_clear					= clear_none;
+	m_float					= element_float_none;
+	m_clear					= element_clear_none;
 	m_font					= 0;
 	m_font_size				= 0;
 	m_white_space			= white_space_normal;
@@ -227,7 +227,7 @@ void html_tag::apply_stylesheet( const css& stylesheet )
 
 	for(auto& el : m_children)
 	{
-		if(el->get_display() != display_inline_text)
+		if(el->get_display() != style_display_inline_text)
 		{
 			el->apply_stylesheet(stylesheet);
 		}
@@ -237,7 +237,7 @@ void html_tag::apply_stylesheet( const css& stylesheet )
 void html_tag::get_content_size( size& sz, int max_width )
 {
 	sz.height	= 0;
-	if(m_display == display_block)
+	if(m_display == style_display_block)
 	{
 		sz.width	= max_width;
 	} else
@@ -254,7 +254,7 @@ void html_tag::draw( uint_ptr hdc, int x, int y, const position* clip )
 
 	draw_background(hdc, x, y, clip);
 
-	if(m_display == display_list_item && m_list_style_type != list_style_type_none)
+	if(m_display == style_display_list_item && m_list_style_type != list_style_type_none)
 	{
 		if(m_overflow > overflow_visible)
 		{
@@ -339,60 +339,55 @@ void html_tag::parse_styles(bool is_reparse)
 	init_font();
 	document::ptr doc = get_document();
 
-	m_el_position	= (element_position)	atom_index( get_style_property(atom_position,		false,	atom_static ),		element_position_fixed, element_position_atoms );
-	m_text_align	= (text_align)			atom_index( get_style_property(atom_text_align,		true,	atom_left ),		text_align_left,		text_align_atoms );
-	m_overflow		= (overflow)			atom_index( get_style_property(atom_overflow,		false,	atom_visible ),		overflow_visible,		overflow_atoms );
-	m_white_space	= (white_space)			atom_index( get_style_property(atom_white_space,	true,	atom_normal ),		white_space_normal,		white_space_atoms );
-	m_display		= (style_display)		atom_index( get_style_property(atom_display,		false,	atom_inline ),		display_inline,			border_style_atoms );
-	m_visibility	= (visibility)			atom_index( get_style_property(atom_visibility,		true,	atom_visible ),		visibility_visible,		visibility_atoms );
-	m_box_sizing	= (box_sizing)			atom_index( get_style_property(atom_box_sizing,		false,	atom_content_box ),	box_sizing_content_box,	box_sizing_atoms );
+	m_el_position	= get_element_position( get_style_property(atom_position,		false,	element_position_static ),		-1, element_position_fixed );
+	m_text_align	= get_text_align(		get_style_property(atom_text_align,		true,	text_align_left ),				-1, text_align_left );
+	m_overflow		= get_overflow(			get_style_property(atom_overflow,		false,	overflow_visible ),				-1, overflow_visible );
+	m_white_space	= get_white_space(		get_style_property(atom_white_space,	true,	white_space_normal ),			-1, white_space_normal );
+	m_display		= get_style_display(	get_style_property(atom_display,		false,	style_display_inline ),			-1, style_display_inline );
+	m_visibility	= get_visibility(		get_style_property(atom_visibility,		true,	visibility_visible ),			-1, visibility_visible );
+	m_box_sizing	= get_box_sizing(		get_style_property(atom_box_sizing,		false,	box_sizing_content_box ),		-1, box_sizing_content_box );
 
-	if(m_el_position != element_position_static)
-	{
+	if(m_el_position != element_position_static) {
 		const tchar_t* val = get_style_property(atom_z_index, false, (atom)0);
-		if(val)
-		{
+		if(val) {
 			m_z_index = t_atoi(val);
 		}
 	}
 
-	const tchar_t* va	= get_style_property(atom_vertical_align, true,	atom_baseline );
-	m_vertical_align = (vertical_align) atom_index(va, va_baseline, vertical_align_atoms);
+	const tchar_t* va	= get_style_property( atom_vertical_align, true,	vertical_align_baseline );
+	m_vertical_align = get_vertical_align( va, -1, vertical_align_baseline );
 
-	const tchar_t* fl	= get_style_property(atom_float, false,	atom_none );
-	m_float = (element_float) atom_index(fl, float_none, element_float_atoms );
+	const tchar_t* fl	= get_style_property( atom_float, false, element_float_none );
+	m_float = get_element_float(fl, -1, element_float_none );
 
-	m_clear = (element_clear) atom_index(get_style_property(atom_clear, false, atom_none), clear_none, element_clear_atoms );
+	m_clear = get_element_clear(	get_style_property(atom_clear, false, 0), element_clear_none );
 
-	if (m_float != float_none)
-	{
+	if (m_float != element_float_none) {
+
 		// reset display in to block for floating elements
-		if (m_display != display_none)
-		{
-			m_display = display_block;
+		if (m_display != style_display_none) {
+			m_display = style_display_block;
 		}
 	}
-	else if (m_display == display_table ||
-		m_display == display_table_caption ||
-		m_display == display_table_cell ||
-		m_display == display_table_column ||
-		m_display == display_table_column_group ||
-		m_display == display_table_footer_group ||
-		m_display == display_table_header_group ||
-		m_display == display_table_row ||
-		m_display == display_table_row_group)
+	else if (m_display == style_display_table ||
+		m_display == style_display_table_caption ||
+		m_display == style_display_table_cell ||
+		m_display == style_display_table_column ||
+		m_display == style_display_table_column_group ||
+		m_display == style_display_table_footer_group ||
+		m_display == style_display_table_header_group ||
+		m_display == style_display_table_row ||
+		m_display == style_display_table_row_group)
 	{
 		doc->add_tabular(shared_from_this());
 	}
-	else if (m_display == display_flex ) {
+	else if (m_display == style_display_flex ) {
 		doc->add_flex(shared_from_this());
 	}
 	// fix inline boxes with absolute/fixed positions
-	else if (m_display != display_none && is_inline_box())
-	{
-		if (m_el_position == element_position_absolute || m_el_position == element_position_fixed)
-		{
-			m_display = display_block;
+	else if (m_display != style_display_none && is_inline_box()) {
+		if (m_el_position == element_position_absolute || m_el_position == element_position_fixed) {
+			m_display = style_display_block;
 		}
 	}
 
@@ -440,17 +435,17 @@ void html_tag::parse_styles(bool is_reparse)
 
 	// todo: optim: avoid color definition for everything
 
-	m_css_borders.left.color = web_color::from_string(get_style_property(atom_border_left_color,	false,	_t("")), doc->container());
-	m_css_borders.left.style = (border_style) value_index_atom(get_style_property(atom_border_left_style, false, atom_none), a_border_style, border_style_none);
+	m_css_borders.left.color = web_color::from_string( get_style_property(atom_border_left_color,	false,	_t("")), doc->container());
+	m_css_borders.left.style = get_border_style( get_style_property(atom_border_left_style, false, 0 ), -1, border_style_none);
 
 	m_css_borders.right.color = web_color::from_string(get_style_property(atom_border_right_color, false, _t("")), doc->container());
-	m_css_borders.right.style = (border_style) value_index(get_style_property(atom_border_right_style, false, atom_none ), border_style_strings, border_style_none);
+	m_css_borders.right.style = get_border_style( get_style_property(atom_border_right_style, false, 0 ), -1, border_style_none);
 
 	m_css_borders.top.color = web_color::from_string(get_style_property(atom_border_top_color, false, _t("")), doc->container());
-	m_css_borders.top.style = (border_style) value_index(get_style_property(atom_border_top_style, false, atom_none ), border_style_strings, border_style_none);
+	m_css_borders.top.style = get_border_style( get_style_property(atom_border_top_style, false, 0 ), -1, border_style_none);
 
 	m_css_borders.bottom.color = web_color::from_string(get_style_property(atom_border_bottom_color, false, _t("")), doc->container());
-	m_css_borders.bottom.style = (border_style) value_index(get_style_property(atom_border_bottom_style, false, atom_none), border_style_strings, border_style_none);
+	m_css_borders.bottom.style = get_border_style( get_style_property(atom_border_bottom_style, false, 0), -1, border_style_none);
 
 	m_css_borders.radius.top_left_x.fromString(get_style_property( atom_border_top_left_radius_x, false, _t("0")));
 	m_css_borders.radius.top_left_y.fromString(get_style_property(atom_border_top_left_radius_y, false, _t("0")));
@@ -491,57 +486,54 @@ void html_tag::parse_styles(bool is_reparse)
 	m_borders.bottom	= doc->cvt_units(m_css_borders.bottom.width,	m_font_size);
 
 	css_length line_height;
-	line_height.fromString(get_style_property(atom_line_height,	true,	atom_normal ), _t("normal"));
-	if(line_height.is_predefined())
-	{
+	line_height.fromString( get_style_property(atom_line_height,	true,	atom_normal ), _t("normal"));
+
+	if(line_height.is_predefined()) {
 		m_line_height = m_font_metrics.height;
 		m_lh_predefined = true;
-	} else if(line_height.units() == css_units_none)
-	{
+	}
+	else if(line_height.units() == css_units_none) {
 		m_line_height = (int) (line_height.val() * m_font_size);
 		m_lh_predefined = false;
-	} else
-	{
+	}
+	else {
 		m_line_height =  doc->cvt_units(line_height,	m_font_size, m_font_size);
 		m_lh_predefined = false;
 	}
 
 
-	if(m_display == display_list_item)
-	{
+	if(m_display == style_display_list_item) {
+
 		const tchar_t* list_type = get_style_property(atom_list_style_type, true, atom_disc );
-		m_list_style_type = (list_style_type) atom_index(list_type, list_style_type_disc, list_style_type_atoms);
+		m_list_style_type = get_list_style_type( list_type, -1, list_style_type_disc );
 
 		const tchar_t* list_pos = get_style_property(atom_list_style_position, true, atom_outside );
-		m_list_style_position = (list_style_position) atom_index(list_pos, list_style_position_outside, list_style_position_atoms);
+		m_list_style_position = get_list_style_position( list_pos, -1, list_style_position_outside );
 
 		const tchar_t* list_image = get_style_property(atom_list_style_image, true, 0);
-		if(list_image && list_image[0])
-		{
+
+		if(list_image && list_image[0]) {
 			xstring url;
 			css::parse_css_url(list_image, url);
 
 			const tchar_t* list_image_baseurl = get_style_property(atom_list_style_baseurl, true, 0);
 			doc->container()->load_image(url.c_str(), list_image_baseurl, true);
 		}
-
 	}
 
 	parse_background();
 
-	if(!is_reparse)
-	{
-		for(auto& el : m_children)
-		{
+	if(!is_reparse) {
+		for(auto& el : m_children) {
 			el->parse_styles();
 		}
 	}
 }
 
+
 int html_tag::render( int x, int y, int max_width, bool second_pass )
 {
-	if (m_display == display_table || m_display == display_inline_table)
-	{
+	if (m_display == style_display_table || m_display == style_display_inline_table) {
 		return render_table(x, y, max_width, second_pass);
 	}
 
@@ -560,21 +552,21 @@ int html_tag::get_font_size() const
 
 int html_tag::get_base_line()
 {
-	if(is_replaced())
-	{
+	if(is_replaced()) {
 		return 0;
 	}
+
 	int bl = 0;
-	if(!m_boxes.empty())
-	{
+	if(!m_boxes.empty()) {
 		bl = m_boxes.back()->baseline() + content_margins_bottom();
 	}
+
 	return bl;
 }
 
 void html_tag::init()
 {
-	if (m_display == display_table || m_display == display_inline_table)
+	if (m_display == style_display_table || m_display == style_display_inline_table)
 	{
 		if( !m_table_infos ) {
 			m_table_infos = std::unique_ptr<table_infos>(new table_infos());
@@ -600,20 +592,19 @@ void html_tag::init()
 
 			elements_iterator cell_iter(row, &table_selector, &cell_selector);
 			element::ptr cell = cell_iter.next();
-			while (cell)
-			{
-				m_table_infos->m_grid->add_cell(cell);
 
+			while (cell) {
+				m_table_infos->m_grid->add_cell(cell);
 				cell = cell_iter.next(false);
 			}
+
 			row = row_iter.next(false);
 		}
 
 		m_table_infos->m_grid->finish();
 	}
 
-	for (auto& el : m_children)
-	{
+	for (auto& el : m_children) {
 		el->init();
 	}
 }
@@ -621,96 +612,93 @@ void html_tag::init()
 int html_tag::select(const css_selector& selector, bool apply_pseudo)
 {
 	int right_res = select(selector.m_right, apply_pseudo);
-	if(right_res == select_no_match)
-	{
+	if(right_res == select_no_match) {
 		return select_no_match;
 	}
+
 	element::ptr el_parent = parent();
-	if(selector.m_left)
-	{
-		if (!el_parent)
-		{
+	if(selector.m_left) {
+		if (!el_parent) {
 			return select_no_match;
 		}
+
 		switch(selector.m_combinator)
 		{
 		case combinator_descendant:
 			{
 				bool is_pseudo = false;
 				element::ptr res = find_ancestor(*selector.m_left, apply_pseudo, &is_pseudo);
-				if(!res)
-				{
+				if(!res) {
 					return select_no_match;
-				} else
-				{
-					if(is_pseudo)
-					{
+				}
+				else {
+					if(is_pseudo) {
 						right_res |= select_match_pseudo_class;
 					}
 				}
 			}
 			break;
+
 		case combinator_child:
 			{
 				int res = el_parent->select(*selector.m_left, apply_pseudo);
-				if(res == select_no_match)
-				{
+				if(res == select_no_match) {
 					return select_no_match;
-				} else
-				{
-					if(right_res != select_match_pseudo_class)
-					{
+				}
+				else {
+					if(right_res != select_match_pseudo_class) {
 						right_res |= res;
 					}
 				}
 			}
 			break;
+
 		case combinator_adjacent_sibling:
 			{
 				bool is_pseudo = false;
 				element::ptr res = el_parent->find_adjacent_sibling(shared_from_this(), *selector.m_left, apply_pseudo, &is_pseudo);
-				if(!res)
-				{
+				if(!res) {
 					return select_no_match;
-				} else
-				{
-					if(is_pseudo)
-					{
+				}
+				else {
+					if(is_pseudo) {
 						right_res |= select_match_pseudo_class;
 					}
 				}
 			}
 			break;
+
 		case combinator_general_sibling:
 			{
 				bool is_pseudo = false;
 				element::ptr res =  el_parent->find_sibling(shared_from_this(), *selector.m_left, apply_pseudo, &is_pseudo);
-				if(!res)
-				{
+				if(!res) {
 					return select_no_match;
-				} else
-				{
-					if(is_pseudo)
-					{
+				}
+				else {
+					if(is_pseudo) {
 						right_res |= select_match_pseudo_class;
 					}
 				}
 			}
 			break;
+
 		default:
-			right_res = select_no_match;
+			{
+				right_res = select_no_match;
+			}
+			break;
 		}
 	}
+
 	return right_res;
 }
 
 int html_tag::select(const css_element_selector& selector, bool apply_pseudo)
 {
 	//if(!selector.m_tag.empty() && selector.m_tag != _t("*"))
-	if(selector.m_tag!=atom_null && selector.m_tag != atom_star )
-	{
-		if(selector.m_tag != m_tag)
-		{
+	if(selector.m_tag!=atom_null && selector.m_tag != atom_star ) {
+		if(selector.m_tag != m_tag) {
 			return select_no_match;
 		}
 	}
@@ -721,104 +709,100 @@ int html_tag::select(const css_element_selector& selector, bool apply_pseudo)
 	for(css_attribute_selector::vector::const_iterator i = selector.m_attrs.begin(); i != selector.m_attrs.end(); i++)
 	{
 		const tchar_t* attr_value = get_attr(i->attribute);
+
 		switch(i->condition)
 		{
 		case select_exists:
-			if(!attr_value)
-			{
+			if(!attr_value) {
 				return select_no_match;
 			}
 			break;
+
 		case select_equal:
-			if(!attr_value)
-			{
+			if(!attr_value) {
 				return select_no_match;
-			} else 
-			{
-				if(i->attribute == atom_class)
-				{
-					const string_vector & tokens1 = m_class_values;
-					const string_vector & tokens2 = i->class_val;
-					bool found = true;
-					for(string_vector::const_iterator str1 = tokens2.begin(); str1 != tokens2.end() && found; str1++)
-					{
-						bool f = false;
-						for(string_vector::const_iterator str2 = tokens1.begin(); str2 != tokens1.end() && !f; str2++)
-						{
-							if( !t_strcasecmp(str1->c_str(), str2->c_str()) )
-							{
-								f = true;
-							}
-						}
-						if(!f)
-						{
-							found = false;
+			}
+
+			if(i->attribute == atom_class) {
+				const string_vector & tokens1 = m_class_values;
+				const string_vector & tokens2 = i->class_val;
+				bool found = true;
+
+				for(string_vector::const_iterator str1 = tokens2.begin(); str1 != tokens2.end() && found; str1++) {
+					bool f = false;
+					for(string_vector::const_iterator str2 = tokens1.begin(); str2 != tokens1.end() && !f; str2++) {
+						if( !t_strcasecmp(str1->c_str(), str2->c_str()) ) {
+							f = true;
 						}
 					}
-					if(!found)
-					{
-						return select_no_match;
+
+					if(!f) {
+						found = false;
 					}
-				} else
-				{
-					if( t_strcasecmp(i->val.c_str(), attr_value) )
-					{
-						return select_no_match;
-					}
+				}
+
+				if(!found) {
+					return select_no_match;
+				}
+			}
+			else {
+				if( t_strcasecmp(i->val.c_str(), attr_value) ) {
+					return select_no_match;
 				}
 			}
 			break;
+
 		case select_contain_str:
-			if(!attr_value)
-			{
+			if(!attr_value) {
 				return select_no_match;
-			} else if(!t_strstr(attr_value, i->val.c_str()))
-			{
+			}
+			else if(!t_strstr(attr_value, i->val.c_str())) {
 				return select_no_match;
 			}
 			break;
+
 		case select_start_str:
-			if(!attr_value)
-			{
+			if(!attr_value) {
 				return select_no_match;
-			} else if(t_strncmp(attr_value, i->val.c_str(), i->val.length()))
-			{
+			}
+			else if(t_strncmp(attr_value, i->val.c_str(), i->val.length())) {
 				return select_no_match;
 			}
 			break;
+
 		case select_end_str:
-			if(!attr_value)
-			{
+			if(!attr_value) {
 				return select_no_match;
-			} else if(t_strncmp(attr_value, i->val.c_str(), i->val.length()))
-			{
+			}
+			else if(t_strncmp(attr_value, i->val.c_str(), i->val.length())) {
 				const tchar_t* s = attr_value + t_strlen(attr_value) - i->val.length() - 1;
-				if(s < attr_value)
-				{
+				if(s < attr_value) {
 					return select_no_match;
 				}
-				if(i->val != s)
-				{
+
+				if(i->val != s) {
 					return select_no_match;
 				}
 			}
 			break;
+
 		case select_pseudo_element:
-			if(i->val == _t("after"))
-			{
+			if(i->val == _t("after")) {
 				res |= select_match_with_after;
-			} else if(i->val == _t("before"))
-			{
+			}
+			else if(i->val == _t("before")) {
 				res |= select_match_with_before;
-			} else
-			{
+			}
+			else {
 				return select_no_match;
 			}
 			break;
+
 		case select_pseudo_class:
-			if(apply_pseudo)
-			{
-				if (!el_parent) return select_no_match;
+			if(apply_pseudo) {
+				if (!el_parent) {
+					return select_no_match;
+				}
 
 				tstring selector_param;
 				tstring	selector_name;
@@ -838,46 +822,46 @@ int html_tag::select(const css_element_selector& selector, bool apply_pseudo)
 					selector_name = i->val;
 				}
 
-				int selector = atom_index(selector_name.c_str(), -1, pseudo_class_atoms );
+				int selector = get_pseudo_class(selector_name.c_str(), -1, -1 );
 				
 				switch(selector)
 				{
 				case pseudo_class_only_child:
-					if (!el_parent->is_only_child(shared_from_this(), false))
-					{
+					if (!el_parent->is_only_child(shared_from_this(), false)) {
 						return select_no_match;
 					}
 					break;
+
 				case pseudo_class_only_of_type:
-					if (!el_parent->is_only_child(shared_from_this(), true))
-					{
+					if (!el_parent->is_only_child(shared_from_this(), true)) {
 						return select_no_match;
 					}
 					break;
+
 				case pseudo_class_first_child:
-					if (!el_parent->is_nth_child(shared_from_this(), 0, 1, false))
-					{
+					if (!el_parent->is_nth_child(shared_from_this(), 0, 1, false)) {
 						return select_no_match;
 					}
 					break;
+
 				case pseudo_class_first_of_type:
-					if (!el_parent->is_nth_child(shared_from_this(), 0, 1, true))
-					{
+					if (!el_parent->is_nth_child(shared_from_this(), 0, 1, true)) {
 						return select_no_match;
 					}
 					break;
+
 				case pseudo_class_last_child:
-					if (!el_parent->is_nth_last_child(shared_from_this(), 0, 1, false))
-					{
+					if (!el_parent->is_nth_last_child(shared_from_this(), 0, 1, false)) {
 						return select_no_match;
 					}
 					break;
+
 				case pseudo_class_last_of_type:
-					if (!el_parent->is_nth_last_child(shared_from_this(), 0, 1, true))
-					{
+					if (!el_parent->is_nth_last_child(shared_from_this(), 0, 1, true)) {
 						return select_no_match;
 					}
 					break;
+
 				case pseudo_class_nth_child:
 				case pseudo_class_nth_of_type:
 				case pseudo_class_nth_last_child:
@@ -893,26 +877,25 @@ int html_tag::select(const css_element_selector& selector, bool apply_pseudo)
 						switch(selector)
 						{
 						case pseudo_class_nth_child:
-							if (!el_parent->is_nth_child(shared_from_this(), num, off, false))
-							{
+							if (!el_parent->is_nth_child(shared_from_this(), num, off, false)) {
 								return select_no_match;
 							}
 							break;
+
 						case pseudo_class_nth_of_type:
-							if (!el_parent->is_nth_child(shared_from_this(), num, off, true))
-							{
+							if (!el_parent->is_nth_child(shared_from_this(), num, off, true)) {
 								return select_no_match;
 							}
 							break;
+
 						case pseudo_class_nth_last_child:
-							if (!el_parent->is_nth_last_child(shared_from_this(), num, off, false))
-							{
+							if (!el_parent->is_nth_last_child(shared_from_this(), num, off, false)) {
 								return select_no_match;
 							}
 							break;
+
 						case pseudo_class_nth_last_of_type:
-							if (!el_parent->is_nth_last_child(shared_from_this(), num, off, true))
-							{
+							if (!el_parent->is_nth_last_child(shared_from_this(), num, off, true)) {
 								return select_no_match;
 							}
 							break;
@@ -920,40 +903,41 @@ int html_tag::select(const css_element_selector& selector, bool apply_pseudo)
 
 					}
 					break;
+
 				case pseudo_class_not:
 					{
 						css_element_selector sel;
 						sel.parse(selector_param);
-						if(select(sel, apply_pseudo))
-						{
+						if(select(sel, apply_pseudo)) {
 							return select_no_match;
 						}
 					}
 					break;
+
 				case pseudo_class_lang:
 					{
 						trim( selector_param );
 
-						if( !get_document()->match_lang( selector_param ) )
-						{
+						if( !get_document()->match_lang( selector_param ) ) {
 							return select_no_match;
 						}
 					}
 					break;
+
 				default:
-					if(std::find(m_pseudo_classes.begin(), m_pseudo_classes.end(), i->val) == m_pseudo_classes.end())
-					{
+					if(std::find(m_pseudo_classes.begin(), m_pseudo_classes.end(), i->val) == m_pseudo_classes.end()) {
 						return select_no_match;
 					}
 					break;
 				}
-			} else
-			{
+			}
+			else {
 				res |= select_match_pseudo_class;
 			}
 			break;
 		}
 	}
+
 	return res;
 }
 
@@ -995,29 +979,30 @@ int html_tag::get_floats_height(element_float el_float) const
 			process = false;
 			switch(el_float)
 			{
-			case float_none:
+			case element_float_none:
 				process = true;
 				break;
-			case float_left:
-				if (fb.clear_floats == clear_left || fb.clear_floats == clear_both)
+			case element_float_left:
+				if (fb.clear_floats == element_clear_left || fb.clear_floats == element_clear_both)
 				{
 					process = true;
 				}
 				break;
-			case float_right:
-				if (fb.clear_floats == clear_right || fb.clear_floats == clear_both)
+			case element_float_right:
+				if (fb.clear_floats == element_clear_right || fb.clear_floats == element_clear_both)
 				{
 					process = true;
 				}
 				break;
 			}
+
 			if(process)
 			{
-				if(el_float == float_none)
+				if(el_float == element_float_none)
 				{
 					h = std::max(h, fb.pos.bottom());
-				} else
-				{
+				}
+				else {
 					h = std::max(h, fb.pos.top());
 				}
 			}
@@ -1029,17 +1014,17 @@ int html_tag::get_floats_height(element_float el_float) const
 			process = false;
 			switch(el_float)
 			{
-			case float_none:
+			case element_float_none:
 				process = true;
 				break;
-			case float_left:
-				if (fb.clear_floats == clear_left || fb.clear_floats == clear_both)
+			case element_float_left:
+				if (fb.clear_floats == element_clear_left || fb.clear_floats == element_clear_both)
 				{
 					process = true;
 				}
 				break;
-			case float_right:
-				if (fb.clear_floats == clear_right || fb.clear_floats == clear_both)
+			case element_float_right:
+				if (fb.clear_floats == element_clear_right || fb.clear_floats == element_clear_both)
 				{
 					process = true;
 				}
@@ -1047,11 +1032,11 @@ int html_tag::get_floats_height(element_float el_float) const
 			}
 			if(process)
 			{
-				if(el_float == float_none)
+				if(el_float == element_float_none)
 				{
 					h = std::max(h, fb.pos.bottom());
-				} else
-				{
+				}
+				else {
 					h = std::max(h, fb.pos.top());
 				}
 			}
@@ -1059,12 +1044,13 @@ int html_tag::get_floats_height(element_float el_float) const
 
 		return h;
 	}
+
 	element::ptr el_parent = parent();
-	if (el_parent)
-	{
+	if (el_parent) {
 		int h = el_parent->get_floats_height(el_float);
 		return h - m_pos.y;
 	}
+
 	return 0;
 }
 
@@ -1224,15 +1210,15 @@ int html_tag::fix_line_width( int max_width, element_float flt )
 		elements_vector els;
 		m_boxes.back()->get_elements(els);
 		bool was_cleared = false;
-		if(!els.empty() && els.front()->get_clear() != clear_none)
+		if(!els.empty() && els.front()->get_clear() != element_clear_none)
 		{
-			if(els.front()->get_clear() == clear_both)
+			if(els.front()->get_clear() == element_clear_both)
 			{
 				was_cleared = true;
 			} else
 			{
-				if(	(flt == float_left	&& els.front()->get_clear() == clear_left) ||
-					(flt == float_right	&& els.front()->get_clear() == clear_right) )
+				if(	(flt == element_float_left	&& els.front()->get_clear() == element_clear_left) ||
+					(flt == element_float_right	&& els.front()->get_clear() == element_clear_right) )
 				{
 					was_cleared = true;
 				}
@@ -1322,7 +1308,7 @@ void html_tag::add_float(const element::ptr &el, int x, int y)
 		fb.clear_floats	= el->get_clear();
 		fb.el			= el;
 
-		if(fb.float_side == float_left)
+		if(fb.float_side == element_float_left)
 		{
 			if(m_floats_left.empty())
 			{
@@ -1345,7 +1331,7 @@ void html_tag::add_float(const element::ptr &el, int x, int y)
 				}
 			}
 			m_cahe_line_left.invalidate();
-		} else if(fb.float_side == float_right)
+		} else if(fb.float_side == element_float_right)
 		{
 			if(m_floats_right.empty())
 			{
@@ -1481,15 +1467,15 @@ void html_tag::parse_background()
 				if( atom_in_list(a_left, 3, atom_left, atom_right, atom_center,(atom)0 ) )
 				{
 					m_bg.m_position.x.fromString(res[0], _t("left;right;center"));
-					m_bg.m_position.y.set_value(50, css_units_percentage);
+					m_bg.m_position.y.set_value(50, css_units_perc);
 				}
 				else if( atom_in_list(res[0].c_str(), atom_tom, atom_bottom, atom_center, (atom)0 ) ) {
 					m_bg.m_position.y.fromString(res[0], _t("top;bottom;center"));
-					m_bg.m_position.x.set_value(50, css_units_percentage);
+					m_bg.m_position.x.set_value(50, css_units_perc);
 				}
 				else {
 					m_bg.m_position.x.fromString(res[0], atom_left, atom_right, atom_center, (atom)0 );
-					m_bg.m_position.y.set_value(50, css_units_percentage);
+					m_bg.m_position.y.set_value(50, css_units_perc);
 				}
 			}
 			else {

@@ -4,31 +4,33 @@
 
 namespace litehtml
 {
-	class property_value
+	class	property_value
 	{
 	public:
-		tstring		m_value;
+		xstring		m_value;
 		bool		m_important;
 
 		property_value()
 		{
 			m_important = false;
 		}
-		property_value(const tchar_t* val, bool imp)
+
+		property_value( const tchar_t* val, bool imp )
 		{
 			m_important = imp;
 			m_value		= val;
 		}
+
 		property_value(const property_value& val)
 		{
-			m_value		= val.m_value;
 			m_important	= val.m_important;
+			m_value		= val.m_value;
 		}
 
 		property_value& operator=(const property_value& val)
 		{
-			m_value		= val.m_value;
 			m_important	= val.m_important;
+			m_value		= val.m_value;
 			return *this;
 		}
 	};
@@ -75,14 +77,14 @@ namespace litehtml
 			return 0;
 		}
 
-		void combine(const litehtml::style& src);
+		void combine(const style& src);
 		void clear()
 		{
 			m_properties.clear();
 		}
 
 	private:
-		void parse_property(const tstring& txt, const tchar_t* baseurl);
+		void parse_property(const xstring& txt, const tchar_t* baseurl);
 		void parse(const tchar_t* txt, const tchar_t* baseurl);
 		void parse_short_border(const tstring& prefix, const tstring& val, bool important);
 		void parse_short_background(const tstring& val, const tchar_t* baseurl, bool important);

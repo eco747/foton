@@ -5,8 +5,8 @@ litehtml::background::background(void)
 {
 	m_attachment	= background_attachment_scroll;
 	m_repeat		= background_repeat_repeat;
-	m_clip			= background_box_border;
-	m_origin		= background_box_padding;
+	m_clip			= background_box_border_box;
+	m_origin		= background_box_padding_box;
 	//m_color.alpha	= 0;
 	//m_color.red		= 0;
 	//m_color.green	= 0;

@@ -220,7 +220,7 @@ void litehtml::table_grid::distribute_width( int width, int start, int end )
 				// distribute between the columns with percents
 				for(int col = start; col <= end; col++)
 				{
-					if(!m_columns[col].css_width.is_predefined() && m_columns[col].css_width.units() == css_units_percentage)
+					if(!m_columns[col].css_width.is_predefined() && m_columns[col].css_width.units() == css_units_perc )
 					{
 						distribute_columns.push_back(&m_columns[col]);
 					}
@@ -351,7 +351,7 @@ int litehtml::table_grid::calc_table_width(int block_width, bool is_auto, int& m
 		float percent = 0;
 		for(int col = 0; col < m_cols_count; col++)
 		{
-			if(!m_columns[col].css_width.is_predefined() && m_columns[col].css_width.units() == css_units_percentage)
+			if(!m_columns[col].css_width.is_predefined() && m_columns[col].css_width.units() == css_units_perc )
 			{
 				percent += m_columns[col].css_width.val();
 			} else
@@ -363,10 +363,10 @@ int litehtml::table_grid::calc_table_width(int block_width, bool is_auto, int& m
 		cur_width = 0;
 		for(int col = 0; col < m_cols_count; col++)
 		{
-			if(!m_columns[col].css_width.is_predefined() && m_columns[col].css_width.units() == css_units_percentage)
+			if(!m_columns[col].css_width.is_predefined() && m_columns[col].css_width.units() == css_units_perc )
 			{
 				css_length w;
-				w.set_value(m_columns[col].css_width.val() * scale, css_units_percentage);
+				w.set_value(m_columns[col].css_width.val() * scale, css_units_perc);
 				m_columns[col].width = w.calc_percent(block_width - fixed_width);
 				if(m_columns[col].width < m_columns[col].min_width)
 				{
@@ -461,7 +461,7 @@ void litehtml::table_grid::calc_rows_height(int blockHeight, int /*borderSpacing
 	{
 		if (!row.css_height.is_predefined())
 		{
-			if (row.css_height.units() != css_units_percentage)
+			if (row.css_height.units() != css_units_perc)
 			{
 				if (row.height < (int)row.css_height.val())
 				{
@@ -481,7 +481,7 @@ void litehtml::table_grid::calc_rows_height(int blockHeight, int /*borderSpacing
 		int auto_count = 0; // number of rows with height=auto
 		for (auto& row : m_rows)
 		{
-			if (!row.css_height.is_predefined() && row.css_height.units() == css_units_percentage)
+			if (!row.css_height.is_predefined() && row.css_height.units() == css_units_perc)
 			{
 				row.height = row.css_height.calc_percent(blockHeight);
 				if (row.height < row.min_height)

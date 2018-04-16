@@ -30,53 +30,62 @@ namespace litehtml {
 
 	void style::parse( const tchar_t* txt, const tchar_t* baseurl )
 	{
-		std::vector<tstring> properties;
-		split_string(txt, properties, _t(";"));
+		while( *txt ) {
+			const char*	p = skip_sp( txt );
+			const char* q = p;
 
-		for( std::vector<tstring>::const_iterator i = properties.begin(); i != properties.end(); i++ )
-		{
-			parse_property(*i, baseurl);
+			while( *q && *q!=';' ) {
+				q++;
+			}
+
+			parse_property( xstring(p, q-p), baseurl);
+
+			if( *q==';' )
+				q++;
+
+			txt = q;
 		}
 	}
 
-	void style::parse_property( const tstring& txt, const tchar_t* baseurl )
+	void style::parse_property( const xstring& txt, const tchar_t* baseurl )
 	{
-		tstring::size_type pos = txt.find_first_of(_t(":"));
+		const tchar_t*	p = txt.c_str();
+		const tchar_t*	q = p;
+		while( *q && *q!=':') {
+			q++;
+		}
 
-		if(pos != tstring::npos)
-		{
-			tstring sname	= txt.substr(0, pos);
-			tstring val		= txt.substr(pos + 1);
+		if( *q!=':' ) {
+			//todo warning bad style definition
+			return;
+		}
 
-			trim(sname);
-			lcase(sname);
+		// trim
+		const tchar_t* r = q-1;
+		while( r>=p && *r==' ' || *r=='\t' ) {
+			r--;
+		}
 
-			trim(val);
+		int	name = get_atom( p, r-p );
 
-			atom name = atom_create( sname.c_str() );
+		q = skip_sp( q+1 );
+		r = q+t_strlen(q)-1;
+		while( r>=q && *r==' ' || *r=='\t' ) {
+			r--;
+		}
 
-			if( name!=atom_null && !val.empty())
-			{
-				string_vector vals;
-				split_string(val, vals, _t("!"));
-				if(vals.size() == 1)
-				{
-					add_property(name, val.c_str(), baseurl, false);
-				}
-				else if(vals.size() > 1)
-				{
-					trim(vals[0]);
-					lcase(vals[1]);
+		if( name && r>q ) {
 
-					if(vals[1] == _t("important"))
-					{
-						add_property(name, vals[0].c_str(), baseurl, true);
-					}
-					else
-					{
-						add_property(name, vals[0].c_str(), baseurl, false);
-					}
-				}
+			p = q;
+			while( p<r && *p!='!' ) {
+				p++;
+			}
+
+			if( *p=='!' && t_strncasecmp( skip_sp(p+1),'important')==0 ) {
+				add_property( name, xstring(q,p-q).c_str(), baseurl, true );
+			}
+			else {
+				add_property( name, xstring(q,r-q).c_str(), baseurl, false );
 			}
 		}
 	}
@@ -130,17 +139,16 @@ namespace litehtml {
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
-				idx = atom_index(tok->c_str(), -1, border_style_atoms );
-				if(idx >= 0)
-				{
+				idx = get_border_style( tok->c_str(), tok->length(), -1 );
+				if(idx >= 0) {
 					add_property(atom_border_left_style, tok->c_str(), baseurl, important);
 					add_property(atom_border_right_style, tok->c_str(), baseurl, important);
 					add_property(atom_border_top_style, tok->c_str(), baseurl, important);
 					add_property(atom_border_bottom_style, tok->c_str(), baseurl, important);
-				} else
-				{
+				}
+				else {
 					if (t_isdigit((*tok)[0]) || (*tok)[0] == _t('.') ||
-						value_in_list((*tok), _t("thin;medium;thick")))
+						get_border_width( tok->c_str(), tok->length(), -1 )>=0 )
 					{
 						add_property(atom_border_left_width, tok->c_str(), baseurl, important);
 						add_property(atom_border_right_width, tok->c_str(), baseurl, important);
@@ -168,7 +176,7 @@ namespace litehtml {
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
-				idx = atom_index(tok->c_str(), -1, border_style_atoms);
+				idx = get_border_style(tok->c_str(), tok->length(), -1);
 				if(idx >= 0)
 				{
 					str = name;
@@ -191,10 +199,9 @@ namespace litehtml {
 					}
 				}
 			}
-		} else
-
+		}
 		// Parse border radius shorthand properties
-		if(name==atom_border_bottom_left_radius)
+		 else if(name==atom_border_bottom_left_radius)
 		{
 			string_vector tokens;
 			split_string(val, tokens, _t(" "));
@@ -354,20 +361,18 @@ namespace litehtml {
 			split_string(val, tokens, _t(" "), _t(""), _t("("));
 			for(string_vector::iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
-				int idx = atom_index(tok->c_str(), -1, list_style_type_atoms);
-				if(idx >= 0)
-				{
+				int idx = get_list_style_type(tok->c_str(), -1, -1 );
+				if(idx >= 0) {
 					add_parsed_property(atom_list_style_type, *tok, important);
 				}
 				else
 				{
-					idx = atom_index(tok->c_str(), -1, list_style_position_atoms);
-					if(idx >= 0)
-					{
+					idx = get_list_style_position(tok->c_str(), -1, -1);
+					if(idx >= 0) {
 						add_parsed_property(atom_list_style_position, *tok, important);
 					}
-					else if(!t_strncmp(val, _t("url"), 3))
-					{
+					else if(!t_strncmp(val, _t("url"), 3)) {
+						//todo: check
 						add_parsed_property(atom_list_style_image, *tok, important);
 						if(baseurl)
 						{
@@ -390,7 +395,6 @@ namespace litehtml {
 		else if(name==atom_background)
 		{
 			parse_short_background(val, baseurl, important);
-
 		}
 		// Parse margin shorthand properties
 		else if( name==atom_margin )
@@ -474,7 +478,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms ) >= 0)
+				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1 ) >= 0)
 				{
 					add_parsed_property(atom_border_left_width,	tokens[0], important);
 					add_parsed_property(atom_border_left_style,	tokens[1], important);
@@ -498,7 +502,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms ) >= 0)
+				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1 ) >= 0)
 				{
 					add_parsed_property(atom_border_right_width,	tokens[0], important);
 					add_parsed_property(atom_border_right_style,	tokens[1], important);
@@ -521,7 +525,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms) >= 0)
+				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1) >= 0)
 				{
 					add_parsed_property(atom_border_top_width,	tokens[0], important);
 					add_parsed_property(atom_border_top_style,	tokens[1], important);
@@ -533,26 +537,21 @@ namespace litehtml {
 				}
 			}
 		}
-		else if( name==atom_border_bottom )
-		{
+		else if( name==atom_border_bottom ) {
 			string_vector tokens;
 			split_string(val, tokens, _t(" "), _t(""), _t("("));
 
-			if(tokens.size() >= 3)
-			{
+			if(tokens.size() >= 3) {
 				add_parsed_property(atom_border_bottom_width,	tokens[0], important);
 				add_parsed_property(atom_border_bottom_style,	tokens[1], important);
 				add_parsed_property(atom_border_bottom_color,	tokens[2], important);
 			}
-			else if(tokens.size() == 2)
-			{
-				if(iswdigit(tokens[0][0]) || atom_index(val, -1, border_width_atoms) >= 0)
-				{
+			else if(tokens.size() == 2) {
+				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1) >= 0) {
 					add_parsed_property(atom_border_bottom_width,	tokens[0], important);
 					add_parsed_property(atom_border_bottom_style,	tokens[1], important);
 				}
-				else
-				{
+				else {
 					add_parsed_property(atom_border_bottom_style,	tokens[0], important);
 					add_parsed_property(atom_border_bottom_color,	tokens[1], important);
 				}
@@ -564,96 +563,84 @@ namespace litehtml {
 			string_vector tokens;
 			split_string(val, tokens, _t(" "));
 
-			if(tokens.size() >= 4)
-			{
+			if(tokens.size() >= 4) {
 				add_parsed_property(atom_border_top_width,		tokens[0], important);
 				add_parsed_property(atom_border_right_width,	tokens[1], important);
 				add_parsed_property(atom_border_bottom_width,	tokens[2], important);
 				add_parsed_property(atom_border_left_width,		tokens[3], important);
 			}
-			else if(tokens.size() == 3)
-			{
+			else if(tokens.size() == 3) {
 				add_parsed_property(atom_border_top_width,		tokens[0], important);
 				add_parsed_property(atom_border_right_width,	tokens[1], important);
 				add_parsed_property(atom_border_left_width,		tokens[1], important);
 				add_parsed_property(atom_border_bottom_width,	tokens[2], important);
 			}
-			else if(tokens.size() == 2)
-			{
+			else if(tokens.size() == 2) {
 				add_parsed_property(atom_border_top_width,		tokens[0], important);
 				add_parsed_property(atom_border_bottom_width,	tokens[0], important);
 				add_parsed_property(atom_border_right_width,	tokens[1], important);
 				add_parsed_property(atom_border_left_width,		tokens[1], important);
 			}
-			else if(tokens.size() == 1)
-			{
+			else if(tokens.size() == 1) {
 				add_parsed_property(atom_border_top_width,		tokens[0], important);
 				add_parsed_property(atom_border_bottom_width,	tokens[0], important);
 				add_parsed_property(atom_border_right_width,	tokens[0], important);
 				add_parsed_property(atom_border_left_width,		tokens[0], important);
 			}
 		}
-		else if( name==atom_border_style )
-		{
+		else if( name==atom_border_style ) {
 			string_vector tokens;
 			split_string(val, tokens, _t(" "));
 
-			if(tokens.size() >= 4)
-			{
+			if(tokens.size() >= 4) {
 				add_parsed_property(atom_border_top_style,		tokens[0], important);
 				add_parsed_property(atom_border_right_style,	tokens[1], important);
 				add_parsed_property(atom_border_bottom_style,	tokens[2], important);
 				add_parsed_property(atom_border_left_style,		tokens[3], important);
 			}
-			else if(tokens.size() == 3)
-			{
+			else if(tokens.size() == 3) {
 				add_parsed_property(atom_border_top_style,		tokens[0], important);
 				add_parsed_property(atom_border_right_style,	tokens[1], important);
 				add_parsed_property(atom_border_left_style,		tokens[1], important);
 				add_parsed_property(atom_border_bottom_style,	tokens[2], important);
 			}
-			else if(tokens.size() == 2)
-			{
+			else if(tokens.size() == 2) {
 				add_parsed_property(atom_border_top_style,		tokens[0], important);
 				add_parsed_property(atom_border_bottom_style,	tokens[0], important);
 				add_parsed_property(atom_border_right_style,	tokens[1], important);
 				add_parsed_property(atom_border_left_style,		tokens[1], important);
 			}
-			else if(tokens.size() == 1)
-			{
+			else if(tokens.size() == 1) {
 				add_parsed_property(atom_border_top_style,		tokens[0], important);
 				add_parsed_property(atom_border_bottom_style,	tokens[0], important);
 				add_parsed_property(atom_border_right_style,	tokens[0], important);
 				add_parsed_property(atom_border_left_style,		tokens[0], important);
 			}
 		}
-		else if( name==atom_border_color )
-		{
+		else if( name==atom_border_color ) {
+
 			string_vector tokens;
 			split_string(val, tokens, _t(" "));
-			if(tokens.size() >= 4)
-			{
+
+			if(tokens.size() >= 4) {
 				add_parsed_property(atom_border_top_color,		tokens[0], important);
 				add_parsed_property(atom_border_right_color,	tokens[1], important);
 				add_parsed_property(atom_border_bottom_color,	tokens[2], important);
 				add_parsed_property(atom_border_left_color,		tokens[3], important);
 			}
-			else if(tokens.size() == 3)
-			{
+			else if(tokens.size() == 3) {
 				add_parsed_property(atom_border_top_color,		tokens[0], important);
 				add_parsed_property(atom_border_right_color,	tokens[1], important);
 				add_parsed_property(atom_border_left_color,		tokens[1], important);
 				add_parsed_property(atom_border_bottom_color,	tokens[2], important);
 			}
-			else if(tokens.size() == 2)
-			{
+			else if(tokens.size() == 2) {
 				add_parsed_property(atom_border_top_color,		tokens[0], important);
 				add_parsed_property(atom_border_bottom_color,	tokens[0], important);
 				add_parsed_property(atom_border_right_color,	tokens[1], important);
 				add_parsed_property(atom_border_left_color,		tokens[1], important);
 			}
-			else if(tokens.size() == 1)
-			{
+			else if(tokens.size() == 1) {
 				add_parsed_property(atom_border_top_color,		tokens[0], important);
 				add_parsed_property(atom_border_bottom_color,	tokens[0], important);
 				add_parsed_property(atom_border_right_color,	tokens[0], important);
@@ -661,12 +648,10 @@ namespace litehtml {
 			}
 		}
 		// Parse font shorthand properties
-		else if( name==atom_font )
-		{
+		else if( name==atom_font ) {
 			parse_short_font(val, important);
 		}
-		else
-		{
+		else {
 			add_parsed_property(name, val, important);
 		}
 	}
@@ -728,26 +713,25 @@ namespace litehtml {
 				}
 
 			}
-			else if( atom_in_list(tok->c_str(), background_repeat_atoms) )
+			else if( get_background_repeat(tok->c_str(), -1, -1 )>=0 )
 			{
 				add_parsed_property( atom_background_repeat, *tok, important);
 			}
-			else if( atom_in_list(tok->c_str(), background_attachment_atoms) )
+			else if( get_background_attachment(tok->c_str(), -1, -1)>=0 )
 			{
 				add_parsed_property(atom_background_attachment, *tok, important);
 			}
-			else if( atom_in_list(tok->c_str(), background_box_atoms) )
+			else if( get_background_box(tok->c_str(), -1, -1)>=0 )
 			{
-				if(!origin_found)
-				{
+				if(!origin_found) {
 					add_parsed_property(atom_background_origin, *tok, important);
 					origin_found = true;
-				} else
-				{
+				}
+				else {
 					add_parsed_property(atom_background_clip,*tok, important);
 				}
 			}
-			else if(	atom_in_list(tok->c_str(), atom_left, atom_right,atom_top,atom_bottom,atom_center,0 ) ||
+			else if(	get_background_position(tok->c_str(), -1, -1 ) ||
 						iswdigit((*tok)[0]) ||
 						(*tok)[0] == _t('-')	||
 						(*tok)[0] == _t('.')	||
@@ -787,81 +771,67 @@ namespace litehtml {
 		tstring font_family;
 		for(string_vector::iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 		{
-			idx = atom_index(tok->c_str(), -1, font_style_atoms);
-			if(!is_family)
-			{
-				if(idx >= 0)
-				{
-					if(idx == 0 && !was_normal)
-					{
+			idx = get_font_style(tok->c_str(), -1, -1);
+
+			if(!is_family) {
+				if(idx >= 0) {
+					if(idx == 0 && !was_normal) {
 						add_parsed_property(atom_font_weight,		*tok, important);
 						add_parsed_property(atom_font_variant,		*tok, important);
 						add_parsed_property(atom_font_style,		*tok, important);
 					}
-					else
-					{
+					else {
 						add_parsed_property(atom_font_style,		*tok, important);
 					}
 				}
-				else
-				{
-					if(value_in_list(tok->c_str(), font_weight_strings))
-					{
+				else {
+					if( get_font_weight(tok->c_str(), tok->length(), -1)>=0 ) {
 						add_parsed_property(atom_font_weight,		*tok, important);
 					}
-					else
-					{
-						if(atom_in_list(tok->c_str(), font_variant_atoms))
-						{
+					else {
+						if(get_font_variant(tok->c_str(), tok->length(), -1)>=0 ) {
 							add_parsed_property(atom_font_variant,	*tok, important);
 						}
-						else if( iswdigit((*tok)[0]) )
-						{
+						else if( iswdigit((*tok)[0]) ) {
 							string_vector szlh;
 							split_string(*tok, szlh, _t("/"));
 
-							if(szlh.size() == 1)
-							{
+							if(szlh.size() == 1) {
 								add_parsed_property(atom_font_size,	szlh[0], important);
 							}
-							else	if(szlh.size() >= 2)
+							else if(szlh.size() >= 2)
 							{
 								add_parsed_property(atom_font_size,	szlh[0], important);
 								add_parsed_property(atom_line_height,	szlh[1], important);
 							}
 						}
-						else
-						{
+						else {
 							is_family = true;
 							font_family += *tok;
 						}
 					}
 				}
 			}
-			else
-			{
+			else {
 				font_family += *tok;
 			}
 		}
 
-		add_parsed_property(atom_font_family, font_family, important);
+		add_parsed_property( atom_font_family, font_family, important );
 	}
 
 	void style::add_parsed_property( atom name, const tstring& val, bool important )
 	{
 		bool is_valid = true;
-		attr_map::iterator vals = m_valid_values.find(name);
 
-		if (vals != m_valid_values.end())
-		{
-			if (!value_in_list(val, vals->second))
-			{
+		//todo: why here ???
+		if( name==atom_white_space ) {
+			if( get_white_space( val.c_str(), val.length(), -1 )<0 ) {
 				is_valid = false;
 			}
 		}
 
-		if (is_valid)
-		{
+		if (is_valid) {
 			props_map::iterator prop = m_properties.find(name);
 			if (prop != m_properties.end())
 			{
@@ -878,6 +848,7 @@ namespace litehtml {
 		}
 	}
 
+	/* no used
 	void style::remove_property( atom name, bool important )
 	{
 		props_map::iterator prop = m_properties.find(name);
@@ -889,4 +860,5 @@ namespace litehtml {
 			}
 		}
 	}
-	}
+	*/
+}
