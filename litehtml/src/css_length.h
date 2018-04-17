@@ -5,14 +5,7 @@ namespace litehtml
 {
 	class css_length
 	{
-		union
-		{
-			float	m_value;
-			int		m_predef;		// predefined size, depend of the thing being measured.
-		};
-
-		css_units	m_units;		//
-		bool		m_is_predefined;
+		property_length	m_self;		
 
 	public:
 		css_length();
@@ -34,10 +27,10 @@ namespace litehtml
 
 	inline css_length::css_length()
 	{
-		m_value			= 0;
-		m_predef		= 0;
-		m_units			= css_units_none;
-		m_is_predefined	= false;
+		m_self.value			= 0;
+		m_self.predef			= 0;
+		m_self.units			= css_units_none;
+		m_self.is_predefined	= false;
 	}
 
 	inline css_length::css_length(const css_length& val)

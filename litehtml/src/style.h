@@ -6,41 +6,91 @@
 
 namespace litehtml
 {
+	struct 	property_length 
+	{
+		union
+		{
+			float	value;
+			int		predef;			// predefined size, depend of the thing being measured.
+		};
+
+		uint8_t		units;			//css_unit
+		uint8_t		is_predefined;	//bool
+	};
+		
 	class	property_value
 	{
 	public:
 		static	property_value	undefined;
 
 	public:
-		xstring		m_value;
-		bool		m_important;
 
+		enum {
+			type_null = 0,
+			type_str = 1,
+			type_color = 2,
+			type_atom = 3,
+			type_length = 4,
+		};
+
+		union {
+			tchar_t*		str;
+			uint32_t		color;
+			uint32_t		atm;
+			property_length	length;
+		} 	m_value;
+
+		uint8_t 	m_type;
+		uint8_t		m_important;
+		
 		property_value()
 		{
+			m_type = type_null;
 			m_important = false;
 		}
 
-		property_value( const xstring& val, bool imp = false ) {
-			m_important = imp;
-			m_value = val;
-		}
-
-		property_value( const tchar_t* val, bool imp = false )
+		property_value( const tchar_t* val, bool imp = false ) 
 		{
 			m_important = imp;
-			m_value		= val;
+			m_value.str = t_strdup( val );
+			m_type = type_str;
 		}
 
 		property_value(const property_value& val)
 		{
+			m_type = type_null;
+			set( val );
+		}
+
+		~property_value( ) {
+			clear( );
+		}
+
+		void clear( ) {
+			if( m_type==type_str ) {
+				mem_free( m_value.str );
+			}
+
+			m_type = type_null;
+		}
+
+		void set( const property_value& val ) {
+			clear( );
+
+			m_type	= val.m_type;
 			m_important	= val.m_important;
-			m_value		= val.m_value;
+
+			if( val.m_type==type_str ) {
+				m_value.str	= t_strdup(val.m_value.str);
+			}
+			else {
+				m_value		= val.m_value;
+			}
 		}
 
 		property_value& operator=(const property_value& val)
 		{
-			m_important	= val.m_important;
-			m_value		= val.m_value;
+			set( val );
 			return *this;
 		}
 	};
@@ -83,7 +133,6 @@ namespace litehtml
 		const property_value& get_property( atom name ) const
 		{
 			if( name ) {
-
 				for( uint32_t i=0; i<m_properties.length(); i++ ) {
 					html_attribute*	a = m_properties.at( i );
 					if( a->name==name ) {

@@ -21,8 +21,7 @@ namespace litehtml
 		return 0;
 	}
 
-	//<todo : remove callback param
-	web_color web_color::from_string(const tchar_t* str, document_container* /*callback*/)
+	web_color web_color::from_string(const tchar_t* str )
 	{
 		if(!str || !str[0])	{
 			return web_color(0xff000000);

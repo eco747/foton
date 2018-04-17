@@ -32,7 +32,7 @@ bool element::is_point_inside(int x, int y)
 		xVector<position>	boxes;
 		get_inline_boxes( boxes );
 
-		for (position::vector::iterator box = boxes.begin(); box != boxes.end(); box++)
+		for ( position::vector::iterator box = boxes.begin(); box != boxes.end(); box++ )
 		{
 			if (box->is_point_inside(x, y))
 			{
@@ -47,12 +47,11 @@ bool element::is_point_inside(int x, int y)
 web_color element::get_color(atom prop_name, bool inherited, const web_color &def_color)
 {
 	const tchar_t *clrstr = get_style_property(prop_name, inherited, 0);
-	if (!clrstr)
-	{
+	if (!clrstr) {
 		return def_color;
 	}
 
-	return web_color::from_string(clrstr, get_document()->container());
+	return web_color::from_string(clrstr);
 }
 
 position element::get_placement() const

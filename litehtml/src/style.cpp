@@ -19,10 +19,12 @@ namespace litehtml {
 	{
 	}
 
+	/*
 	style::style( const style& val )
 	{
 		m_properties = val.m_properties;
 	}
+	*/
 
 	style::~style()
 	{
@@ -38,7 +40,7 @@ namespace litehtml {
 				q++;
 			}
 
-			parse_property( xstring(p, q-p), baseurl);
+			parse_property( xstringpart(p, q-p), baseurl);
 
 			if( *q==';' )
 				q++;
@@ -135,6 +137,7 @@ namespace litehtml {
 		{
 			string_vector tokens;
 			split_string(value, tokens, _t(" "), _t(""), _t("("));
+			
 			int idx;
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)

@@ -45,29 +45,26 @@ namespace litehtml
 	 * @brief The xstringpart class
 	 */
 
-	class	xstringpart
+	struct	xstringpart
 	{
-	private:
-		const tchar_t*	m_str;
-		uint32_t		m_len;
+		const tchar_t*	str;
+		uint32_t		len;
 
 	public:
+		xstringpart( const tchar_t* s )
+			:	str( s )
+		{
+			len = t_strlen( s );
+		}
+
 		xstringpart( const tchar_t* s, uint32_t l )
-			:	m_str( s ),
-				m_len( l )
+			:	str( s ),
+				len( l )
 		{
 		}
 
 		const tchar_t* trim_left( );
 		const tchar_t*	trim_right( );
-
-		const tchar_t*  c_str( ) const {
-			return m_str;
-		}
-
-		uint32_t	length( ) const {
-			return m_len;
-		}
 
 		bool	i_equ( const xstringpart& o );
 		bool	equ( const xstringpart& o );

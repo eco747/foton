@@ -116,4 +116,8 @@ namespace litehtml
 	void		atom_init( );
 	atom		atom_create(const tchar_t* text , bool create_it=true);
 	tstring		atom_get( atom v );
+
+	void*		mem_alloc( size_t s );
+	void		mem_free( void* p );
+	tchar_t*	t_strdup( const tchar_t* s );
 }
