@@ -137,34 +137,45 @@ namespace litehtml {
 		{
 			string_vector tokens;
 			split_string(value, tokens, _t(" "), _t(""), _t("("));
-			
+
 			int idx;
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
 				idx = get_border_style( tok->c_str(), tok->length(), -1 );
 				if(idx >= 0) {
-					add_property(atom_border_left_style, tok->c_str(), baseurl, important);
-					add_property(atom_border_right_style, tok->c_str(), baseurl, important);
-					add_property(atom_border_top_style, tok->c_str(), baseurl, important);
-					add_property(atom_border_bottom_style, tok->c_str(), baseurl, important);
+					property_value	bstyle( (atom)idx,important );
+					add_property(atom_border_left_style, bstyle, baseurl );
+					add_property(atom_border_right_style, bstyle, baseurl );
+					add_property(atom_border_top_style, bstyle, baseurl );
+					add_property(atom_border_bottom_style, bstyle, baseurl );
 				}
-				else {
-					if (t_isdigit((*tok)[0]) || (*tok)[0] == _t('.') ||
-						get_border_width( tok->c_str(), tok->length(), -1 )>=0 )
-					{
-						add_property(atom_border_left_width, tok->c_str(), baseurl, important);
-						add_property(atom_border_right_width, tok->c_str(), baseurl, important);
-						add_property(atom_border_top_width, tok->c_str(), baseurl, important);
-						add_property(atom_border_bottom_width, tok->c_str(), baseurl, important);
-					}
-					else
-					{
-						add_property(atom_border_left_color, tok->c_str(), baseurl, important);
-						add_property(atom_border_right_color, tok->c_str(), baseurl, important);
-						add_property(atom_border_top_color, tok->c_str(), baseurl, important);
-						add_property(atom_border_bottom_color, tok->c_str(), baseurl, important);
-					}
+				else if ( t_isdigit((*tok)[0]) || (*tok)[0] == _t('.') )
+				{
+					css_length	length;
+					property_value	bwidth( length.fromString(tok->c_str(),0) );
+
+					add_property(atom_border_left_width, bwidth, baseurl, important);
+					add_property(atom_border_right_width, bwidth, baseurl, important);
+					add_property(atom_border_top_width, bwidth, baseurl, important);
+					add_property(atom_border_bottom_width, bwidth, baseurl, important);
+				}
+				else if( (idx=get_border_width( tok->c_str(), tok->length(), -1 )>=0 ) {
+					property_value	bwidth( (atom)idx, important );
+
+					add_property(atom_border_left_width, bwidth, baseurl, important);
+					add_property(atom_border_right_width, bwidth, baseurl, important);
+					add_property(atom_border_top_width, bwidth, baseurl, important);
+					add_property(atom_border_bottom_width, bwidth, baseurl, important);
+				}
+				else
+				{
+					property_value	bcolor( web_color(tok->c_str()), important );
+
+					add_property(atom_border_left_color, bcolor, baseurl, important);
+					add_property(atom_border_right_color, bcolor, baseurl, important);
+					add_property(atom_border_top_color, bcolor, baseurl, important);
+					add_property(atom_border_bottom_color, bcolor, baseurl, important);
 				}
 			}
 		}

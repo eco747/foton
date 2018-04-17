@@ -36,7 +36,7 @@ namespace litehtml
 		union {
 			tchar_t*		str;
 			uint32_t		color;
-			uint32_t		atm;
+			atom 			atm;
 			property_length	length;
 		} 	m_value;
 
@@ -49,10 +49,24 @@ namespace litehtml
 			m_important = false;
 		}
 
+		property_value( atom atm, bool imp = false ) 
+		{
+			m_important = imp;
+			m_value.atm = atm;
+			m_type = type_atom;
+		}
+
 		property_value( const tchar_t* val, bool imp = false ) 
 		{
 			m_important = imp;
 			m_value.str = t_strdup( val );
+			m_type = type_str;
+		}
+
+		property_value( const property_length& val, bool imp = false )
+		{
+			m_important = imp;
+			m_value.length = val;
 			m_type = type_str;
 		}
 
