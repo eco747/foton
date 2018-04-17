@@ -4,7 +4,7 @@
 
 namespace litehtml
 {
-	el_text::el_text(const tchar_t* text, const std::shared_ptr<document>& doc)
+	el_text::el_text(const tchar_t* text, document* doc)
 		: element(doc)
 	{
 		if(text)

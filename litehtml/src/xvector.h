@@ -1,65 +1,86 @@
+#ifndef __XVECTOR_H
+#define __XVECTOR_H
 
-class xVectorBase
+namespace litehtml
 {
-	void**		m_data;
-	uint32_t	m_length;
-	uint32_t	m_capacity;
 
-protected:
-	xVectorBase( uint32_t initial_capacity=0 );
-	virtual ~xVectorBase( );
-
-	void 	_add( void* el );
-	void*	_pop( );
-	int 	_index_of( void* el );
-	void 	_insert_at( uint32_t index, void* el );
-	void 	_remove( void* el );
-	void* 	_remove_at( uint32_t index );
-
-private:
-	void 	_grow_if_full( );
-};
-
-template <class type>
-class 	xVector
-	:	public xVectorBase
-{
-public:
-	xVector( uint32_t initial_capacity=0 )
-		: xVectorBase( initial_capacity ) 
+	class xVectorBase
 	{
-	}
+		void**		m_data;
+		uint32_t	m_length;
+		uint32_t	m_capacity;
 
-	void 	add( type* el )	
+	protected:
+		xVectorBase( uint32_t initial_capacity=0 );
+		virtual ~xVectorBase( );
+
+		void 	_add( void* el );
+		void*	_pop( );
+		int 	_index_of( void* el );
+		void 	_insert_at( uint32_t index, void* el );
+		void 	_remove( void* el );
+		void* 	_remove_at( uint32_t index );
+		void*	_at( uint32_t index ) const;
+		void*	_front( ) const;
+
+	public:
+		void	 clear( );
+		uint32_t length( ) const { return m_length; }
+		bool 	 empty( ) const {return m_length==0; }
+
+	private:
+		void 	_grow_if_full( );
+	};
+
+	template <class type>
+	class 	xVector
+		:	public xVectorBase
 	{
-		_add( el ); 
-	}
-	
-	type*		pop( )
-	{
-		return (type*)_pop( );
-	}
+	public:
+		xVector( uint32_t initial_capacity=0 )
+			: xVectorBase( initial_capacity )
+		{
+		}
 
-	int 	index_of( type* el )
-	{
-		return _index_of( el );
-	}
+		void 	add( type* el )
+		{
+			_add( el );
+		}
 
-	void 	insert_at( uint32_t index, type* el )
-	{
-		return insert_at( index, el );
-	}
+		type*		pop( )
+		{
+			return (type*)_pop( );
+		}
 
-	void 	remove( type* el )
-	{
-		_remove( el );
-	}
+		type*	at( uint32_t index ) const
+		{
+			return (type*)_at( index );
+		}
 
-	type* 	remove_at( uint32_t index )
-	{
-		return (type*)_remove_at( index );
-	}
-};
+		int 	index_of( type* el )
+		{
+			return _index_of( el );
+		}
 
+		void 	insert_at( uint32_t index, type* el )
+		{
+			return insert_at( index, el );
+		}
 
+		void 	remove( type* el )
+		{
+			_remove( el );
+		}
 
+		type* 	remove_at( uint32_t index )
+		{
+			return (type*)_remove_at( index );
+		}
+
+		type*  front( ) const {
+			return _front( );
+		}
+	};
+}
+
+#endif

@@ -2,6 +2,7 @@
 
 namespace litehtml
 {
+	/*
 	struct	attr_color {
 		uint32_t	color;
 
@@ -27,4 +28,5 @@ namespace litehtml
 			width	= 0;
 		}
 	};
+	*/
 }

@@ -5,7 +5,7 @@
 namespace litehtml
 {
 
-	el_anchor::el_anchor(const std::shared_ptr<litehtml::document>& doc)
+	el_anchor::el_anchor(document* doc)
 		: html_tag(doc)
 	{
 	}
@@ -19,7 +19,7 @@ namespace litehtml
 		const tchar_t* href = get_attr( atom_href );
 
 		if(href) {
-			get_document()->container()->on_anchor_click(href, shared_from_this());
+			get_document()->container()->on_anchor_click(href, this);
 		}
 	}
 

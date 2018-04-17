@@ -5,7 +5,7 @@
 namespace litehtml
 {
 
-	el_title::el_title(const std::shared_ptr<document>& doc)
+	el_title::el_title(document* doc)
 		: html_tag(doc)
 	{
 	}

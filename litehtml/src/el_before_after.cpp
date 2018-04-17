@@ -7,7 +7,7 @@
 namespace litehtml
 {
 
-	el_before_after_base::el_before_after_base(const std::shared_ptr<document>& doc, bool before)
+	el_before_after_base::el_before_after_base( document* doc, bool before)
 		: html_tag(doc)
 	{
 		if(before){
@@ -120,11 +120,12 @@ namespace litehtml
 							}
 
 
-							element::ptr el = std::make_shared<el_image>(get_document());
-							el->set_attr(atom_src, url.c_str());
-							el->set_attr(atom_style, _t("display:inline-block"));
+							element* el = new el_image(get_document());
+							el->set_attr( atom_src, property_value(url) );
+							el->set_attr( atom_style, property_value("display:inline-block"));
 							el->set_tagName( atom_img /*_t("img")*/);
 							appendChild(el);
+
 							el->parse_attributes();
 						}
 						else if( t.imatch("counter") ) {
@@ -132,7 +133,7 @@ namespace litehtml
 						}
 						else if( t.imatch("attr") ) {
 
-							element::ptr el_parent = parent();
+							element* el_parent = parent();
 							if (el_parent) {
 
 								start = skip_sp( ++p );
@@ -142,8 +143,8 @@ namespace litehtml
 								atom	a_name = atom_create(param.c_str(), false );
 
 								if( a_name!=atom_null ) {	// unknown name
-									const tchar_t*	attr_value = el_parent->get_attr(a_name);
-									if (attr_value) {
+									property_value attr_value = el_parent->get_attr( a_name );
+									if ( attr_value!=property_value::undefined ) {
 										add_text( attr_value );
 									}
 								}
@@ -171,12 +172,12 @@ namespace litehtml
 				{
 					if(!word.empty())
 					{
-						element::ptr el = std::make_shared<el_text>(word.c_str(), get_document());
+						element* el = new el_text(word.c_str(), get_document());
 						appendChild(el);
 						word.clear();
 					}
 
-					element::ptr el = std::make_shared<el_space>(txt.substr(i, 1).c_str(), get_document());
+					element* el = new el_space(txt.substr(i, 1).c_str(), get_document());
 					appendChild(el);
 				}
 				else {
@@ -202,7 +203,7 @@ namespace litehtml
 		}
 
 		if(!word.empty()) {
-			element::ptr el = std::make_shared<el_text>(word.c_str(), get_document());
+			element* el = new el_text(word.c_str(), get_document());
 			appendChild(el);
 			word.clear();
 		}
@@ -216,7 +217,7 @@ namespace litehtml
 		// attr
 		case 0:
 			{
-				element::ptr el_parent = parent();
+				element*	el_parent = parent();
 				if (el_parent)
 				{
 					tstring p_name = params;
@@ -258,7 +259,7 @@ namespace litehtml
 				}
 				if(!p_url.empty())
 				{
-					element::ptr el = std::make_shared<el_image>(get_document());
+					element* el = new el_image(get_document());
 					el->set_attr(atom_src, p_url.c_str());
 					el->set_attr(atom_style, _t("display:inline-block"));
 					el->set_tagName( atom_img /*_t("img")*/);

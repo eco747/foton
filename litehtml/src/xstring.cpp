@@ -7,10 +7,10 @@ namespace litehtml
 	 */
 
 	xstring::xstring( )
-		: __ptr( __buf )
+		: m_ptr( m_buf )
 	{
-		*__buf = 0;
-		__len = 0;
+		*m_buf = 0;
+		m_len = 0;
 	}
 
 	/**
@@ -20,9 +20,9 @@ namespace litehtml
 
 	xstring::xstring( const xstring& other )
 	{
-		*__buf = 0;
-		__ptr = __buf;
-		__len = 0;
+		*m_buf = 0;
+		m_ptr = m_buf;
+		m_len = 0;
 
 		operator = (other);
 	}
@@ -39,10 +39,10 @@ namespace litehtml
 			len = strlen( txt );
 		}
 
-		__len = len;
-		__alloc( __len );
-		memcpy( __ptr, txt, __len*sizeof(tchar_t) );
-		__ptr[__len] = 0;
+		m_len = len;
+		__alloc( m_len );
+		memcpy( m_ptr, txt, m_len*sizeof(tchar_t) );
+		m_ptr[m_len] = 0;
 	}
 
 	/**
@@ -66,9 +66,9 @@ namespace litehtml
 			__asm int 3;
 		}
 
-		__realloc( other.__len );
-		__len = other.__len;
-		memcpy( __ptr, other.__ptr, (__len+1)*sizeof(tchar_t) );
+		__realloc( other.m_len );
+		m_len = other.m_len;
+		memcpy( m_ptr, other.m_ptr, (m_len+1)*sizeof(tchar_t) );
 		return *this;
 	}
 
@@ -82,7 +82,7 @@ namespace litehtml
 
 	xstring& xstring::set( const tchar_t* txt, int32_t len/*=-1*/, bool lowercase/*=false*/ )
 	{
-		if( txt>=__ptr && txt<=__ptr+__len ) {
+		if( txt>=m_ptr && txt<=m_ptr+m_len ) {
 			__asm int 3;
 		}
 
@@ -91,15 +91,15 @@ namespace litehtml
 		}
 
 		__realloc( len );
-		__len	= len;
+		m_len	= len;
 
 		if( len ) {
 			if( lowercase==false ) {
-				memcpy( __ptr, txt, __len*sizeof(tchar_t) );
+				memcpy( m_ptr, txt, m_len*sizeof(tchar_t) );
 			}
 			else {
-				int32_t l = __len;
-				tchar_t* p = __ptr;
+				int32_t l = m_len;
+				tchar_t* p = m_ptr;
 
 				while( l-- ) {
 					*p++ = tolower(*txt++);
@@ -107,7 +107,7 @@ namespace litehtml
 			}
 		}
 
-		__ptr[__len] = 0;
+		m_ptr[m_len] = 0;
 
 		return *this;
 	}
@@ -118,9 +118,9 @@ namespace litehtml
 
 	void	xstring::clear( ) {
 		__release( );
-		*__buf	= 0;
-		__ptr	= __buf;
-		__len	= 0;
+		*m_buf	= 0;
+		m_ptr	= m_buf;
+		m_len	= 0;
 	}
 
 	/**
@@ -128,8 +128,8 @@ namespace litehtml
 	 */
 
 	void	xstring::__release( ) {
-		if( __ptr!=__buf ) {
-			free( __ptr );
+		if( m_ptr!=m_buf ) {
+			free( m_ptr );
 		}
 	}
 
@@ -141,10 +141,10 @@ namespace litehtml
 	void	xstring::__alloc( uint32_t len ) {
 		len++;
 		if( len<BSIZE ) {
-			__ptr = __buf;
+			m_ptr = m_buf;
 		}
 		else {
-			__ptr = (tchar_t*)malloc( adj_size(len) * sizeof(tchar_t) );
+			m_ptr = (tchar_t*)malloc( adj_size(len) * sizeof(tchar_t) );
 		}
 	}
 
@@ -155,22 +155,77 @@ namespace litehtml
 
 	void	xstring::__realloc( uint32_t len )
 	{
-		uint32_t	ol = adj_size( __len+1 );
+		uint32_t	ol = adj_size( m_len+1 );
 		uint32_t	nl = adj_size( len+1 );
 
 		if( ol!=nl ) {
-			if( __ptr==__buf ) {
-				__ptr = (tchar_t*)malloc( nl );
+			if( m_ptr==m_buf ) {
+				m_ptr = (tchar_t*)malloc( nl );
 			}
 			else {
 				if( nl<=BSIZE ) {
-					free( __ptr );
-					__ptr = __buf;
+					free( m_ptr );
+					m_ptr = m_buf;
 				}
 				else {
-					__ptr = (tchar_t*)realloc( __ptr, nl*sizeof(tchar_t) );
+					m_ptr = (tchar_t*)realloc( m_ptr, nl*sizeof(tchar_t) );
 				}
 			}
 		}
 	}
+
+
+
+
+
+	/**
+	 * @brief xstringpart::trim_left
+	 * @return
+	 */
+
+	const tchar_t* xstringpart::trim_left( ) {
+
+		while( m_len && (*m_str==' ' || *m_str=='\t') ) {
+			m_str++;
+			m_len--;
+		}
+
+		return m_str;
+	}
+
+	/**
+	 * @brief xstringpart::trim_right
+	 * @return
+	 */
+
+	const tchar_t*	xstringpart::trim_right( ) {
+
+		const tchar_t* e = m_str + m_len - 1;
+		while( m_len && (*e==' ' || *e=='\t') ) {
+			m_len--;
+		}
+
+		return m_str;
+	}
+
+	/**
+	 * @brief xstringpart::i_equ
+	 * @param o
+	 * @return
+	 */
+
+	bool	xstringpart::i_equ( const xstringpart& o ) {
+		return o.m_len==m_len && t_strncasecmp( m_str, o.m_str, m_len )==0;
+	}
+
+	/**
+	 * @brief xstringpart::equ
+	 * @param o
+	 * @return
+	 */
+
+	bool	xstringpart::equ( const xstringpart& o ) {
+		return o.m_len==m_len && t_strncmp( m_str, o.m_str, m_len )==0;
+	}
+
 }

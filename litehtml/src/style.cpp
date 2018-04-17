@@ -81,7 +81,7 @@ namespace litehtml {
 				p++;
 			}
 
-			if( *p=='!' && t_strncasecmp( skip_sp(p+1),'important')==0 ) {
+			if( *p=='!' && t_strncasecmp( skip_sp(p+1),"important",9)==0 ) {
 				add_property( name, xstring(q,p-q).c_str(), baseurl, true );
 			}
 			else {
@@ -98,9 +98,9 @@ namespace litehtml {
 		}
 	}
 
-	void style::add_property( atom name, const tchar_t* val, const tchar_t* baseurl, bool important )
+	void style::add_property(atom name, property_value& value, const tchar_t* baseurl, bool important )
 	{
-		if(!name || !val)
+		if(!name || !value)
 		{
 			return;
 		}
@@ -108,7 +108,7 @@ namespace litehtml {
 		// Add baseurl for background image
 		if(	name==atom_background_image )
 		{
-			add_parsed_property(name, val, important);
+			add_parsed_property(name, value, important);
 			if(baseurl)
 			{
 				add_parsed_property(atom_background_baseurl, baseurl, important);
@@ -118,7 +118,7 @@ namespace litehtml {
 		else if( name==atom_border_spacing )
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() == 1)
 			{
 				add_property(atom__xx_border_spacing_x, tokens[0].c_str(), baseurl, important);
@@ -134,7 +134,7 @@ namespace litehtml {
 		else if( name == atom_border )
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "), _t(""), _t("("));
+			split_string(value, tokens, _t(" "), _t(""), _t("("));
 			int idx;
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
@@ -171,7 +171,7 @@ namespace litehtml {
 				 name==atom_border_bottom )
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "), _t(""), _t("("));
+			split_string(value, tokens, _t(" "), _t(""), _t("("));
 			int idx;
 			tstring str;
 			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
@@ -204,7 +204,7 @@ namespace litehtml {
 		 else if(name==atom_border_bottom_left_radius)
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() >= 2)
 			{
 				add_property(atom_border_bottom_left_radius_x, tokens[0].c_str(), baseurl, important);
@@ -220,7 +220,7 @@ namespace litehtml {
 		else if(name==atom_border_bottom_right_radius)
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() >= 2)
 			{
 				add_property(atom_border_bottom_right_radius_x, tokens[0].c_str(), baseurl, important);
@@ -236,7 +236,7 @@ namespace litehtml {
 		else if(name==atom_border_top_right_radius)
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() >= 2)
 			{
 				add_property(atom_border_top_right_radius_x, tokens[0].c_str(), baseurl, important);
@@ -252,7 +252,7 @@ namespace litehtml {
 		else if(name==atom_border_top_left_radius)
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() >= 2)
 			{
 				add_property(atom_border_top_left_radius_x, tokens[0].c_str(), baseurl, important);
@@ -269,7 +269,7 @@ namespace litehtml {
 		else if(name==atom_border_radius)
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t("/"));
+			split_string(value, tokens, _t("/"));
 			if(tokens.size() == 1)
 			{
 				add_property(atom_border_radius_x, tokens[0].c_str(), baseurl, important);
@@ -284,7 +284,7 @@ namespace litehtml {
 		else if(name==atom_border_radius_x)
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() == 1)
 			{
 				add_property(atom_border_top_left_radius_x,			tokens[0].c_str(), baseurl, important);
@@ -317,7 +317,7 @@ namespace litehtml {
 		else if(name==atom_border_radius_y)
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() == 1)
 			{
 				add_property(atom_border_top_left_radius_y,			tokens[0].c_str(), baseurl, important);
@@ -358,7 +358,7 @@ namespace litehtml {
 	//<eco:		add_parsed_property(atom_list_style_baseurl,		_t(""),			important);
 
 			string_vector tokens;
-			split_string(val, tokens, _t(" "), _t(""), _t("("));
+			split_string(value, tokens, _t(" "), _t(""), _t("("));
 			for(string_vector::iterator tok = tokens.begin(); tok != tokens.end(); tok++)
 			{
 				int idx = get_list_style_type(tok->c_str(), -1, -1 );
@@ -371,7 +371,7 @@ namespace litehtml {
 					if(idx >= 0) {
 						add_parsed_property(atom_list_style_position, *tok, important);
 					}
-					else if(!t_strncmp(val, _t("url"), 3)) {
+					else if(!t_strncmp(value, _t("url"), 3)) {
 						//todo: check
 						add_parsed_property(atom_list_style_image, *tok, important);
 						if(baseurl)
@@ -385,7 +385,7 @@ namespace litehtml {
 		// Add baseurl for background image
 		else if( name==atom_list_style_image )
 		{
-			add_parsed_property(name, val, important);
+			add_parsed_property(name, value, important);
 			if(baseurl)
 			{
 				add_parsed_property(atom_list_style_baseurl, baseurl, important);
@@ -394,13 +394,13 @@ namespace litehtml {
 		// Parse background shorthand properties
 		else if(name==atom_background)
 		{
-			parse_short_background(val, baseurl, important);
+			parse_short_background(value, baseurl, important);
 		}
 		// Parse margin shorthand properties
 		else if( name==atom_margin )
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() >= 4)
 			{
 				add_parsed_property(atom_margin_top,		tokens[0], important);
@@ -434,7 +434,7 @@ namespace litehtml {
 		else if( name==atom_padding )
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 			if(tokens.size() >= 4)
 			{
 				add_parsed_property(atom_padding_top,		tokens[0], important);
@@ -468,7 +468,7 @@ namespace litehtml {
 		else if( name==atom_border_left ) {
 
 			string_vector tokens;
-			split_string(val, tokens, _t(" "), _t(""), _t("("));
+			split_string(value, tokens, _t(" "), _t(""), _t("("));
 
 			if(tokens.size() >= 3)
 			{
@@ -478,7 +478,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1 ) >= 0)
+				if(iswdigit(tokens[0][0]) || get_border_width(value, -1, -1 ) >= 0)
 				{
 					add_parsed_property(atom_border_left_width,	tokens[0], important);
 					add_parsed_property(atom_border_left_style,	tokens[1], important);
@@ -492,7 +492,7 @@ namespace litehtml {
 		}
 		else if( name==atom_border_right ) {
 			string_vector tokens;
-			split_string(val, tokens, _t(" "), _t(""), _t("("));
+			split_string(value, tokens, _t(" "), _t(""), _t("("));
 
 			if(tokens.size() >= 3)
 			{
@@ -502,7 +502,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1 ) >= 0)
+				if(iswdigit(tokens[0][0]) || get_border_width(value, -1, -1 ) >= 0)
 				{
 					add_parsed_property(atom_border_right_width,	tokens[0], important);
 					add_parsed_property(atom_border_right_style,	tokens[1], important);
@@ -516,7 +516,7 @@ namespace litehtml {
 		}
 		else if( name==atom_border_top ) {
 			string_vector tokens;
-			split_string(val, tokens, _t(" "), _t(""), _t("("));
+			split_string(value, tokens, _t(" "), _t(""), _t("("));
 			if(tokens.size() >= 3)
 			{
 				add_parsed_property(atom_border_top_width,	tokens[0], important);
@@ -525,7 +525,7 @@ namespace litehtml {
 			}
 			else if(tokens.size() == 2)
 			{
-				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1) >= 0)
+				if(iswdigit(tokens[0][0]) || get_border_width(value, -1, -1) >= 0)
 				{
 					add_parsed_property(atom_border_top_width,	tokens[0], important);
 					add_parsed_property(atom_border_top_style,	tokens[1], important);
@@ -539,7 +539,7 @@ namespace litehtml {
 		}
 		else if( name==atom_border_bottom ) {
 			string_vector tokens;
-			split_string(val, tokens, _t(" "), _t(""), _t("("));
+			split_string(value, tokens, _t(" "), _t(""), _t("("));
 
 			if(tokens.size() >= 3) {
 				add_parsed_property(atom_border_bottom_width,	tokens[0], important);
@@ -547,7 +547,7 @@ namespace litehtml {
 				add_parsed_property(atom_border_bottom_color,	tokens[2], important);
 			}
 			else if(tokens.size() == 2) {
-				if(iswdigit(tokens[0][0]) || get_border_width(val, -1, -1) >= 0) {
+				if(iswdigit(tokens[0][0]) || get_border_width(value, -1, -1) >= 0) {
 					add_parsed_property(atom_border_bottom_width,	tokens[0], important);
 					add_parsed_property(atom_border_bottom_style,	tokens[1], important);
 				}
@@ -561,7 +561,7 @@ namespace litehtml {
 		else if( name==atom_border_width )
 		{
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 
 			if(tokens.size() >= 4) {
 				add_parsed_property(atom_border_top_width,		tokens[0], important);
@@ -590,7 +590,7 @@ namespace litehtml {
 		}
 		else if( name==atom_border_style ) {
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 
 			if(tokens.size() >= 4) {
 				add_parsed_property(atom_border_top_style,		tokens[0], important);
@@ -620,7 +620,7 @@ namespace litehtml {
 		else if( name==atom_border_color ) {
 
 			string_vector tokens;
-			split_string(val, tokens, _t(" "));
+			split_string(value, tokens, _t(" "));
 
 			if(tokens.size() >= 4) {
 				add_parsed_property(atom_border_top_color,		tokens[0], important);
@@ -649,10 +649,10 @@ namespace litehtml {
 		}
 		// Parse font shorthand properties
 		else if( name==atom_font ) {
-			parse_short_font(val, important);
+			parse_short_font(value, important);
 		}
 		else {
-			add_parsed_property(name, val, important);
+			add_parsed_property(name, value, important);
 		}
 	}
 
@@ -820,7 +820,7 @@ namespace litehtml {
 		add_parsed_property( atom_font_family, font_family, important );
 	}
 
-	void style::add_parsed_property( atom name, const tstring& val, bool important )
+	void style::add_parsed_property(atom name, const property_value& val, bool important )
 	{
 		bool is_valid = true;
 

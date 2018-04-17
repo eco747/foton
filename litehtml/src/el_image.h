@@ -5,12 +5,13 @@
 namespace litehtml
 {
 
-	class el_image : public html_tag
+	class el_image	
+		: public html_tag
 	{
 		xstring	m_src;
 
 	public:
-		el_image(const std::shared_ptr<litehtml::document>& doc);
+		el_image(document* doc);
 		virtual ~el_image(void);
 
 		virtual int		line_height() const override;

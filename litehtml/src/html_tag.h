@@ -14,10 +14,10 @@ namespace litehtml
 {
 	struct line_context
 	{
-		int calculatedTop;
-		int top;
-		int left;
-		int right;
+		int 	calculatedTop;
+		int 	top;
+		int 	left;
+		int 	right;
 
 		int width()
 		{
@@ -35,7 +35,7 @@ namespace litehtml
 	 */
 
 	class html_tag
-			: public element
+		: public element
 	{
 		friend class elements_iterator;
 		friend class el_table;
@@ -43,16 +43,14 @@ namespace litehtml
 		friend class block_box;
 		friend class line_box;
 
-	public:
-		typedef std::shared_ptr<litehtml::html_tag>	ptr;
+//	public:
+//		typedef std::shared_ptr<html_tag>	ptr;
 
 	protected:
-		box::vector				m_boxes;
+		xVector<box>			m_boxes;
 		string_vector			m_class_values;
-		//tstring				m_tag;
-		litehtml::atom			m_tag;
-		litehtml::style			m_style;
-		//string_map				m_attrs;
+		atom					m_tag;
+		style					m_style;
 		attr_map				m_attrs;
 		vertical_align			m_vertical_align;
 		text_align				m_text_align;
@@ -62,15 +60,15 @@ namespace litehtml
 		white_space				m_white_space;
 		element_float			m_float;
 		element_clear			m_clear;
-		floated_box::vector		m_floats_left;
-		floated_box::vector		m_floats_right;
+		xVector<floated_box>	m_floats_left;
+		xVector<floated_box>	m_floats_right;
 		elements_vector			m_positioned;
 		background				m_bg;
 		element_position		m_el_position;
 		int						m_line_height;
 		bool					m_lh_predefined;
 		string_vector			m_pseudo_classes;
-		used_selector::vector	m_used_styles;		
+		xVector<used_selector>	m_used_styles;
 		
 		uint_ptr				m_font;
 		int						m_font_size;
@@ -93,17 +91,17 @@ namespace litehtml
 		int						m_z_index;
 		box_sizing				m_box_sizing;
 
-		int_int_cache			m_cahe_line_left;
-		int_int_cache			m_cahe_line_right;
+		int_int_cache			m_cache_line_left;
+		int_int_cache			m_cache_line_right;
 
 		// data for table rendering
 		struct	table_infos {
-			std::unique_ptr<table_grid>	m_grid;
-			css_length				m_css_border_spacing_x;
-			css_length				m_css_border_spacing_y;
-			int						m_border_spacing_x;
-			int						m_border_spacing_y;
-			border_collapse			m_border_collapse;
+			table_grid*			m_grid;
+			css_length			m_css_border_spacing_x;
+			css_length			m_css_border_spacing_y;
+			int					m_border_spacing_x;
+			int					m_border_spacing_y;
+			border_collapse		m_border_collapse;
 
 			table_infos( ) {
 				m_border_spacing_x	= 0;
@@ -112,33 +110,33 @@ namespace litehtml
 			}
 		};
 
-		std::unique_ptr<table_infos>	m_table_infos;
+		table_infos*			m_table_infos;
 
 		virtual void			select_all(const css_selector& selector, elements_vector& res);
 
 	public:
-		html_tag(const std::shared_ptr<litehtml::document>& doc);
+		html_tag( document* doc);
 		virtual ~html_tag();
 
 		/* render functions */
 
 		virtual int					render(int x, int y, int max_width, bool second_pass = false) override;
 
-		virtual int					render_inline(const element::ptr &container, int max_width) override;
-		virtual int					place_element(const element::ptr &el, int max_width) override;
+		virtual int					render_inline(const element* container, int max_width) override;
+		virtual int					place_element(const element* el, int max_width) override;
 		virtual bool				fetch_positioned() override;
 		virtual void				render_positioned(render_type rt = render_all) override;
 
-		int							new_box(const element::ptr &el, int max_width, line_context& line_ctx);
+		int							new_box(const element* el, int max_width, line_context& line_ctx);
 
-		int							get_cleared_top(const element::ptr &el, int line_top) const;
+		int							get_cleared_top(const element* el, int line_top) const;
 		int							finish_last_box(bool end_of_render = false);
 
-		virtual bool				appendChild(const element::ptr &el) override;
-		virtual bool				removeChild(const element::ptr &el) override;
+		virtual bool				appendChild(const element* el) override;
+		virtual bool				removeChild(const element* el) override;
 		virtual void				clearRecursive() override;
-		virtual litehtml::atom		get_tagName() const override;
-		virtual void				set_tagName( litehtml::atom tag) override;
+		virtual atom				get_tagName() const override;
+		virtual void				set_tagName( atom tag) override;
 		virtual void				set_data(const tchar_t* data) override;
 		virtual element_float		get_float() const override;
 		virtual vertical_align		get_vertical_align() const override;
@@ -152,13 +150,14 @@ namespace litehtml
 		virtual css_length			get_css_height() const override;
 		virtual element_clear		get_clear() const override;
 		virtual size_t				get_children_count() const override;
-		virtual element::ptr		get_child(int idx) const override;
+		virtual element*			get_child(int idx) const override;
 		virtual element_position	get_element_position(css_offsets* offsets = 0) const override;
 		virtual overflow			get_overflow() const override;
 
-		virtual void				set_attr( /*const tchar_t**/ atom name, const tchar_t* val) override;
-		virtual const tchar_t*		get_attr( /*const tchar_t**/ atom name, const tchar_t* def = 0) override;
-		virtual void				apply_stylesheet(const litehtml::css& stylesheet) override;
+		virtual void				set_attr( atom name, const tchar_t* val) override;
+		virtual const tchar_t*		get_attr( atom name, const tchar_t* def = 0) override;
+
+		virtual void				apply_stylesheet(const css& stylesheet) override;
 		virtual void				refresh_styles() override;
 
 		virtual bool				is_white_space() const override;
@@ -170,7 +169,7 @@ namespace litehtml
 		virtual bool				on_lbutton_down() override;
 		virtual bool				on_lbutton_up() override;
 		virtual void				on_click() override;
-		virtual bool				find_styles_changes(position::vector& redraw_boxes, int x, int y) override;
+		virtual bool				find_styles_changes( xVector<position>& redraw_boxes, int x, int y) override;
 		virtual const tchar_t*		get_cursor() override;
 		virtual void				init_font() override;
 		virtual bool				set_pseudo_class(const tchar_t* pclass, bool add) override;
@@ -190,31 +189,31 @@ namespace litehtml
 		virtual uint_ptr			get_font(font_metrics* fm = 0) override;
 		virtual int					get_font_size() const override;
 
-		elements_vector&			children();
+		//xVector<element*>&			children();
 		virtual void				calc_outlines(int parent_width) override;
 		virtual void				calc_auto_margins(int parent_width) override;
 
 		virtual int					select(const css_selector& selector, bool apply_pseudo = true) override;
 		virtual int					select(const css_element_selector& selector, bool apply_pseudo = true) override;
 
-		virtual elements_vector		select_all(const tstring& selector) override;
-		virtual elements_vector		select_all(const css_selector& selector) override;
+		virtual int					select_all(const tstring& selector, xVector<element*>& res ) override;
+		virtual int					select_all(const css_selector& selector, xVector<element*>& res) override;
 
-		virtual element::ptr		select_one(const tstring& selector) override;
-		virtual element::ptr		select_one(const css_selector& selector) override;
+		virtual element*			select_one(const tstring& selector) override;
+		virtual element*			select_one(const css_selector& selector) override;
 
-		virtual element::ptr		find_ancestor(const css_selector& selector, bool apply_pseudo = true, bool* is_pseudo = 0) override;
-		virtual element::ptr		find_adjacent_sibling(const element::ptr& el, const css_selector& selector, bool apply_pseudo = true, bool* is_pseudo = 0) override;
-		virtual element::ptr		find_sibling(const element::ptr& el, const css_selector& selector, bool apply_pseudo = true, bool* is_pseudo = 0) override;
+		virtual element*			find_ancestor(const css_selector& selector, bool apply_pseudo = true, bool* is_pseudo = 0) override;
+		virtual element*			find_adjacent_sibling(const element* el, const css_selector& selector, bool apply_pseudo = true, bool* is_pseudo = 0) override;
+		virtual element*			find_sibling(const element* el, const css_selector& selector, bool apply_pseudo = true, bool* is_pseudo = 0) override;
 		virtual void				get_text(tstring& text) override;
 		virtual void				parse_attributes() override;
 
-		virtual bool				is_first_child_inline(const element::ptr& el) const override;
-		virtual bool				is_last_child_inline(const element::ptr& el) override;
+		virtual bool				is_first_child_inline(const element* el) const override;
+		virtual bool				is_last_child_inline(const element* el) override;
 		virtual bool				have_inline_child() const override;
 		virtual void				get_content_size(size& sz, int max_width) override;
 		virtual void				init() override;
-		virtual void				get_inline_boxes(position::vector& boxes) override;
+		virtual void				get_inline_boxes( xVector<position>& boxes) override;
 		virtual bool				is_floats_holder() const override;
 		virtual int					get_floats_height(element_float el_float = element_float_none) const override;
 		virtual int					get_left_floats_height() const override;
@@ -222,23 +221,23 @@ namespace litehtml
 		virtual int					get_line_left(int y) override;
 		virtual int					get_line_right(int y, int def_right) override;
 		virtual void				get_line_left_right(int y, int def_right, int& ln_left, int& ln_right) override;
-		virtual void				add_float(const element::ptr &el, int x, int y) override;
-		virtual void				update_floats(int dy, const element::ptr &parent) override;
-		virtual void				add_positioned(const element::ptr &el) override;
+		virtual void				add_float(const element* el, int x, int y) override;
+		virtual void				update_floats(int dy, const element* parent) override;
+		virtual void				add_positioned(const element* el) override;
 		virtual int					find_next_line_top(int top, int width, int def_right) override;
 		virtual void				apply_vertical_align() override;
 		virtual void				draw_children(uint_ptr hdc, int x, int y, const position* clip, draw_flag flag, int zindex) override;
 		virtual int					get_zindex() const override;
 		virtual void				draw_stacking_context(uint_ptr hdc, int x, int y, const position* clip, bool with_positioned) override;
-		virtual void				calc_document_size(litehtml::size& sz, int x = 0, int y = 0) override;
-		virtual void				get_redraw_box(litehtml::position& pos, int x = 0, int y = 0) override;
-		virtual void				add_style(const litehtml::style& st) override;
-		virtual element::ptr		get_element_by_point(int x, int y, int client_x, int client_y) override;
-		virtual element::ptr		get_child_by_point(int x, int y, int client_x, int client_y, draw_flag flag, int zindex) override;
+		virtual void				calc_document_size(size& sz, int x = 0, int y = 0) override;
+		virtual void				get_redraw_box(position& pos, int x = 0, int y = 0) override;
+		virtual void				add_style(const style& st) override;
+		virtual element*			get_element_by_point(int x, int y, int client_x, int client_y) override;
+		virtual element*			get_child_by_point(int x, int y, int client_x, int client_y, draw_flag flag, int zindex) override;
 
-		virtual bool				is_nth_child(const element::ptr& el, int num, int off, bool of_type) const override;
-		virtual bool				is_nth_last_child(const element::ptr& el, int num, int off, bool of_type) const override;
-		virtual bool				is_only_child(const element::ptr& el, bool of_type) const override;
+		virtual bool				is_nth_child(const element* el, int num, int off, bool of_type) const override;
+		virtual bool				is_nth_last_child(const element* el, int num, int off, bool of_type) const override;
+		virtual bool				is_only_child(const element* el, bool of_type) const override;
 		virtual const background*	get_background(bool own_only = false) override;
 
 	protected:
@@ -252,17 +251,19 @@ namespace litehtml
 		void						draw_list_marker( uint_ptr hdc, const position &pos );
 		void						parse_nth_child_params( tstring param, int &num, int &off );
 		void						remove_before_after();
-		litehtml::element::ptr		get_element_before();
-		litehtml::element::ptr		get_element_after();
+		element*					get_element_before();
+		element*					get_element_after();
 	};
 
 	/************************************************************************/
 	/*                        Inline Functions                              */
 	/************************************************************************/
 
-	inline elements_vector& litehtml::html_tag::children()
+	/*
+	inline xVector<element>&		html_tag::children()
 	{
 		return m_children;
 	}
+	*/
 }
 

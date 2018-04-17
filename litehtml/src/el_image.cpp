@@ -4,7 +4,7 @@
 
 namespace litehtml
 {
-	el_image::el_image(const std::shared_ptr<document>& doc)
+	el_image::el_image(document* doc)
 		: html_tag(doc)
 	{
 		m_display = style_display_inline_block;
@@ -37,7 +37,7 @@ namespace litehtml
 
 		m_pos.move_to(x, y);
 
-		document::ptr doc = get_document();
+		document* doc = get_document();
 
 		size sz;
 		doc->container()->get_image_size(m_src.c_str(), 0, sz);

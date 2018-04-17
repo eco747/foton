@@ -112,7 +112,7 @@ namespace litehtml
 	 * @param media
 	 */
 
-	void css::parse_stylesheet( const tchar_t* str, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media )
+	void css::parse_stylesheet( const tchar_t* str, const tchar_t* baseurl, const document* doc, const media_query_list::ptr& media )
 	{
 		//todo: memory optim, think about not creating xstring but using directly str
 		xstring		text( str );
@@ -212,9 +212,10 @@ namespace litehtml
 	 * @return true if something added
 	 */
 
-	bool css::parse_selectors( const xstring& txt, const style::ptr& styles, const media_query_list::ptr& media )
+	bool css::parse_selectors( const xstring& txt, const style* styles, const media_query_list::ptr& media )
 	{
 		const tchar_t*	p = txt;
+		bool added_something = false;
 
 		while( *p ) {
 
@@ -236,14 +237,13 @@ namespace litehtml
 				if( q>start ) {
 
 					// parse selector
-					css_selector::ptr selector = std::make_shared<css_selector>(media);
-					selector->m_style = styles;
+					css_selector* selector = new css_selector( media, styles );
 
 					tstring	tok( start, q-start );
-					if(selector->parse(tok))
+					if( selector->parse(tok) )
 					{
-						selector->calc_specificity();
-						add_selector(selector);
+						selector->calc_specificity( );
+						add_selector( selector );
 						added_something = true;
 					}
 				}

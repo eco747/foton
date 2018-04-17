@@ -3,7 +3,7 @@
 
 namespace litehtml
 {
-	el_td::el_td(const std::shared_ptr<document>& doc)
+	el_td::el_td(document* doc)
 		: html_tag(doc)
 	{
 

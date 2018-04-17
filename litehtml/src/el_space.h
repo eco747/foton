@@ -4,10 +4,11 @@
 
 namespace litehtml
 {
-	class el_space : public el_text
+	class el_space
+		: public el_text
 	{
 	public:
-		el_space(const tchar_t* text, const std::shared_ptr<litehtml::document>& doc);
+		el_space(const tchar_t* text, document* doc);
 		virtual ~el_space();
 
 		virtual bool	is_white_space() const override;

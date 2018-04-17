@@ -94,12 +94,10 @@ namespace litehtml
 
 	struct position
 	{
-		typedef std::vector<position>	vector;
-
-		int	x;
-		int	y;
-		int	width;
-		int	height;
+		int		x;
+		int		y;
+		int		width;
+		int		height;
 
 		position()
 		{
@@ -589,7 +587,7 @@ namespace litehtml
 
 	struct floated_box
 	{
-		typedef std::vector<floated_box>	vector;
+		//typedef std::vector<floated_box>	vector;
 
 		position		pos;
 		element_float	float_side;

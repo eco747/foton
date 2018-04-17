@@ -4,7 +4,7 @@
 namespace litehtml
 {
 
-	el_cdata::el_cdata(const std::shared_ptr<document>& doc)
+	el_cdata::el_cdata(document* doc)
 		: element(doc)
 	{
 		m_skip = true;

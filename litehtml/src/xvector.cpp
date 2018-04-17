@@ -81,6 +81,16 @@ void* xVectorBase::_remove_at( uint32_t index )
 	return result;
 }
 
+void*	xVectorBase::_at( uint32_t index )
+{
+	assert( index<m_length );
+	return m_data[index];
+}
+
+void*  xVectorBase::_front( ) const {
+	return m_length==0 ? NULL : m_data[0];
+}
+
 void xVectorBase::_grow_if_full( ) 
 {
 	if ( m_length >= m_capacity ) {

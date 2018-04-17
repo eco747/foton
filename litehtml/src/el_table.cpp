@@ -6,7 +6,7 @@
 
 namespace litehtml
 {
-	el_table::el_table(const std::shared_ptr<document>& doc)
+	el_table::el_table(document* doc)
 		: html_tag(doc)
 	{
 		m_table_infos = std::unique_ptr<table_infos>(new table_infos());

@@ -4,7 +4,7 @@
 namespace litehtml
 {
 
-	el_comment::el_comment(const std::shared_ptr<document>& doc)
+	el_comment::el_comment(document* doc)
 		: element(doc)
 	{
 		m_skip = true;

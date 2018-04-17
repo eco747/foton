@@ -5,7 +5,7 @@
 namespace litehtml
 {
 
-	el_space::el_space(const tchar_t* text, const std::shared_ptr<document>& doc)
+	el_space::el_space(const tchar_t* text, document* doc)
 		: el_text(text, doc)
 	{
 	}

@@ -2,14 +2,14 @@
 #include "element.h"
 #include "document.h"
 
-#define{return ret; } {return ret; }
 
 namespace litehtml
 {
-element::element(const std::shared_ptr<document> &doc) : m_doc(doc)
+element::element( document* doc) 
+	: m_doc( doc )
 {
-	m_box = 0;
-	m_skip = false;
+	m_box 	= 0;
+	m_flags = 0;
 }
 
 element::~element()
@@ -18,24 +18,20 @@ element::~element()
 
 bool element::is_point_inside(int x, int y)
 {
-	if (get_display() != style_display_inline && get_display() != style_display_table_row)
+	if ( get_display() != style_display_inline && 
+		 get_display() != style_display_table_row)
 	{
-		position pos = m_pos;
+		position	pos = m_pos;
 		pos += m_padding;
 		pos += m_borders;
-		if (pos.is_point_inside(x, y))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		
+		return pos.is_point_inside(x, y);
 	}
 	else
 	{
-		position::vector boxes;
-		get_inline_boxes(boxes);
+		xVector<position>	boxes;
+		get_inline_boxes( boxes );
+
 		for (position::vector::iterator box = boxes.begin(); box != boxes.end(); box++)
 		{
 			if (box->is_point_inside(x, y))
@@ -62,34 +58,31 @@ web_color element::get_color(atom prop_name, bool inherited, const web_color &de
 position element::get_placement() const
 {
 	position pos = m_pos;
-	element::ptr cur_el = parent();
+	element* cur_el = parent();
+	
 	while (cur_el)
 	{
 		pos.x += cur_el->m_pos.x;
 		pos.y += cur_el->m_pos.y;
 		cur_el = cur_el->parent();
 	}
+
 	return pos;
 }
 
 bool element::is_inline_box() const
 {
 	style_display d = get_display();
-	if (d == style_display_inline ||
-		d == style_display_inline_block ||
-		d == style_display_inline_text)
-	{
-		return true;
-	}
-	return false;
+	return (d == style_display_inline || d == style_display_inline_block || d == style_display_inline_text );
 }
 
 bool element::collapse_top_margin() const
 {
-	if (!m_borders.top && !m_padding.top && in_normal_flow() && get_float() == element_float_none && m_margins.top >= 0 && have_parent())
+	if (!m_borders.top && !m_padding.top && in_normal_flow() && get_float()==element_float_none && m_margins.top>=0 && have_parent())
 	{
 		return true;
 	}
+
 	return false;
 }
 
@@ -110,9 +103,10 @@ bool element::get_predefined_height(int &p_height) const
 		p_height = m_pos.height;
 		return false;
 	}
+
 	if (h.units() == css_units_perc)
 	{
-		element::ptr el_parent = parent();
+		element* el_parent = parent();
 		if (!el_parent)
 		{
 			position client_pos;
@@ -139,6 +133,7 @@ bool element::get_predefined_height(int &p_height) const
 			}
 		}
 	}
+
 	p_height = get_document()->cvt_units(h, get_font_size());
 	return true;
 }
@@ -177,7 +172,7 @@ int element::calc_width(int defVal) const
 	}
 	if (w.units() == css_units_perc)
 	{
-		element::ptr el_parent = parent();
+		element* el_parent = parent();
 		if (!el_parent)
 		{
 			position client_pos;
@@ -197,24 +192,24 @@ int element::calc_width(int defVal) const
 	return get_document()->cvt_units(w, get_font_size());
 }
 
-bool element::is_ancestor(const ptr &el) const
+bool element::is_ancestor(const element* el) const
 {
-	element::ptr el_parent = parent();
-	while (el_parent && el_parent != el)
-	{
+	element* el_parent = parent();
+	while (el_parent && el_parent != el) {
 		el_parent = el_parent->parent();
 	}
-	if (el_parent)
-	{
+
+	if (el_parent) {
 		return true;
 	}
+
 	return false;
 }
 
 int element::get_inline_shift_left()
 {
 	int ret = 0;
-	element::ptr el_parent = parent();
+	element* el_parent = parent();
 	if (el_parent)
 	{
 		if (el_parent->get_display() == style_display_inline)
@@ -223,13 +218,14 @@ int element::get_inline_shift_left()
 
 			if (disp == style_display_inline_text || disp == style_display_inline_block)
 			{
-				element::ptr el = shared_from_this();
+				element* el = this;
 				while (el_parent && el_parent->get_display() == style_display_inline)
 				{
 					if (el_parent->is_first_child_inline(el))
 					{
 						ret += el_parent->padding_left() + el_parent->border_left() + el_parent->margin_left();
 					}
+					
 					el = el_parent;
 					el_parent = el_parent->parent();
 				}
@@ -243,7 +239,7 @@ int element::get_inline_shift_left()
 int element::get_inline_shift_right()
 {
 	int ret = 0;
-	element::ptr el_parent = parent();
+	element* el_parent = parent();
 	if (el_parent)
 	{
 		if (el_parent->get_display() == style_display_inline)
@@ -252,13 +248,14 @@ int element::get_inline_shift_right()
 
 			if (disp == style_display_inline_text || disp == style_display_inline_block)
 			{
-				element::ptr el = shared_from_this();
+				element* el = this;
 				while (el_parent && el_parent->get_display() == style_display_inline)
 				{
 					if (el_parent->is_last_child_inline(el))
 					{
 						ret += el_parent->padding_right() + el_parent->border_right() + el_parent->margin_right();
 					}
+					
 					el = el_parent;
 					el_parent = el_parent->parent();
 				}
@@ -274,7 +271,7 @@ void element::apply_relative_shift(int parent_width)
 	css_offsets offsets;
 	if (get_element_position(&offsets) == element_position_relative)
 	{
-		element::ptr parent_ptr = parent();
+		element* parent_ptr = parent();
 		if (!offsets.left.is_predefined())
 		{
 			m_pos.x += offsets.left.calc_percent(parent_width);
@@ -290,7 +287,7 @@ void element::apply_relative_shift(int parent_width)
 
 			if (offsets.top.units() == css_units_perc)
 			{
-				element::ptr el_parent = parent();
+				element* el_parent = parent();
 				if (el_parent)
 				{
 					el_parent->get_predefined_height(h);
@@ -305,7 +302,7 @@ void element::apply_relative_shift(int parent_width)
 
 			if (offsets.top.units() == css_units_perc)
 			{
-				element::ptr el_parent = parent();
+				element* el_parent = parent();
 				if (el_parent)
 				{
 					el_parent->get_predefined_height(h);
@@ -326,12 +323,12 @@ const background *element::get_background(bool own_only)
 	return 0;
 }
 
-element::ptr element::get_element_by_point(int x, int y, int client_x, int client_y)
+element* element::get_element_by_point(int x, int y, int client_x, int client_y)
 {
 	return 0;
 }
 
-element::ptr element::get_child_by_point(int x, int y, int client_x, int client_y, draw_flag flag, int zindex)
+element* element::get_child_by_point(int x, int y, int client_x, int client_y, draw_flag flag, int zindex)
 {
 	return 0;
 }
@@ -344,7 +341,7 @@ void element::add_style(const style &st)
 {
 }
 
-void element::select_all(const css_selector &selector, elements_vector &res)
+void element::select_all(const css_selector &selector, xVector<element*>& res)
 {
 }
 
@@ -358,37 +355,37 @@ elements_vector element::select_all(const tstring &selector)
 	return elements_vector(); 
 }
 
-element::ptr element::select_one(const css_selector &selector)
+element* element::select_one(const css_selector &selector)
 {
 	return 0;
 }
 
-element::ptr element::select_one(const tstring &selector)
+element* element::select_one(const tstring &selector)
 {
 	return 0;
 }
 
-element::ptr element::find_adjacent_sibling(const element::ptr &el, const css_selector &selector, bool apply_pseudo /*= true*/, bool *is_pseudo /*= 0*/)
+element* element::find_adjacent_sibling(const element* el, const css_selector &selector, bool apply_pseudo /*= true*/, bool *is_pseudo /*= 0*/)
 {
 	return 0;
 }
 
-element::ptr element::find_sibling(const element::ptr &el, const css_selector &selector, bool apply_pseudo /*= true*/, bool *is_pseudo /*= 0*/)
+element* element::find_sibling(const element* el, const css_selector &selector, bool apply_pseudo /*= true*/, bool *is_pseudo /*= 0*/)
 {
 	return 0;
 }
 
-bool element::is_nth_last_child(const element::ptr &el, int num, int off, bool of_type) const
+bool element::is_nth_last_child(const element* el, int num, int off, bool of_type) const
 {
 	return false;
 }
 
-bool element::is_nth_child(const element::ptr &, int num, int off, bool of_type) const
+bool element::is_nth_child(const element*, int num, int off, bool of_type) const
 {
 	return false;
 }
 
-bool element::is_only_child(const element::ptr &el, bool of_type) const
+bool element::is_only_child(const element* el, bool of_type) const
 {
 	return false;
 }
@@ -437,7 +434,7 @@ void element::set_css_width(css_length &w)
 
 }
 
-element::ptr element::get_child(int idx) const
+element* element::get_child(int idx) const
 {
 	return 0;
 }
@@ -497,12 +494,12 @@ vertical_align element::get_vertical_align() const
 	return vertical_align_baseline;
 }
 
-int element::place_element(const ptr &el, int max_width)
+int element::place_element(const element* el, int max_width)
 {
 	return 0;
 }
 
-int element::render_inline(const ptr &container, int max_width)
+int element::render_inline(const element* container, int max_width)
 {
 	return 0;
 }
@@ -577,12 +574,12 @@ int element::render(int x, int y, int max_width, bool second_pass)
 	return 0;
 }
 
-bool element::appendChild(const ptr &el)
+bool element::appendChild(const element* el)
 {
 	return false;
 }
 
-bool element::removeChild(const ptr &el)
+bool element::removeChild(const element* el)
 {
 	return false;
 }
@@ -687,7 +684,7 @@ bool element::on_lbutton_up()
 	return false;
 }
 
-bool element::find_styles_changes(position::vector &redraw_boxes, int x, int y)
+bool element::find_styles_changes( xVector<position>& redraw_boxes, int x, int y)
 {
 	return false;
 }
@@ -777,17 +774,17 @@ int element::select(const css_element_selector &selector, bool apply_pseudo /*= 
 	return select_no_match;
 }
 
-element::ptr element::find_ancestor(const css_selector &selector, bool apply_pseudo, bool *is_pseudo)
+element* element::find_ancestor(const css_selector &selector, bool apply_pseudo, bool *is_pseudo)
 {
 	return 0;
 }
 
-bool element::is_first_child_inline(const element::ptr &el) const
+bool element::is_first_child_inline(const element* el) const
 {
 	return false;
 }
 
-bool element::is_last_child_inline(const element::ptr &el)
+bool element::is_last_child_inline(const element* el)
 {
 	return false;
 }

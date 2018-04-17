@@ -384,7 +384,7 @@ namespace litehtml
 			return false;
 		}
 
-		element::ptr over_el = m_root->get_element_by_point(x, y, client_x, client_y);
+		element* over_el = m_root->get_element_by_point(x, y, client_x, client_y);
 
 		bool state_was_changed = false;
 
@@ -443,7 +443,7 @@ namespace litehtml
 			return false;
 		}
 
-		element::ptr over_el = m_root->get_element_by_point(x, y, client_x, client_y);
+		element* over_el = m_root->get_element_by_point(x, y, client_x, client_y);
 
 		bool state_was_changed = false;
 
@@ -503,10 +503,10 @@ namespace litehtml
 		return false;
 	}
 
-	element::ptr document::create_element(const tchar_t* _tag_name, const attr_map& attributes)
+	element* document::create_element(const tchar_t* _tag_name, const attr_map& attributes)
 	{
-		element::ptr newTag;
-		document::ptr this_doc = shared_from_this();
+		element* newTag;
+		document* this_doc = this;
 
 		atom tag_name = atom_create(_tag_name);
 
@@ -519,21 +519,21 @@ namespace litehtml
 			if( tag_name==atom_br ) {
 				newTag = std::make_shared<el_break>(this_doc);
 			}
-			else if( tag_name==atom_p )		{ newTag = std::make_shared<el_para>(this_doc); }
-			else if( tag_name==atom_img )	{ newTag = std::make_shared<el_image>(this_doc); }
-			else if(tag_name==atom_table)	{ newTag = std::make_shared<el_table>(this_doc); }
-			else if(tag_name==atom_td || tag_name==atom_th ) { newTag = std::make_shared<el_td>(this_doc); }
-			else if( tag_name==atom_link )	{ newTag = std::make_shared<el_link>(this_doc); }
-			else if(tag_name==atom_title)	{ newTag = std::make_shared<el_title>(this_doc); }
-			else if( tag_name==atom_a )		{ newTag = std::make_shared<el_anchor>(this_doc); }
-			else if(tag_name==atom_tr)		{ newTag = std::make_shared<el_tr>(this_doc); }
-			else if(tag_name==atom_style)	{ newTag = std::make_shared<el_style>(this_doc); }
-			else if(tag_name==atom_base )	{ newTag = std::make_shared<el_base>(this_doc); }
-			else if(tag_name==atom_body)	{ newTag = std::make_shared<el_body>(this_doc); }
-			else if(tag_name==atom_div)		{ newTag = std::make_shared<el_div>(this_doc); }
-			else if(tag_name==atom_script)	{ newTag = std::make_shared<el_script>(this_doc); }
-			else if(tag_name==atom_font )	{ newTag = std::make_shared<el_font>(this_doc); }
-			else							{ newTag = std::make_shared<html_tag>(this_doc); }
+			else if( tag_name==atom_p )		{ newTag = new el_para(this_doc); }
+			else if( tag_name==atom_img )	{ newTag = new el_image(this_doc); }
+			else if(tag_name==atom_table)	{ newTag = new el_table(this_doc); }
+			else if(tag_name==atom_td || tag_name==atom_th ) { newTag = new el_td(this_doc); }
+			else if( tag_name==atom_link )	{ newTag = new el_link(this_doc); }
+			else if(tag_name==atom_title)	{ newTag = new el_title(this_doc); }
+			else if( tag_name==atom_a )		{ newTag = new el_anchor(this_doc); }
+			else if(tag_name==atom_tr)		{ newTag = new el_tr(this_doc); }
+			else if(tag_name==atom_style)	{ newTag = new el_style(this_doc); }
+			else if(tag_name==atom_base )	{ newTag = new el_base(this_doc); }
+			else if(tag_name==atom_body)	{ newTag = new el_body(this_doc); }
+			else if(tag_name==atom_div)		{ newTag = new el_div(this_doc); }
+			else if(tag_name==atom_script)	{ newTag = new el_script(this_doc); }
+			else if(tag_name==atom_font )	{ newTag = new el_font(this_doc); }
+			else							{ newTag = new html_tag(this_doc); }
 		}
 
 		if(newTag)
@@ -607,13 +607,13 @@ namespace litehtml
 		return update_styles;
 	}
 
-	void document::add_media_list( media_query_list::ptr list )
+	void document::add_media_list( media_query_list* list )
 	{
 		if(list)
 		{
 			if(std::find(m_media_lists.begin(), m_media_lists.end(), list) == m_media_lists.end())
 			{
-				m_media_lists.push_back(list);
+				m_media_lists.add( list );
 			}
 		}
 	}

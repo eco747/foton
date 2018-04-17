@@ -4,12 +4,12 @@ namespace litehtml
 {
 	struct table_row
 	{
-		typedef std::vector<table_row>	vector;
+//		typedef std::vector<table_row>	vector;
 
 		int				height;
 		int				border_top;
 		int				border_bottom;
-		element::ptr	el_row;
+		element*		el_row;
 		int				top;
 		int				bottom;
 		css_length		css_height;
@@ -27,7 +27,7 @@ namespace litehtml
 			css_height.predef(0);
 		}
 
-		table_row(int h, element::ptr& row)
+		table_row(int h, element* row)
 		{
 			min_height		= 0;
 			height			= h;
@@ -53,7 +53,7 @@ namespace litehtml
 			css_height = val.css_height;
 			el_row = val.el_row;
 		}
-
+/*
 		table_row(table_row&& val)
 		{
 			min_height = val.min_height;
@@ -65,11 +65,12 @@ namespace litehtml
 			css_height = val.css_height;
 			el_row = std::move(val.el_row);
 		}
+*/
 	};
 
 	struct table_column
 	{
-		typedef std::vector<table_column>	vector;
+//		typedef std::vector<table_column>	vector;
 		
 		int			min_width;
 		int			max_width;
@@ -117,6 +118,7 @@ namespace litehtml
 		}
 	};
 
+
 	class table_column_accessor
 	{
 	public:
@@ -143,7 +145,7 @@ namespace litehtml
 
 	struct table_cell
 	{
-		element::ptr	el;
+		element*		el;
 		int				colspan;
 		int				rowspan;
 		int				min_width;
@@ -181,9 +183,10 @@ namespace litehtml
 			borders			= val.borders;
 		}
 
+		/*
 		table_cell(const table_cell&& val)
 		{
-			el = std::move(val.el);
+			el = val.el;
 			colspan = val.colspan;
 			rowspan = val.rowspan;
 			width = val.width;
@@ -194,18 +197,20 @@ namespace litehtml
 			max_height = val.max_height;
 			borders = val.borders;
 		}
+		*/
 	};
 
 	class table_grid
 	{
-	public:
-		typedef std::vector< std::vector<table_cell> >	rows;
+//	public:
+//		typedef std::vector< std::vector<table_cell> >	rows;
+
 	private:
 		int						m_rows_count;
 		int						m_cols_count;
-		rows					m_cells;
-		table_column::vector	m_columns;
-		table_row::vector		m_rows;
+		//xVector<table_cell>		m_cells;
+		xVector<table_column>	m_columns;
+		xVector<table_row>		m_rows;
 	public:
 
 		table_grid()
@@ -215,8 +220,8 @@ namespace litehtml
 		}
 
 		void			clear();
-		void			begin_row(element::ptr& row);
-		void			add_cell(element::ptr& el);
+		void			begin_row(element* row);
+		void			add_cell(element* el);
 		bool			is_rowspanned(int r, int c);
 		void			finish();
 		table_cell*		cell(int t_col, int t_row);

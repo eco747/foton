@@ -5,7 +5,7 @@
 namespace litehtml
 {
 
-	el_script::el_script(const std::shared_ptr<document>& doc)
+	el_script::el_script(document* doc)
 		: element(doc)
 	{
 

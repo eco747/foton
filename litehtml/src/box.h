@@ -12,9 +12,9 @@ namespace litehtml
 
 	class box
 	{
-	public:
-		typedef std::unique_ptr<litehtml::box>	ptr;
-		typedef std::vector< box::ptr >			vector;
+//	public:
+//		typedef std::unique_ptr<box>	ptr;
+//		typedef std::vector< box::ptr >			vector;
 	protected:
 		int		m_box_top;
 		int		m_box_left;
@@ -33,60 +33,65 @@ namespace litehtml
 		int		right()		{ return m_box_left + width();	}
 		int		left()		{ return m_box_left;			}
 
-		virtual litehtml::box_type	get_type() = 0;
+		virtual box_type			get_type() = 0;
 		virtual int					height() = 0;
 		virtual int					width() = 0;
-		virtual void				add_element(const element::ptr &el) = 0;
-		virtual bool				can_hold(const element::ptr &el, white_space ws) = 0;
+		virtual void				add_element( element* el) = 0;
+		virtual bool				can_hold( element* el, white_space ws) = 0;
 		virtual void				finish(bool last_box = false) = 0;
 		virtual bool				is_empty() = 0;
 		virtual int					baseline() = 0;
-		virtual void				get_elements(elements_vector& els) = 0;
+		virtual void				get_elements( xVector<element>& els) = 0;
 		virtual int					top_margin() = 0;
 		virtual int					bottom_margin() = 0;
 		virtual void				y_shift(int shift) = 0;
-		virtual void				new_width(int left, int right, elements_vector& els) = 0;
+		virtual void				new_width(int left, int right, xVector<element>& els) = 0;
 	};
 
 	//////////////////////////////////////////////////////////////////////////
 
-	class block_box : public box
+	class block_box
+		: public box
 	{
-		element::ptr m_element;
+		element*	 m_element;
+
 	public:
 		block_box(int top, int left, int right) : box(top, left, right)
 		{
 			m_element = 0;
 		}
 
-		virtual litehtml::box_type	get_type();
+		virtual box_type			get_type();
 		virtual int					height();
 		virtual int					width();
-		virtual void				add_element(const element::ptr &el);
-		virtual bool				can_hold(const element::ptr &el, white_space ws);
+		virtual void				add_element( element* el);
+		virtual bool				can_hold( element* el, white_space ws);
 		virtual void				finish(bool last_box = false);
 		virtual bool				is_empty();
 		virtual int					baseline();
-		virtual void				get_elements(elements_vector& els);
+		virtual void				get_elements( xVector<element>& els);
 		virtual int					top_margin();
 		virtual int					bottom_margin();
 		virtual void				y_shift(int shift);
-		virtual void				new_width(int left, int right, elements_vector& els);
+		virtual void				new_width(int left, int right, xVector<element>& els);
 	};
 
 	//////////////////////////////////////////////////////////////////////////
 
-	class line_box : public box
+	class line_box
+		: public box
 	{
-		elements_vector			m_items;
+		xVector<element>		m_items;
 		int						m_height;
 		int						m_width;
 		int						m_line_height;
 		font_metrics			m_font_metrics;
 		int						m_baseline;
 		text_align				m_text_align;
+
 	public:
-		line_box(int top, int left, int right, int line_height, font_metrics& fm, text_align align) : box(top, left, right)
+		line_box(int top, int left, int right, int line_height, const font_metrics& fm, text_align align)
+			: box(top, left, right)
 		{
 			m_height		= 0;
 			m_width			= 0;
@@ -96,19 +101,19 @@ namespace litehtml
 			m_text_align	= align;
 		}
 
-		virtual litehtml::box_type	get_type();
+		virtual box_type			get_type();
 		virtual int					height();
 		virtual int					width();
-		virtual void				add_element(const element::ptr &el);
-		virtual bool				can_hold(const element::ptr &el, white_space ws);
+		virtual void				add_element( element* el);
+		virtual bool				can_hold( element* el, white_space ws);
 		virtual void				finish(bool last_box = false);
 		virtual bool				is_empty();
 		virtual int					baseline();
-		virtual void				get_elements(elements_vector& els);
+		virtual void				get_elements( xVector<element>& els);
 		virtual int					top_margin();
 		virtual int					bottom_margin();
 		virtual void				y_shift(int shift);
-		virtual void				new_width(int left, int right, elements_vector& els);
+		virtual void				new_width(int left, int right, xVector<element>& els);
 
 	private:
 		bool						have_last_space();

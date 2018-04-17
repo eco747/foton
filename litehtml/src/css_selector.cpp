@@ -242,7 +242,7 @@ namespace litehtml {
 
 		if(!left.empty())
 		{
-			m_left = std::make_shared<css_selector>(media_query_list::ptr(0));
+			m_left = new css_selector( 0 );
 			if(!m_left->parse(left))
 			{
 				return false;

@@ -4,7 +4,7 @@
 
 namespace litehtml {
 
-	el_link::el_link(const std::shared_ptr<document>& doc)
+	el_link::el_link(document* doc)
 		: html_tag(doc)
 	{
 

@@ -3,7 +3,7 @@
 
 namespace litehtml
 {
-	el_break::el_break(const std::shared_ptr<document>& doc)
+	el_break::el_break( document* doc)
 		: html_tag(doc)
 	{
 	}

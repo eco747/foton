@@ -4,7 +4,7 @@
 
 namespace litehtml
 {
-	el_style::el_style(const std::shared_ptr<document>& doc)
+	el_style::el_style(document* doc)
 		: element(doc)
 	{
 

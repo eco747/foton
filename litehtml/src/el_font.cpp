@@ -4,7 +4,7 @@
 namespace litehtml
 {
 
-	el_font::el_font(const std::shared_ptr<document>& doc)
+	el_font::el_font(document* doc)
 		: html_tag(doc)
 	{
 
