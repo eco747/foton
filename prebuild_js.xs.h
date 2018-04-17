@@ -440,10 +440,10 @@ extern void dom_element_get_parent(xsMachine* the);
 #define xsID_paddings -32360
 #define xsID_borders -32359
 #define xsID_right -32358
-#define xsID_width -32357
-#define xsID_get_style -32356
-#define xsID_margins -32355
-#define xsID_tagName -32354
-#define xsID_left -32353
+#define xsID_width -32356
+#define xsID_get_style -32355
+#define xsID_margins -32354
+#define xsID_tagName -32353
+#define xsID_left -32352
 #define xsID_appendChild -32351
 

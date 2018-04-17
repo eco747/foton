@@ -3,10 +3,15 @@
 #include "stylesheet.h"
 
 
-void litehtml::context::load_master_stylesheet( const tchar_t* str )
-{
-	media_query_list::ptr media;
+namespace litehtml {
 
-	m_master_css.parse_stylesheet(str, 0, std::shared_ptr<litehtml::document>(), media_query_list::ptr());
-	m_master_css.sort_selectors();
+
+	void context::load_master_stylesheet( const tchar_t* str )
+	{
+		media_query_list::ptr media;
+
+		m_master_css.parse_stylesheet(str, 0, std::shared_ptr<litehtml::document>(), media_query_list::ptr());
+		m_master_css.sort_selectors();
+	}
+
 }

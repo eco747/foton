@@ -303,7 +303,7 @@ generate( 'none;all;screen;print;braille;embossed;handheld;projection;speech;tty
 
 
 generate( 'pseudo-el;before;after;pseudo;id;class;inherit;auto;br;p;table;td;th;img;link;title;a;tr;style;base;body;div;script;' +
-	'font;::before;::after;tbody;thead;tfoot;*;href;src;align;text-align;display;color;face;font-face;size;font-size;height;width;rel;media;cellspacing;cellpadding;border-spacing;' +
+	'font;::before;::after;tbody;thead;tfoot;*;href;src;text-align;display;color;face;font-face;size;font-size;height;width;rel;media;cellspacing;cellpadding;border-spacing;' +
 	'border-width;border;bgcolor;background-color;background;valign;vertical-align;border-left-style;border-right-style;border-top-style;border-bottom-style;border-left-width;' +
 	'border-right-width;border-top-width;border-bottom-width;border-left-color;border-right-color;border-top-color;border-bottom-color;colspan;rowspan;border-collapse;text-transform;' +
 	'position;overflow;white-space;visibility;box-sizing;z-index;float;clear;text-indent;min-width;min-height;max-width;max-height;line-height;left;top;right;bottom;margin;' +
