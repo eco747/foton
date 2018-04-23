@@ -118,6 +118,9 @@ namespace litehtml
 		html_tag( document* doc);
 		virtual ~html_tag();
 
+		virtual bool				appendChild( element* el) override;
+		virtual bool				removeChild( element* el ) override;
+
 		/* render functions */
 
 		virtual int					render(int x, int y, int max_width, bool second_pass = false) override;
@@ -132,8 +135,8 @@ namespace litehtml
 		int							get_cleared_top(const element* el, int line_top) const;
 		int							finish_last_box(bool end_of_render = false);
 
-		virtual bool				appendChild(const element* el) override;
-		virtual bool				removeChild(const element* el) override;
+		
+		
 		virtual void				clearRecursive() override;
 		virtual atom				get_tagName() const override;
 		virtual void				set_tagName( atom tag) override;

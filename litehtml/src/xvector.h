@@ -21,10 +21,12 @@ namespace litehtml
 		void 	_remove( void* el );
 		void* 	_remove_at( uint32_t index );
 		void*	_at( uint32_t index ) const;
-		void*	_front( ) const;
+		void*	_first( ) const;
+		void*	_last( ) const;
 
 	public:
 		void	 clear( );
+		void 	 copy( const XVectorBase& );
 		uint32_t length( ) const { return m_length; }
 		bool 	 empty( ) const {return m_length==0; }
 
@@ -52,6 +54,10 @@ namespace litehtml
 			return (type*)_pop( );
 		}
 
+		type* operator [] ( uint32_t index ) const {
+			return (type*)_at( index );
+		}
+
 		type*	at( uint32_t index ) const
 		{
 			return (type*)_at( index );
@@ -77,8 +83,12 @@ namespace litehtml
 			return (type*)_remove_at( index );
 		}
 
-		type*  front( ) const {
-			return _front( );
+		type*  first( ) const {
+			return _first( );
+		}
+
+		type*  last( ) const {
+			return _last;
 		}
 	};
 }

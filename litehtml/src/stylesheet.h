@@ -17,13 +17,13 @@ namespace litehtml
 		
 		~css()
 		{
-			m_selectors.clear( );
+			clear( );
 		}
 
-		const xVector<css_selector>& selectors() const
-		{
-			return m_selectors;
-		}
+		//const xVector<css_selector>& selectors() const
+		//{
+		//	return m_selectors;
+		//}
 
 		void clear()
 		{
@@ -32,6 +32,7 @@ namespace litehtml
 
 		void	parse_stylesheet(const tchar_t* str, const tchar_t* baseurl, const document* doc, const media_query_list::ptr& media);
 		void	sort_selectors();
+		
 		static void	parse_css_url(const xstring& str, xstring& url);
 
 	private:

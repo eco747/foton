@@ -1,5 +1,4 @@
 #include "html.h"
-
 #include <qDebug>
 
 namespace litehtml {

@@ -17,7 +17,6 @@ namespace litehtml
 	void el_anchor::on_click()
 	{
 		const tchar_t* href = get_attr( atom_href );
-
 		if(href) {
 			get_document()->container()->on_anchor_click(href, this);
 		}

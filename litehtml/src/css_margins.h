@@ -12,10 +12,9 @@ namespace litehtml
 
 		css_margins()
 		{
-
 		}
 
-		css_margins(const css_margins& val)
+		css_margins( const css_margins& val )
 		{
 			left	= val.left;
 			right	= val.right;
@@ -23,7 +22,7 @@ namespace litehtml
 			bottom	= val.bottom;
 		}
 
-		css_margins& operator=(const css_margins& val)
+		css_margins& operator = (const css_margins& val)
 		{
 			left	= val.left;
 			right	= val.right;

@@ -14,7 +14,7 @@
 #include "background.h"
 #include "borders.h"
 #include "html_tag.h"
-#include "web_color.h"
+#include "css_color.h"
 #include "media_query.h"
 
 namespace litehtml

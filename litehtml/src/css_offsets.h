@@ -12,7 +12,6 @@ namespace litehtml
 
 		css_offsets()
 		{
-
 		}
 
 		css_offsets(const css_offsets& val)

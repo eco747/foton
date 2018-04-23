@@ -36,6 +36,11 @@ namespace litehtml {
 		//m_table_infos->m_border_spacing_x		= 0;
 		//m_table_infos->m_border_spacing_y		= 0;
 		//m_table_infos->m_border_collapse		= border_collapse_separate;
+
+		m_next_element	= NULL;
+		m_prev_element	= NULL;
+		m_first_child	= NULL;
+		m_last_child	= NULL;
 	}
 
 	html_tag::~html_tag()
@@ -43,26 +48,52 @@ namespace litehtml {
 
 	}
 
-	bool html_tag::appendChild(const element::ptr &el)
+	bool html_tag::appendChild(element* el)
 	{
-		if( el )
-		{
-			el->parent(shared_from_this());
-			m_children.push_back(el);
-			return true;
+		if( !el ) {
+			return false;
 		}
-		return false;
+
+		el->set_parent(this);
+
+		if( m_first_child==NULL ) {
+			m_first_child = m_last_child = el;
+		}
+		else {
+			m_last_child->m_next_element = el;
+			el->m_prev_element 	= m_last_child;
+			m_last_child = el;
+		}
+			
+		return true;
 	}
 
-	bool html_tag::removeChild(const element::ptr &el)
+	bool html_tag::removeChild( element* el)
 	{
-		if(el && el->parent() == shared_from_this())
-		{
-			el->parent(nullptr);
-			m_children.erase(std::remove(m_children.begin(), m_children.end(), el), m_children.end());
-			return true;
+		if( !el || el->parent() != this ){
+			return false;
 		}
-		return false;
+
+		el->set_parent( NULL );
+
+		if( m_first_child==el ) {
+			
+			if( el->m_next_element) {
+				el->m_next_element->m_prev_element = el->m_prev_element;
+			}
+			else {
+				m_last_child = el->m_prev_element;
+			}
+
+			if( el->m_prev_element ) {
+				el->m_prev_element->m_next_element = el->m_next_element;
+			}
+			else {
+				m_first_child = el->m_next_element;
+			}
+		}
+
+		return true;
 	}
 
 	void html_tag::clearRecursive()

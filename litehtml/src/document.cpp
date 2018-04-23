@@ -49,26 +49,26 @@ namespace litehtml
 		}
 	}
 
-	document::ptr document::createFromString( const tchar_t* str, document_container* objPainter, context* ctx, css* user_styles)
+	document* document::createFromString( const tchar_t* str, document_container* objPainter, context* ctx, css* user_styles)
 	{
 		return createFromUTF8(litehtml_to_utf8(str), objPainter, ctx, user_styles);
 	}
 
-	document::ptr document::createFromUTF8(const char* str, document_container* objPainter, context* ctx, css* user_styles)
+	document* document::createFromUTF8(const char* str, document_container* objPainter, context* ctx, css* user_styles)
 	{
 		// parse document into GumboOutput
 		GumboOutput* output = gumbo_parse((const char*) str);
 
 		// Create document
-		document::ptr doc = std::make_shared<document>(objPainter, ctx);
+		document* doc = new document(objPainter, ctx);
 
 		// Create elements.
 		elements_vector root_elements;
 		doc->create_node(output->root, root_elements);
-		if (!root_elements.empty())
-		{
+		if (!root_elements.empty()) {
 			doc->m_root = root_elements.back();
 		}
+
 		// Destroy GumboOutput
 		gumbo_destroy_output(&kGumboDefaultOptions, output);
 
@@ -323,41 +323,42 @@ namespace litehtml
 			ret = val.calc_percent(size);
 			break;
 		case css_units_em:
-			ret = round_f(val.val() * fontSize);
+			ret = round_f(val.value() * fontSize);
 			val.set_value((float) ret, css_units_px);
 			break;
 		case css_units_pt:
-			ret = m_container->pt_to_px((int) val.val());
+			ret = m_container->pt_to_px((int) val.value());
 			val.set_value((float) ret, css_units_px);
 			break;
 		case css_units_in:
-			ret = m_container->pt_to_px((int) (val.val() * 72));
+			ret = m_container->pt_to_px((int) (val.value() * 72));
 			val.set_value((float) ret, css_units_px);
 			break;
 		case css_units_cm:
-			ret = m_container->pt_to_px((int) (val.val() * 0.3937 * 72));
+			ret = m_container->pt_to_px((int) (val.value() * 0.3937 * 72));
 			val.set_value((float) ret, css_units_px);
 			break;
 		case css_units_mm:
-			ret = m_container->pt_to_px((int) (val.val() * 0.3937 * 72) / 10);
+			ret = m_container->pt_to_px((int) (val.value() * 0.3937 * 72) / 10);
 			val.set_value((float) ret, css_units_px);
 			break;
 		case css_units_vw:
-			ret = (int)((double)m_media.width * (double)val.val() / 100.0);
+			ret = (int)((double)m_media.width * (double)val.value() / 100.0);
 			break;
 		case css_units_vh:
-			ret = (int)((double)m_media.height * (double)val.val() / 100.0);
+			ret = (int)((double)m_media.height * (double)val.value() / 100.0);
 			break;
 		case css_units_vmin:
-			ret = (int)((double)std::min(m_media.height, m_media.width) * (double)val.val() / 100.0);
+			ret = (int)((double)std::min(m_media.height, m_media.width) * (double)val.value() / 100.0);
 			break;
 		case css_units_vmax:
-			ret = (int)((double)std::max(m_media.height, m_media.width) * (double)val.val() / 100.0);
+			ret = (int)((double)std::max(m_media.height, m_media.width) * (double)val.value() / 100.0);
 			break;
 		default:
-			ret = (int) val.val();
+			ret = (int) val.value();
 			break;
 		}
+
 		return ret;
 	}
 
@@ -516,9 +517,7 @@ namespace litehtml
 
 		if(!newTag)
 		{
-			if( tag_name==atom_br ) {
-				newTag = std::make_shared<el_break>(this_doc);
-			}
+			if( tag_name==atom_br ) 		{newTag = new el_break(this_doc); }
 			else if( tag_name==atom_p )		{ newTag = new el_para(this_doc); }
 			else if( tag_name==atom_img )	{ newTag = new el_image(this_doc); }
 			else if(tag_name==atom_table)	{ newTag = new el_table(this_doc); }
@@ -618,7 +617,11 @@ namespace litehtml
 		}
 	}
 
-	void document::create_node(GumboNode* node, elements_vector& elements)
+	/**
+	 * 
+	 */
+
+	element*	document::create_node( GumboNode* node )
 	{
 		switch (node->type)
 		{
@@ -633,7 +636,7 @@ namespace litehtml
 				}
 
 
-				element::ptr ret;
+				element*	ret;
 				const char* tag = gumbo_normalized_tagname(node->v.element.tag);
 
 				if (tag[0]) {
@@ -710,29 +713,33 @@ namespace litehtml
 				}
 			}
 			break;
+
 		case GUMBO_NODE_CDATA:
 			{
-				element::ptr ret = std::make_shared<el_cdata>(shared_from_this());
+				element* ret = new el_cdata(this);
 				ret->set_data(litehtml_from_utf8(node->v.text.text));
 				elements.push_back(ret);
 			}
 			break;
+
 		case GUMBO_NODE_COMMENT:
 			{
-				element::ptr ret = std::make_shared<el_comment>(shared_from_this());
+				element* ret = new el_comment(this);
 				ret->set_data(litehtml_from_utf8(node->v.text.text));
 				elements.push_back(ret);
 			}
 			break;
+
 		case GUMBO_NODE_WHITESPACE:
 			{
 				tstring str = litehtml_from_utf8(node->v.text.text);
 				for (size_t i = 0; i < str.length(); i++)
 				{
-					elements.push_back(std::make_shared<el_space>(str.substr(i, 1).c_str(), shared_from_this()));
+					elements.push_back( new el_space(str.substr(i, 1).c_str(), this) );
 				}
 			}
 			break;
+
 		default:
 			break;
 		}
@@ -743,7 +750,7 @@ namespace litehtml
 		size_t i = 0;
 		while (i < m_tabular_elements.size())
 		{
-			element::ptr el_ptr = m_tabular_elements[i];
+			element* el_ptr = m_tabular_elements[i];
 
 			switch (el_ptr->get_display())
 			{
@@ -775,7 +782,7 @@ namespace litehtml
 		}
 	}
 
-	void document::fix_table_children(element::ptr& el_ptr, style_display disp, const tchar_t* disp_str)
+	void document::fix_table_children(element* el_ptr, style_display disp, const tchar_t* disp_str)
 	{
 		elements_vector tmp;
 		elements_vector::iterator first_iter = el_ptr->m_children.begin();
@@ -783,18 +790,22 @@ namespace litehtml
 
 		auto flush_elements = [&]()
 		{
-			element::ptr annon_tag = std::make_shared<html_tag>(shared_from_this());
 			style st;
+			
+			element* annon_tag = new html_tag( this );
 			st.add_property(atom_display, disp_str, 0, false);
+
 			annon_tag->add_style(st);
 			annon_tag->parent(el_ptr);
 			annon_tag->parse_styles();
+			
 			std::for_each(tmp.begin(), tmp.end(),
 				[&annon_tag](element::ptr& el)
 				{
 					annon_tag->appendChild(el);
 				}
 			);
+
 			first_iter = el_ptr->m_children.insert(first_iter, annon_tag);
 			cur_iter = first_iter + 1;
 			while (cur_iter != el_ptr->m_children.end() && (*cur_iter)->parent() != el_ptr)
@@ -836,7 +847,7 @@ namespace litehtml
 
 	void document::fix_table_parent(element::ptr& el_ptr, style_display disp, const tchar_t* disp_str)
 	{
-		element::ptr parent = el_ptr->parent();
+		element* parent = el_ptr->parent();
 
 		if (parent->get_display() != disp)
 		{
@@ -890,7 +901,7 @@ namespace litehtml
 				}
 
 				// extract elements with the same display and wrap them with anonymous object
-				element::ptr annon_tag = std::make_shared<html_tag>(shared_from_this());
+				element* annon_tag = std::make_shared<html_tag>(shared_from_this());
 				style st;
 				st.add_property(atom_display, disp_str, 0, false);
 				annon_tag->add_style(st);
@@ -913,7 +924,7 @@ namespace litehtml
 		size_t i = 0;
 		while (i < m_flex_elements.size())
 		{
-			element::ptr el_ptr = m_flex_elements[i];
+			element* el_ptr = m_flex_elements[i];
 
 			//	vertical
 			//el_ptr

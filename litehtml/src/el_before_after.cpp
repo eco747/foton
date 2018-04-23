@@ -121,8 +121,8 @@ namespace litehtml
 
 
 							element* el = new el_image(get_document());
-							el->set_attr( atom_src, property_value(url) );
-							el->set_attr( atom_style, property_value("display:inline-block"));
+							el->set_attr( atom_src, css_value(url) );
+							el->set_attr( atom_style, css_value("display:inline-block"));
 							el->set_tagName( atom_img /*_t("img")*/);
 							appendChild(el);
 
@@ -143,9 +143,9 @@ namespace litehtml
 								atom	a_name = atom_create(param.c_str(), false );
 
 								if( a_name!=atom_null ) {	// unknown name
-									property_value attr_value = el_parent->get_attr( a_name );
-									if ( attr_value!=property_value::undefined ) {
-										add_text( attr_value );
+									css_value* attr_value = el_parent->get_attr( a_name );
+									if ( attr_value ) {
+										add_text( *attr_value );
 									}
 								}
 							}

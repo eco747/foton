@@ -100,10 +100,9 @@ namespace litehtml {
 		}
 	}
 
-	void style::add_property(atom name, property_value& value, const tchar_t* baseurl, bool important )
+	void style::add_property(atom name, css_value* value, const tchar_t* baseurl, bool important )
 	{
-		if(!name || !value)
-		{
+		if(!name || !value) {
 			return;
 		}
 
@@ -144,7 +143,7 @@ namespace litehtml {
 			{
 				idx = get_border_style( tok->c_str(), tok->length(), -1 );
 				if(idx >= 0) {
-					property_value	bstyle( (atom)idx,important );
+					css_value	bstyle( (atom)idx, important );
 					add_property(atom_border_left_style, bstyle, baseurl );
 					add_property(atom_border_right_style, bstyle, baseurl );
 					add_property(atom_border_top_style, bstyle, baseurl );
@@ -152,8 +151,7 @@ namespace litehtml {
 				}
 				else if ( t_isdigit((*tok)[0]) || (*tok)[0] == _t('.') )
 				{
-					css_length	length;
-					property_value	bwidth( length.fromString(tok->c_str(),0) );
+					css_value	bwidth( css_length::fromString(tok->c_str(),0) );
 
 					add_property(atom_border_left_width, bwidth, baseurl, important);
 					add_property(atom_border_right_width, bwidth, baseurl, important);
@@ -161,7 +159,7 @@ namespace litehtml {
 					add_property(atom_border_bottom_width, bwidth, baseurl, important);
 				}
 				else if( (idx=get_border_width( tok->c_str(), tok->length(), -1 )>=0 ) {
-					property_value	bwidth( (atom)idx, important );
+					css_value	bwidth( (atom)idx, important );
 
 					add_property(atom_border_left_width, bwidth, baseurl, important);
 					add_property(atom_border_right_width, bwidth, baseurl, important);
@@ -170,7 +168,7 @@ namespace litehtml {
 				}
 				else
 				{
-					property_value	bcolor( web_color(tok->c_str()), important );
+					css_value	bcolor( web_color(tok->c_str()), important );
 
 					add_property(atom_border_left_color, bcolor, baseurl, important);
 					add_property(atom_border_right_color, bcolor, baseurl, important);
@@ -834,7 +832,7 @@ namespace litehtml {
 		add_parsed_property( atom_font_family, font_family, important );
 	}
 
-	void style::add_parsed_property(atom name, const property_value& val, bool important )
+	void style::add_parsed_property(atom name, const css_value& val, bool important )
 	{
 		bool is_valid = true;
 
@@ -857,10 +855,25 @@ namespace litehtml {
 			}
 			else
 			{
-				m_properties[name] = property_value(val.c_str(), important);
+				m_properties[name] = css_value(val.c_str(), important);
 			}
 		}
 	}
+
+	const css_value*	style::get_property( atom name ) const
+	{
+		if( name ) {
+			for( uint32_t i=0; i<m_properties.length(); i++ ) {
+				css_property*	a = m_properties[i];
+				if( a->name==name ) {
+					return &a->value;
+				}
+			}
+		}
+
+		return NULL;
+	}
+
 
 	/* no used
 	void style::remove_property( atom name, bool important )

@@ -12,7 +12,6 @@ namespace litehtml
 
 		css_position()
 		{
-
 		}
 
 		css_position(const css_position& val)

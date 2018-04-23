@@ -6,22 +6,10 @@
 
 namespace litehtml
 {
-	struct 	property_length 
-	{
-		union
-		{
-			float	value;
-			int		predef;			// predefined size, depend of the thing being measured.
-		};
-
-		uint8_t		units;			//css_unit
-		uint8_t		is_predefined;	//bool
-	};
-		
-	class	property_value
+	class	css_value
 	{
 	public:
-		static	property_value	undefined;
+		static	css_value	undefined;
 
 	public:
 
@@ -34,49 +22,49 @@ namespace litehtml
 		};
 
 		union {
-			tchar_t*		str;
-			uint32_t		color;
-			atom 			atm;
-			property_length	length;
+			tchar_t*			str;
+			atom 				atm;
+			css_color_value		color;
+			css_length_value	length;
 		} 	m_value;
 
 		uint8_t 	m_type;
 		uint8_t		m_important;
 		
-		property_value()
+		css_value()
 		{
 			m_type = type_null;
 			m_important = false;
 		}
 
-		property_value( atom atm, bool imp = false ) 
+		css_value( atom atm, bool imp = false ) 
 		{
 			m_important = imp;
 			m_value.atm = atm;
 			m_type = type_atom;
 		}
 
-		property_value( const tchar_t* val, bool imp = false ) 
+		css_value( const tchar_t* val, bool imp = false ) 
 		{
 			m_important = imp;
 			m_value.str = t_strdup( val );
 			m_type = type_str;
 		}
 
-		property_value( const property_length& val, bool imp = false )
+		css_value( const css_value_length& val, bool imp = false )
 		{
 			m_important = imp;
 			m_value.length = val;
 			m_type = type_str;
 		}
 
-		property_value(const property_value& val)
+		css_value(const css_value& val)
 		{
 			m_type = type_null;
 			set( val );
 		}
 
-		~property_value( ) {
+		~css_value( ) {
 			clear( );
 		}
 
@@ -88,7 +76,7 @@ namespace litehtml
 			m_type = type_null;
 		}
 
-		void set( const property_value& val ) {
+		void set( const css_value& val ) {
 			clear( );
 
 			m_type	= val.m_type;
@@ -102,31 +90,24 @@ namespace litehtml
 			}
 		}
 
-		property_value& operator=(const property_value& val)
+		css_value& operator=(const css_value& val)
 		{
 			set( val );
 			return *this;
 		}
 	};
 
-	//typedef std::map<atom, property_value>	props_map;
-
-	struct html_attribute
+	struct	css_property
 	{
 		atom			name;
-		property_value	value;
+		css_value		value;
 	};
 
 	class style
 	{
-	//public:
-		//typedef std::shared_ptr<style>		ptr;
-		//typedef std::vector<style::ptr>		vector;
-
 	private:
-		xVector<html_attribute>		m_properties;
-		//static attr_map				m_valid_values;
-
+		xVector<css_property>		m_properties;
+		
 	public:
 		style( );
 		style( const style& val );
@@ -142,20 +123,20 @@ namespace litehtml
 			parse( txt, baseurl);
 		}
 
-		void add_property(atom name, const property_value& value, const tchar_t* baseurl, bool important);
+		void add_property(atom name, const css_value& value, const tchar_t* baseurl, bool important);
 
-		const property_value& get_property( atom name ) const
+		const css_value*	get_property( atom name ) const
 		{
 			if( name ) {
 				for( uint32_t i=0; i<m_properties.length(); i++ ) {
-					html_attribute*	a = m_properties.at( i );
+					css_property*	a = m_properties.at( i );
 					if( a->name==name ) {
-						return a->value;
+						return &a->value;
 					}
 				}
 			}
 
-			return property_value::undefined;
+			return NULL;
 		}
 
 		void combine(const style& src);
@@ -166,13 +147,13 @@ namespace litehtml
 		}
 
 	private:
-		void parse_property( const xstring& txt, const tchar_t* baseurl );
-		void parse( const tchar_t* txt, const tchar_t* baseurl );
-		void parse_short_border(const tstring& prefix, const tstring& val, bool important);
-		void parse_short_background(const tstring& val, const tchar_t* baseurl, bool important);
-		void parse_short_font(const tstring& val, bool important);
+		void 	parse_property( const xstring& txt, const tchar_t* baseurl );
+		void 	parse( const tchar_t* txt, const tchar_t* baseurl );
+		void 	parse_short_border(const tstring& prefix, const tstring& val, bool important);
+		void 	parse_short_background(const tstring& val, const tchar_t* baseurl, bool important);
+		void 	parse_short_font(const tstring& val, bool important);
 
-		void add_parsed_property(atom name, const property_value& val, bool important);
-		void remove_property( atom name, bool important );
+		void 	add_parsed_property(atom name, const css_value& val, bool important);
+		//void 	remove_property( atom name, bool important );
 	};
 }

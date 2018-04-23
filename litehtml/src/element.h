@@ -28,6 +28,7 @@ namespace litehtml
 		const uint32_t	flag_skip = 0x0001;
 		
 		//xVector<element>	m_children;
+		
 		element*			m_parent;
 		element*			m_next_element;
 		element*			m_prev_element;
@@ -87,7 +88,7 @@ namespace litehtml
 		void						skip(bool val);
 		bool						have_parent() const;
 		element*					parent() const;
-		void						parent(element* par);
+		void						set_parent(element* par);
 		bool						is_visible() const;
 		int							calc_width(int defVal) const;
 		int							get_inline_shift_left();
@@ -111,8 +112,8 @@ namespace litehtml
 		virtual bool				fetch_positioned();
 		virtual void				render_positioned(render_type rt = render_all);
 
-		virtual bool				appendChild(const element* el);
-		virtual bool				removeChild(const element* el);
+		virtual bool				appendChild( element* el);
+		virtual bool				removeChild( element* el);
 		virtual void				clearRecursive() ;
 
 		virtual atom				get_tagName() const;
@@ -352,7 +353,7 @@ namespace litehtml
 		return m_parent;
 	}
 
-	inline void element::parent(element* par)
+	inline void element::set_parent(element* par)
 	{
 		m_parent = par;
 	}

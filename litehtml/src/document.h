@@ -87,37 +87,41 @@ namespace litehtml
 		bool							on_lbutton_down(int x, int y, int client_x, int client_y, position::vector& redraw_boxes);
 		bool							on_lbutton_up(int x, int y, int client_x, int client_y, position::vector& redraw_boxes);
 		bool							on_mouse_leave(position::vector& redraw_boxes);
-		litehtml::element::ptr			create_element( const tchar_t* tag_name, const attr_map& attributes);
-		element::ptr					root();
+		element*						create_element( const tchar_t* tag_name, const attr_map& attributes);
+	
+		element*						root()
+		{
+			return m_root;
+		}
+
 		void							get_fixed_boxes(position::vector& fixed_boxes);
 		void							add_fixed_box(const position& pos);
 		void							add_media_list(media_query_list::ptr list);
 		bool							media_changed();
-		bool							lang_changed();
+		bool							lang_changed()
+		{
+			return lang == m_lang || lang == m_culture;
+		}
 		bool                            match_lang(const tstring & lang);
-		void							add_tabular(const element::ptr& el);
-		void							add_flex(const element::ptr& el);
+		void							add_tabular(element* el);
+		void							add_flex( element* el);
 
-		static litehtml::document::ptr createFromString(const tchar_t* str, litehtml::document_container* objPainter, litehtml::context* ctx, litehtml::css* user_styles = 0);
-		static litehtml::document::ptr createFromUTF8(const char* str, litehtml::document_container* objPainter, litehtml::context* ctx, litehtml::css* user_styles = 0);
+		static document*				createFromString(const tchar_t* str, document_container* objPainter, context* ctx, css* user_styles = 0);
+		static document*				createFromUTF8(const char* str, document_container* objPainter, context* ctx, css* user_styles = 0);
 	
 	private:
-		litehtml::uint_ptr	add_font(const tchar_t* name, int size, const tchar_t* weight, const tchar_t* style, const tchar_t* decoration, font_metrics* fm);
+		uint_ptr						add_font(const tchar_t* name, int size, const tchar_t* weight, const tchar_t* style, const tchar_t* decoration, font_metrics* fm);
 
-		void create_node(GumboNode* node, elements_vector& elements);
-		bool update_media_lists(const media_features& features);
+		void 	create_node(GumboNode* node, elements_vector& elements);
+		bool 	update_media_lists(const media_features& features);
 
-		void fix_tables_layout();
-		void fix_table_children(element::ptr& el_ptr, style_display disp, const tchar_t* disp_str);
-		void fix_table_parent(element::ptr& el_ptr, style_display disp, const tchar_t* disp_str);
+		void 	fix_tables_layout();
+		void 	fix_table_children(element* el_ptr, style_display disp, const tchar_t* disp_str);
+		void 	fix_table_parent(element* el_ptr, style_display disp, const tchar_t* disp_str);
 
-		void fix_flex_layouts();
+		void 	fix_flex_layouts();
 	};
 
-	inline element::ptr document::root()
-	{
-		return m_root;
-	}
 	inline void document::add_tabular(const element::ptr& el)
 	{
 		m_tabular_elements.push_back(el);
@@ -126,8 +130,5 @@ namespace litehtml
 	{
 		m_flex_elements.push_back(el);
 	}
-	inline bool document::match_lang(const tstring & lang)
-	{
-		return lang == m_lang || lang == m_culture;
-	}
+	
 }

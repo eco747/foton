@@ -3,7 +3,8 @@
 
 namespace litehtml
 {
-	class el_anchor : public html_tag
+	class el_anchor 
+		: public html_tag
 	{
 	public:
 		el_anchor(document* doc);

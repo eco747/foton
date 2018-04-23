@@ -9,10 +9,6 @@ namespace litehtml
 		m_repeat		= background_repeat_repeat;
 		m_clip			= background_box_border_box;
 		m_origin		= background_box_padding_box;
-		//m_color.alpha	= 0;
-		//m_color.red		= 0;
-		//m_color.green	= 0;
-		//m_color.blue	= 0;
 	}
 
 	background::background( const background& val )
@@ -45,7 +41,10 @@ namespace litehtml
 	}
 
 
-	background_paint::background_paint() : color(0, 0, 0, 0)
+
+
+	background_paint::background_paint() 
+		: color(0, 0, 0, 0)
 	{
 		position_x		= 0;
 		position_y		= 0;
