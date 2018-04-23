@@ -14,6 +14,8 @@ namespace litehtml
 		uint8_t		units;			//css_unit
 		uint8_t		is_predefined;	//bool
 	};
+
+	bool	parse_css_length( const xstringpart& value, css_length_value* result );
 	
 	/**
 	 * 
@@ -93,7 +95,7 @@ namespace litehtml
 			return (int)m_self.value;
 		}
 		
-		static css_length	fromString( const tstring& str, int predef_value );
+		//static css_length	fromString( const tstring& str, int predef_value );	
 	};
 
 	//inline css_length&	css_length::operator = (float val)

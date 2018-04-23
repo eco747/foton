@@ -51,6 +51,17 @@ namespace litehtml
 		uint32_t		len;
 
 	public:
+		xstringpart( )
+			:	str( NULL),
+				len( 0 )
+		{
+		}
+		xstringpart( const xstring& s ) 
+			: 	str( s.c_str() ),
+				len( s.length() )
+		{
+		}
+
 		xstringpart( const tchar_t* s )
 			:	str( s )
 		{
@@ -63,8 +74,27 @@ namespace litehtml
 		{
 		}
 
-		const tchar_t* trim_left( );
+		xstringpart&	operator = (const xstringpart& other) {
+			str = other.str;
+			len = other.len;
+		}
+
+		void 	set( const tchar_t* s, uint32_t l ) {
+			str = s;
+			len = l;
+		}
+
+		const tchar_t*	end( ) const { return str+len; }
+		const tchar_t*	start( ) const { return str; }
+
+		const tchar_t* 	trim_left( );
 		const tchar_t*	trim_right( );
+		const tchar_t*	trim( ) { trim_right(); return trim_left(); }
+
+		int 	split( tchar_t sep, xstringpart* left, xstringpart* right ) const;
+		int 	split( tchar_t sep, xstringpart* parts, int pcount ) const;
+		
+		int 	rsplit( tchar_t sep, xstringpart* left, xstringpart* right );
 
 		bool	i_equ( const xstringpart& o );
 		bool	equ( const xstringpart& o );

@@ -8,7 +8,7 @@ namespace litehtml {
 
 // -------------------------------------------------
 
-int get_media_type( const tchar_t* text, int len = -1, int def = 0 );
+int __get_media_type( const tchar_t* text, int len = -1, int def = 0 );
 
 enum media_type {
 	media_type_none = 0,
@@ -28,7 +28,7 @@ enum media_type {
 
 // -------------------------------------------------
 
-int get_atom( const tchar_t* text, int len = -1, int def = 0 );
+int __get_atom( const tchar_t* text, int len = -1, int def = 0 );
 
 enum atom {
 	atom_null = 0,
@@ -196,156 +196,158 @@ enum atom {
 	atom_iframe = 161,
 	atom_img = 162,
 	atom_inherit = 163,
-	atom_input = 164,
-	atom_ins = 165,
-	atom_isindex = 166,
-	atom_justify_content = 167,
-	atom_kbd = 168,
-	atom_keygen = 169,
-	atom_label = 170,
-	atom_lang = 171,
-	atom_layer = 172,
-	atom_left = 173,
-	atom_legend = 174,
-	atom_letter_spacing = 175,
-	atom_li = 176,
-	atom_line_height = 177,
-	atom_link = 178,
-	atom_list = 179,
-	atom_list_style = 180,
-	atom_list_style_baseurl = 181,
-	atom_list_style_image = 182,
-	atom_list_style_position = 183,
-	atom_list_style_type = 184,
-	atom_listing = 185,
-	atom_main = 186,
-	atom_map = 187,
-	atom_margin = 188,
-	atom_margin_bottom = 189,
-	atom_margin_left = 190,
-	atom_margin_right = 191,
-	atom_margin_top = 192,
-	atom_mark = 193,
-	atom_marquee = 194,
-	atom_max = 195,
-	atom_max_height = 196,
-	atom_max_width = 197,
-	atom_media = 198,
-	atom_menu = 199,
-	atom_meta = 200,
-	atom_meter = 201,
-	atom_min = 202,
-	atom_min_height = 203,
-	atom_min_width = 204,
-	atom_name = 205,
-	atom_nav = 206,
-	atom_nobr = 207,
-	atom_noframes = 208,
-	atom_nowrap = 209,
-	atom_object = 210,
-	atom_object_fit = 211,
-	atom_ol = 212,
-	atom_opacity = 213,
-	atom_optgroup = 214,
-	atom_option = 215,
-	atom_outline = 216,
-	atom_outline_offset = 217,
-	atom_output = 218,
-	atom_overflow = 219,
-	atom_overflow_x = 220,
-	atom_overflow_y = 221,
-	atom_p = 222,
-	atom_padding = 223,
-	atom_padding_bottom = 224,
-	atom_padding_left = 225,
-	atom_padding_right = 226,
-	atom_padding_top = 227,
-	atom_param = 228,
-	atom_placeholder = 229,
-	atom_plaintext = 230,
-	atom_pointer_events = 231,
-	atom_position = 232,
-	atom_pre = 233,
-	atom_progress = 234,
-	atom_pseudo = 235,
-	atom_pseudo_el = 236,
-	atom_q = 237,
-	atom_r = 238,
-	atom_readonly = 239,
-	atom_rel = 240,
-	atom_resize = 241,
-	atom_right = 242,
-	atom_role = 243,
-	atom_rows = 244,
-	atom_rowspan = 245,
-	atom_rp = 246,
-	atom_rt = 247,
-	atom_ruby = 248,
-	atom_s = 249,
-	atom_samp = 250,
-	atom_script = 251,
-	atom_section = 252,
-	atom_select = 253,
-	atom_size = 254,
-	atom_small = 255,
-	atom_span = 256,
-	atom_src = 257,
-	atom_strike = 258,
-	atom_strong = 259,
-	atom_style = 260,
-	atom_sub = 261,
-	atom_summary = 262,
-	atom_sup = 263,
-	atom_svg = 264,
-	atom_tabindex = 265,
-	atom_table = 266,
-	atom_table_layout = 267,
-	atom_tbody = 268,
-	atom_td = 269,
-	atom_template = 270,
-	atom_text_align = 271,
-	atom_text_decoration = 272,
-	atom_text_indent = 273,
-	atom_text_overflow = 274,
-	atom_text_rendering = 275,
-	atom_text_shadow = 276,
-	atom_text_transform = 277,
-	atom_textarea = 278,
-	atom_tfoot = 279,
-	atom_th = 280,
-	atom_thead = 281,
-	atom_time = 282,
-	atom_title = 283,
-	atom_top = 284,
-	atom_tr = 285,
-	atom_transparent = 286,
-	atom_tt = 287,
-	atom_type = 288,
-	atom_u = 289,
-	atom_ul = 290,
-	atom_unicode_bidi = 291,
-	atom_user_drag = 292,
-	atom_valign = 293,
-	atom_value = 294,
-	atom_var = 295,
-	atom_vertical_align = 296,
-	atom_video = 297,
-	atom_visibility = 298,
-	atom_white_space = 299,
-	atom_width = 300,
-	atom_word_break = 301,
-	atom_word_spacing = 302,
-	atom_word_wrap = 303,
-	atom_xmp = 304,
-	atom_z_index = 305,
-	atom_zoom = 306,
+	atom_initial = 164,
+	atom_input = 165,
+	atom_ins = 166,
+	atom_isindex = 167,
+	atom_justify_content = 168,
+	atom_kbd = 169,
+	atom_keygen = 170,
+	atom_label = 171,
+	atom_lang = 172,
+	atom_layer = 173,
+	atom_left = 174,
+	atom_legend = 175,
+	atom_letter_spacing = 176,
+	atom_li = 177,
+	atom_line_height = 178,
+	atom_link = 179,
+	atom_list = 180,
+	atom_list_style = 181,
+	atom_list_style_baseurl = 182,
+	atom_list_style_image = 183,
+	atom_list_style_position = 184,
+	atom_list_style_type = 185,
+	atom_listing = 186,
+	atom_main = 187,
+	atom_map = 188,
+	atom_margin = 189,
+	atom_margin_bottom = 190,
+	atom_margin_left = 191,
+	atom_margin_right = 192,
+	atom_margin_top = 193,
+	atom_mark = 194,
+	atom_marquee = 195,
+	atom_max = 196,
+	atom_max_height = 197,
+	atom_max_width = 198,
+	atom_media = 199,
+	atom_menu = 200,
+	atom_meta = 201,
+	atom_meter = 202,
+	atom_min = 203,
+	atom_min_height = 204,
+	atom_min_width = 205,
+	atom_name = 206,
+	atom_nav = 207,
+	atom_nobr = 208,
+	atom_noframes = 209,
+	atom_nowrap = 210,
+	atom_object = 211,
+	atom_object_fit = 212,
+	atom_ol = 213,
+	atom_opacity = 214,
+	atom_optgroup = 215,
+	atom_option = 216,
+	atom_outline = 217,
+	atom_outline_offset = 218,
+	atom_output = 219,
+	atom_overflow = 220,
+	atom_overflow_x = 221,
+	atom_overflow_y = 222,
+	atom_p = 223,
+	atom_padding = 224,
+	atom_padding_bottom = 225,
+	atom_padding_left = 226,
+	atom_padding_right = 227,
+	atom_padding_top = 228,
+	atom_param = 229,
+	atom_placeholder = 230,
+	atom_plaintext = 231,
+	atom_pointer_events = 232,
+	atom_position = 233,
+	atom_pre = 234,
+	atom_progress = 235,
+	atom_pseudo = 236,
+	atom_pseudo_el = 237,
+	atom_q = 238,
+	atom_r = 239,
+	atom_readonly = 240,
+	atom_rel = 241,
+	atom_resize = 242,
+	atom_right = 243,
+	atom_role = 244,
+	atom_rows = 245,
+	atom_rowspan = 246,
+	atom_rp = 247,
+	atom_rt = 248,
+	atom_ruby = 249,
+	atom_s = 250,
+	atom_samp = 251,
+	atom_script = 252,
+	atom_section = 253,
+	atom_select = 254,
+	atom_size = 255,
+	atom_small = 256,
+	atom_span = 257,
+	atom_src = 258,
+	atom_strike = 259,
+	atom_strong = 260,
+	atom_style = 261,
+	atom_sub = 262,
+	atom_summary = 263,
+	atom_sup = 264,
+	atom_svg = 265,
+	atom_tabindex = 266,
+	atom_table = 267,
+	atom_table_layout = 268,
+	atom_tbody = 269,
+	atom_td = 270,
+	atom_template = 271,
+	atom_text_align = 272,
+	atom_text_decoration = 273,
+	atom_text_indent = 274,
+	atom_text_overflow = 275,
+	atom_text_rendering = 276,
+	atom_text_shadow = 277,
+	atom_text_transform = 278,
+	atom_textarea = 279,
+	atom_tfoot = 280,
+	atom_th = 281,
+	atom_thead = 282,
+	atom_time = 283,
+	atom_title = 284,
+	atom_top = 285,
+	atom_tr = 286,
+	atom_transparent = 287,
+	atom_tt = 288,
+	atom_type = 289,
+	atom_u = 290,
+	atom_ul = 291,
+	atom_unicode_bidi = 292,
+	atom_unset = 293,
+	atom_user_drag = 294,
+	atom_valign = 295,
+	atom_value = 296,
+	atom_var = 297,
+	atom_vertical_align = 298,
+	atom_video = 299,
+	atom_visibility = 300,
+	atom_white_space = 301,
+	atom_width = 302,
+	atom_word_break = 303,
+	atom_word_spacing = 304,
+	atom_word_wrap = 305,
+	atom_xmp = 306,
+	atom_z_index = 307,
+	atom_zoom = 308,
 };
 
 
 
 // -------------------------------------------------
 
-int get_style_display( const tchar_t* text, int len = -1, int def = 0 );
+int __get_style_display( const tchar_t* text, int len = -1, int def = 0 );
 
 enum style_display {
 	style_display_none = 0,
@@ -371,7 +373,7 @@ enum style_display {
 
 // -------------------------------------------------
 
-int get_font_size( const tchar_t* text, int len = -1, int def = 0 );
+int __get_font_size( const tchar_t* text, int len = -1, int def = 0 );
 
 enum font_size {
 	font_size_xx_small = 0,
@@ -389,7 +391,7 @@ enum font_size {
 
 // -------------------------------------------------
 
-int get_list_style_type( const tchar_t* text, int len = -1, int def = 0 );
+int __get_list_style_type( const tchar_t* text, int len = -1, int def = 0 );
 
 enum list_style_type {
 	list_style_type_none = 0,
@@ -419,7 +421,7 @@ enum list_style_type {
 
 // -------------------------------------------------
 
-int get_vertical_align( const tchar_t* text, int len = -1, int def = 0 );
+int __get_vertical_align( const tchar_t* text, int len = -1, int def = 0 );
 
 enum vertical_align {
 	vertical_align_baseline = 0,
@@ -436,7 +438,7 @@ enum vertical_align {
 
 // -------------------------------------------------
 
-int get_border_style( const tchar_t* text, int len = -1, int def = 0 );
+int __get_border_style( const tchar_t* text, int len = -1, int def = 0 );
 
 enum border_style {
 	border_style_none = 0,
@@ -455,7 +457,7 @@ enum border_style {
 
 // -------------------------------------------------
 
-int get_font_style( const tchar_t* text, int len = -1, int def = 0 );
+int __get_font_style( const tchar_t* text, int len = -1, int def = 0 );
 
 enum font_style {
 	font_style_normal = 0,
@@ -466,7 +468,7 @@ enum font_style {
 
 // -------------------------------------------------
 
-int get_font_variant( const tchar_t* text, int len = -1, int def = 0 );
+int __get_font_variant( const tchar_t* text, int len = -1, int def = 0 );
 
 enum font_variant {
 	font_variant_normal = 0,
@@ -477,7 +479,7 @@ enum font_variant {
 
 // -------------------------------------------------
 
-int get_border_width( const tchar_t* text, int len = -1, int def = 0 );
+int __get_border_width( const tchar_t* text, int len = -1, int def = 0 );
 
 enum border_width {
 	border_width_thin = 0,
@@ -489,7 +491,7 @@ enum border_width {
 
 // -------------------------------------------------
 
-int get_element_float( const tchar_t* text, int len = -1, int def = 0 );
+int __get_element_float( const tchar_t* text, int len = -1, int def = 0 );
 
 enum element_float {
 	element_float_none = 0,
@@ -501,7 +503,7 @@ enum element_float {
 
 // -------------------------------------------------
 
-int get_element_clear( const tchar_t* text, int len = -1, int def = 0 );
+int __get_element_clear( const tchar_t* text, int len = -1, int def = 0 );
 
 enum element_clear {
 	element_clear_none = 0,
@@ -514,7 +516,7 @@ enum element_clear {
 
 // -------------------------------------------------
 
-int get_css_units( const tchar_t* text, int len = -1, int def = 0 );
+int __get_css_units( const tchar_t* text, int len = -1, int def = 0 );
 
 enum css_units {
 	css_units_none = 0,
@@ -539,7 +541,7 @@ enum css_units {
 
 // -------------------------------------------------
 
-int get_background_attachment( const tchar_t* text, int len = -1, int def = 0 );
+int __get_background_attachment( const tchar_t* text, int len = -1, int def = 0 );
 
 enum background_attachment {
 	background_attachment_scroll = 0,
@@ -550,7 +552,7 @@ enum background_attachment {
 
 // -------------------------------------------------
 
-int get_background_repeat( const tchar_t* text, int len = -1, int def = 0 );
+int __get_background_repeat( const tchar_t* text, int len = -1, int def = 0 );
 
 enum background_repeat {
 	background_repeat_repeat = 0,
@@ -563,7 +565,7 @@ enum background_repeat {
 
 // -------------------------------------------------
 
-int get_background_box( const tchar_t* text, int len = -1, int def = 0 );
+int __get_background_box( const tchar_t* text, int len = -1, int def = 0 );
 
 enum background_box {
 	background_box_border_box = 0,
@@ -575,7 +577,7 @@ enum background_box {
 
 // -------------------------------------------------
 
-int get_element_position( const tchar_t* text, int len = -1, int def = 0 );
+int __get_element_position( const tchar_t* text, int len = -1, int def = 0 );
 
 enum element_position {
 	element_position_static = 0,
@@ -588,7 +590,7 @@ enum element_position {
 
 // -------------------------------------------------
 
-int get_text_align( const tchar_t* text, int len = -1, int def = 0 );
+int __get_text_align( const tchar_t* text, int len = -1, int def = 0 );
 
 enum text_align {
 	text_align_left = 0,
@@ -601,7 +603,7 @@ enum text_align {
 
 // -------------------------------------------------
 
-int get_text_transform( const tchar_t* text, int len = -1, int def = 0 );
+int __get_text_transform( const tchar_t* text, int len = -1, int def = 0 );
 
 enum text_transform {
 	text_transform_none = 0,
@@ -614,7 +616,7 @@ enum text_transform {
 
 // -------------------------------------------------
 
-int get_white_space( const tchar_t* text, int len = -1, int def = 0 );
+int __get_white_space( const tchar_t* text, int len = -1, int def = 0 );
 
 enum white_space {
 	white_space_normal = 0,
@@ -628,7 +630,7 @@ enum white_space {
 
 // -------------------------------------------------
 
-int get_overflow( const tchar_t* text, int len = -1, int def = 0 );
+int __get_overflow( const tchar_t* text, int len = -1, int def = 0 );
 
 enum overflow {
 	overflow_visible = 0,
@@ -643,7 +645,7 @@ enum overflow {
 
 // -------------------------------------------------
 
-int get_background_size( const tchar_t* text, int len = -1, int def = 0 );
+int __get_background_size( const tchar_t* text, int len = -1, int def = 0 );
 
 enum background_size {
 	background_size_auto = 0,
@@ -655,7 +657,7 @@ enum background_size {
 
 // -------------------------------------------------
 
-int get_visibility( const tchar_t* text, int len = -1, int def = 0 );
+int __get_visibility( const tchar_t* text, int len = -1, int def = 0 );
 
 enum visibility {
 	visibility_visible = 0,
@@ -667,7 +669,7 @@ enum visibility {
 
 // -------------------------------------------------
 
-int get_border_collapse( const tchar_t* text, int len = -1, int def = 0 );
+int __get_border_collapse( const tchar_t* text, int len = -1, int def = 0 );
 
 enum border_collapse {
 	border_collapse_collapse = 0,
@@ -678,7 +680,7 @@ enum border_collapse {
 
 // -------------------------------------------------
 
-int get_pseudo_class( const tchar_t* text, int len = -1, int def = 0 );
+int __get_pseudo_class( const tchar_t* text, int len = -1, int def = 0 );
 
 enum pseudo_class {
 	pseudo_class_only_child = 0,
@@ -699,7 +701,7 @@ enum pseudo_class {
 
 // -------------------------------------------------
 
-int get_content_property( const tchar_t* text, int len = -1, int def = 0 );
+int __get_content_property( const tchar_t* text, int len = -1, int def = 0 );
 
 enum content_property {
 	content_property_none = 0,
@@ -714,7 +716,7 @@ enum content_property {
 
 // -------------------------------------------------
 
-int get_media_orientation( const tchar_t* text, int len = -1, int def = 0 );
+int __get_media_orientation( const tchar_t* text, int len = -1, int def = 0 );
 
 enum media_orientation {
 	media_orientation_portrait = 0,
@@ -725,7 +727,7 @@ enum media_orientation {
 
 // -------------------------------------------------
 
-int get_media_feature( const tchar_t* text, int len = -1, int def = 0 );
+int __get_media_feature( const tchar_t* text, int len = -1, int def = 0 );
 
 enum media_feature {
 	media_feature_none = 0,
@@ -766,7 +768,7 @@ enum media_feature {
 
 // -------------------------------------------------
 
-int get_box_sizing( const tchar_t* text, int len = -1, int def = 0 );
+int __get_box_sizing( const tchar_t* text, int len = -1, int def = 0 );
 
 enum box_sizing {
 	box_sizing_content_box = 0,
@@ -777,7 +779,7 @@ enum box_sizing {
 
 // -------------------------------------------------
 
-int get_web_colors( const tchar_t* text, int len = -1, int def = 0 );
+int __get_web_colors( const tchar_t* text, int len = -1, int def = 0 );
 
 enum web_colors {
 	web_colors_transparent = 0,
@@ -932,7 +934,7 @@ enum web_colors {
 
 // -------------------------------------------------
 
-int get_list_style_position( const tchar_t* text, int len = -1, int def = 0 );
+int __get_list_style_position( const tchar_t* text, int len = -1, int def = 0 );
 
 enum list_style_position {
 	list_style_position_inside = 0,
@@ -943,7 +945,7 @@ enum list_style_position {
 
 // -------------------------------------------------
 
-int get_font_weight( const tchar_t* text, int len = -1, int def = 0 );
+int __get_font_weight( const tchar_t* text, int len = -1, int def = 0 );
 
 enum font_weight {
 	font_weight_normal = 0,
@@ -963,7 +965,7 @@ enum font_weight {
 
 // -------------------------------------------------
 
-int get_style_border( const tchar_t* text, int len = -1, int def = 0 );
+int __get_style_border( const tchar_t* text, int len = -1, int def = 0 );
 
 enum style_border {
 	style_border_none = 0,
@@ -978,7 +980,7 @@ enum style_border {
 
 // -------------------------------------------------
 
-int get_text_decoration( const tchar_t* text, int len = -1, int def = 0 );
+int __get_text_decoration( const tchar_t* text, int len = -1, int def = 0 );
 
 enum text_decoration {
 	text_decoration_underline = 0,
@@ -990,13 +992,56 @@ enum text_decoration {
 
 // -------------------------------------------------
 
-int get_background_position( const tchar_t* text, int len = -1, int def = 0 );
+int __get_background_position( const tchar_t* text, int len = -1, int def = 0 );
 
 enum background_position {
 	background_position_left = 0,
 	background_position_right = 1,
 	background_position_top,bottom = 2,
 	background_position_center = 3,
+};
+
+enum css_value_type {
+	css_value_type_null,
+	css_value_type_string,
+	css_value_type_atom,
+	css_value_type_color,
+	css_value_type_css_length,
+	css_value_type_media_type,
+	css_value_type_atom,
+	css_value_type_style_display,
+	css_value_type_font_size,
+	css_value_type_list_style_type,
+	css_value_type_vertical_align,
+	css_value_type_border_style,
+	css_value_type_font_style,
+	css_value_type_font_variant,
+	css_value_type_border_width,
+	css_value_type_element_float,
+	css_value_type_element_clear,
+	css_value_type_css_units,
+	css_value_type_background_attachment,
+	css_value_type_background_repeat,
+	css_value_type_background_box,
+	css_value_type_element_position,
+	css_value_type_text_align,
+	css_value_type_text_transform,
+	css_value_type_white_space,
+	css_value_type_overflow,
+	css_value_type_background_size,
+	css_value_type_visibility,
+	css_value_type_border_collapse,
+	css_value_type_pseudo_class,
+	css_value_type_content_property,
+	css_value_type_media_orientation,
+	css_value_type_media_feature,
+	css_value_type_box_sizing,
+	css_value_type_web_colors,
+	css_value_type_list_style_position,
+	css_value_type_font_weight,
+	css_value_type_style_border,
+	css_value_type_text_decoration,
+	css_value_type_background_position,
 };
 
 

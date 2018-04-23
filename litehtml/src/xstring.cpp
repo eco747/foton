@@ -185,12 +185,12 @@ namespace litehtml
 
 	const tchar_t* xstringpart::trim_left( ) {
 
-		while( m_len && (*m_str==' ' || *m_str=='\t') ) {
-			m_str++;
-			m_len--;
+		while( len && (*str==' ' || *str=='\t') ) {
+			str++;
+			len--;
 		}
 
-		return m_str;
+		return str;
 	}
 
 	/**
@@ -200,12 +200,12 @@ namespace litehtml
 
 	const tchar_t*	xstringpart::trim_right( ) {
 
-		const tchar_t* e = m_str + m_len - 1;
-		while( m_len && (*e==' ' || *e=='\t') ) {
-			m_len--;
+		const tchar_t* e = str + len - 1;
+		while( len && (*e==' ' || *e=='\t') ) {
+			len--;
 		}
 
-		return m_str;
+		return str;
 	}
 
 	/**
@@ -215,7 +215,7 @@ namespace litehtml
 	 */
 
 	bool	xstringpart::i_equ( const xstringpart& o ) {
-		return o.m_len==m_len && t_strncasecmp( m_str, o.m_str, m_len )==0;
+		return o.len==len && strnicmp( str, o.str, len )==0;
 	}
 
 	/**
@@ -225,7 +225,47 @@ namespace litehtml
 	 */
 
 	bool	xstringpart::equ( const xstringpart& o ) {
-		return o.m_len==m_len && t_strncmp( m_str, o.m_str, m_len )==0;
+		return o.len==len && strncmp( str, o.str, len )==0;
+	}
+
+	int 	xstringpart::split( tchar_t sep, xstringpart* parts, int pcount )
+	{
+		int  		cidx = 0;
+		xstringpart	temp( str, len );
+		
+		while( cidx<(pcount-1) ) {
+			if( !temp.split( sep, &parts[cidx], &temp ) ) {
+				parts[cidx] = temp;
+				return cidx;
+			}
+
+			cidx++;
+		}
+
+		return cidx;
+	}
+
+	bool 	xstringpart::split( tchar_t sep, xstringpart* left, xstringpart* right )
+	{
+		int 	cidx = 0;
+		const tchar_t*	p = start( );
+		const tchar_t*	e = end( );
+		const tchar_t*	q = p;
+
+		while( p<e ) {
+			if( *p==sep )  {
+				
+				left->set( q, p-q );
+				p++;
+				right->set( p, e-p );
+
+				return true;
+			}
+			
+			p++
+		}
+
+		return false;
 	}
 
 }

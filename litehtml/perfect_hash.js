@@ -141,6 +141,8 @@ let __cpp_output = '#include "html.h"\n\nnamespace litehtml {\n\n'+
 					'int 	hash_find( const tchar_t* text, int len, int* GT, int GT_len, int* VT, int VT_len, int* RH, RH_len, int def );\n\n';
 
 let __h_output = '#ifndef __KEYWORDS_H\n#define __KEYWORDS_H\n\n\nnamespace litehtml {\n\n';
+
+let  elements_types = ['null','string','atom','color','css_length'];
 					
 
 function generate( input, output_name, sort_it, gen_zero ) {
@@ -243,7 +245,7 @@ function generate( input, output_name, sort_it, gen_zero ) {
 			text += '*/\n';
 		}
 			
-		text += '\nint get_'+output_name+'( const tchar_t* text, int len, int def )\n{\n';
+		text += '\nint __get_'+output_name+'( const tchar_t* text, int len, int def )\n{\n';
 
 		if( input.length>7 )  {
 			text += '	return hash_find( text, len, '+output_name+'_GT, countof('+output_name+'_GT),\n\t\t\t\t\t\t'+output_name+'_VT, countof('+output_name+'_VT),\n\t\t\t\t\t\t'+output_name+'_RH, countof('+output_name+'_RH), def );\n';
@@ -260,13 +262,15 @@ function generate( input, output_name, sort_it, gen_zero ) {
 	//////////////////
 
 	{
+		elements_types.push( output_name );
+
 		text = '\n\n// -------------------------------------------------\n\n';
 
 		//text += '#ifndef __' + output_name.toUpperCase( ) + '\n';
 		//text += '#define __' + output_name.toUpperCase( ) + '\n\n';
 		
-		text += 'int get_'+output_name+'( const tchar_t* text, int len = -1, int def = 0 );\n\n';
-		
+		text += 'int __get_'+output_name+'( const tchar_t* text, int len = -1, int def = 0 );\n\n';
+				
 		text += 'enum '+output_name+' {\n';
 
 		if( gen_zero ) {
@@ -302,7 +306,7 @@ generate( 'none;all;screen;print;braille;embossed;handheld;projection;speech;tty
 	'media_type', false, false  );
 
 
-generate( 'pseudo-el;before;after;pseudo;id;class;inherit;auto;br;p;table;td;th;img;link;title;a;tr;style;base;body;div;script;' +
+generate( 'pseudo-el;before;after;pseudo;id;class;inherit;initial;unset;auto;br;p;table;td;th;img;link;title;a;tr;style;base;body;div;script;' +
 	'font;::before;::after;tbody;thead;tfoot;*;href;src;text-align;display;color;face;font-face;size;font-size;height;width;rel;media;cellspacing;cellpadding;border-spacing;' +
 	'border-width;border;bgcolor;background-color;background;valign;vertical-align;border-left-style;border-right-style;border-top-style;border-bottom-style;border-left-width;' +
 	'border-right-width;border-top-width;border-bottom-width;border-left-color;border-right-color;border-top-color;border-bottom-color;colspan;rowspan;border-collapse;text-transform;' +
@@ -445,6 +449,14 @@ generate( 'underline;line-through;overline;',
 generate( 'left;right;top,bottom;center;',
 	'background_position', false, false );
 	
+
+__h_output += 'enum css_value_type {\n';
+for( let i=0; i<elements_types.length; i++ ) {
+	__h_output += '\tcss_value_type_'+elements_types[i]+',\n';
+}
+__h_output += '};\n\n';
+
+
 __cpp_output += '\n\n}\n';
 __h_output += '\n\n}\n\n#endif';
 

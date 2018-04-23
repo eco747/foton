@@ -33,14 +33,14 @@ namespace litehtml {
 	void style::parse( const tchar_t* txt, const tchar_t* baseurl )
 	{
 		while( *txt ) {
-			const char*	p = skip_sp( txt );
-			const char* q = p;
+			const tchar_t* p = skip_sp( txt );
+			const tchar_t* q = p;
 
 			while( *q && *q!=';' ) {
 				q++;
 			}
 
-			parse_property( xstringpart(p, q-p), baseurl);
+			parse_property( xstringpart(p, (uint32_t)(q-p)), baseurl);
 
 			if( *q==';' )
 				q++;
@@ -51,47 +51,36 @@ namespace litehtml {
 
 	void style::parse_property( const xstring& txt, const tchar_t* baseurl )
 	{
-		const tchar_t*	p = txt.c_str();
-		const tchar_t*	q = p;
-		while( *q && *q!=':') {
-			q++;
-		}
+		xstringpart		text( txt );
 
-		if( *q!=':' ) {
+		xstringpart		left, right;
+		if( !text.split( ':', &left, &right ) ) {
 			//todo warning bad style definition
 			return;
 		}
 
 		// trim
-		const tchar_t* r = q-1;
-		while( r>=p && *r==' ' || *r=='\t' ) {
-			r--;
-		}
+		left.trim( );
+		right.trim( );
+		
+		atom 	name = (atom)__get_atom( left.str, left.len, -1 );
+		if( name>0 && right.len>0 ) {
 
-		int	name = get_atom( p, r-p );
+			xstringpart		p1, p2;
+			if( right.rsplit( '!', &p1, &p2 ) ) {
 
-		q = skip_sp( q+1 );
-		r = q+t_strlen(q)-1;
-		while( r>=q && *r==' ' || *r=='\t' ) {
-			r--;
-		}
-
-		if( name && r>q ) {
-
-			p = q;
-			while( p<r && *p!='!' ) {
-				p++;
+				p2.trim( );
+				if( p2.len==9 && strnicmp(p2.str,"important",9)==0 ) {
+					add_property( name, p1, baseurl, true );
+					return;
+				}
 			}
-
-			if( *p=='!' && t_strncasecmp( skip_sp(p+1),"important",9)==0 ) {
-				add_property( name, xstring(q,p-q).c_str(), baseurl, true );
-			}
-			else {
-				add_property( name, xstring(q,r-q).c_str(), baseurl, false );
-			}
+			
+			add_property( name, right, baseurl, false );
 		}
 	}
 
+	/*
 	void style::combine( const style& src )
 	{
 		for(props_map::const_iterator i = src.m_properties.begin(); i != src.m_properties.end(); i++)
@@ -99,66 +88,107 @@ namespace litehtml {
 			add_parsed_property( i->first, i->second.m_value.c_str(), i->second.m_important);
 		}
 	}
+	*/
 
-	void style::add_property(atom name, css_value* value, const tchar_t* baseurl, bool important )
+	void style::add_property(atom name, const xstringpart& value, const tchar_t* baseurl, bool important )
 	{
-		if(!name || !value) {
+		if(!name || !part.len ) {
 			return;
 		}
 
+		int 			n;
+		xstringpart		parts[5];
+		
 		// Add baseurl for background image
 		if(	name==atom_background_image )
 		{
+			//todo: url
 			add_parsed_property(name, value, important);
-			if(baseurl)
-			{
+
+			if(baseurl) {
 				add_parsed_property(atom_background_baseurl, baseurl, important);
 			}
 		}
 		// Parse border spacing properties
-		else if( name==atom_border_spacing )
-		{
-			string_vector tokens;
-			split_string(value, tokens, _t(" "));
-			if(tokens.size() == 1)
-			{
-				add_property(atom__xx_border_spacing_x, tokens[0].c_str(), baseurl, important);
-				add_property(atom__xx_border_spacing_y, tokens[0].c_str(), baseurl, important);
+		else if( name==atom_border_spacing ) {
+
+			n = value.split( 0x01, parts, 2 );
+
+			if( n == 1 ) {
+
+				int v = __get_atom( parts[0].str, parts[0].len, -1 );
+
+				switch( v ) {
+					case atom_inherit:
+					case atom_initial:
+					case atom_unset: {
+						add_prop( css_value(atom__xx_border_spacing_x,(atom)v,important), baseurl );
+						add_prop( css_value(atom__xx_border_spacing_y,(atom)v,important), baseurl );
+						break;
+					}
+
+					default: {
+						css_length_value	length;
+						if( parse_css_length(parts[0],&length) ) {
+							add_prop( css_value(atom__xx_border_spacing_x,length,important), baseurl );
+							add_prop( css_value(atom__xx_border_spacing_y,length,important), baseurl );
+						}
+						else {
+							//todo: bad length
+						}
+						break;		
+					}
+				}
 			}
-			else if(tokens.size() == 2)
-			{
-				add_property(atom__xx_border_spacing_x, tokens[0].c_str(), baseurl, important);
-				add_property(atom__xx_border_spacing_y, tokens[1].c_str(), baseurl, important);
+			else if( n==2 ) {
+				css_length_value	x, y;
+				if( parse_css_length(parts[0],&x) &&
+					parse_css_length(parts[0],&y) ) {
+					add_prop( css_value(atom__xx_border_spacing_x,x,important), baseurl );
+					add_prop( css_value(atom__xx_border_spacing_y,y,important), baseurl );
+				}
+				else {
+					//todo: bad length
+				}
 			}
 		}
 		// Parse borders shorthand properties
 		else if( name == atom_border )
 		{
-			string_vector tokens;
-			split_string(value, tokens, _t(" "), _t(""), _t("("));
+			n = value.split( 0x01, parts, 4 );
 
-			int idx;
-			tstring str;
-			for(string_vector::const_iterator tok = tokens.begin(); tok != tokens.end(); tok++)
-			{
-				idx = get_border_style( tok->c_str(), tok->length(), -1 );
+			//	style
+			//	style/couleur
+			//	largeur/style
+			//	largeur/style/couleur
+			//	inherit
+			//	initial
+			//	unset
+			
+			for( int i=0; i<n; i++ ) {
+				
+				int idx = __get_border_style( parts[i].str, parts[i].len, -1 );
 				if(idx >= 0) {
 					css_value	bstyle( (atom)idx, important );
-					add_property(atom_border_left_style, bstyle, baseurl );
-					add_property(atom_border_right_style, bstyle, baseurl );
-					add_property(atom_border_top_style, bstyle, baseurl );
-					add_property(atom_border_bottom_style, bstyle, baseurl );
+					_add_property(atom_border_left_style, bstyle, baseurl );
+					_add_property(atom_border_right_style, bstyle, baseurl );
+					_add_property(atom_border_top_style, bstyle, baseurl );
+					_add_property(atom_border_bottom_style, bstyle, baseurl );
+					continue;
 				}
-				else if ( t_isdigit((*tok)[0]) || (*tok)[0] == _t('.') )
-				{
+				
+				css_length_value	bwidth;
+				if ( parse_css_length(parts[i],&length) ) {
 					css_value	bwidth( css_length::fromString(tok->c_str(),0) );
 
 					add_property(atom_border_left_width, bwidth, baseurl, important);
 					add_property(atom_border_right_width, bwidth, baseurl, important);
 					add_property(atom_border_top_width, bwidth, baseurl, important);
 					add_property(atom_border_bottom_width, bwidth, baseurl, important);
+					continue;
 				}
-				else if( (idx=get_border_width( tok->c_str(), tok->length(), -1 )>=0 ) {
+				
+				if( (idx=get_border_width( tok->c_str(), tok->length(), -1 )>=0 ) {
 					css_value	bwidth( (atom)idx, important );
 
 					add_property(atom_border_left_width, bwidth, baseurl, important);
@@ -697,6 +727,7 @@ namespace litehtml {
 
 	void style::parse_short_background( const tstring& val, const tchar_t* baseurl, bool important )
 	{
+		//	todo: only if important
 		add_parsed_property(atom_background_color,			_t("transparent"),	important);
 		add_parsed_property(atom_background_image,			_t(""),				important);
 		add_parsed_property(atom_background_baseurl,		_t(""),				important);

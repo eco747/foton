@@ -319,27 +319,22 @@ namespace litehtml {
 		return m_font;
 	}
 
-	const tchar_t* html_tag::get_style_property( atom name, bool inherited, const tchar_t* def /*= 0*/ )
+	const css_value*	html_tag::get_style_property( atom name, bool inherited )
 	{
-		const tchar_t* ret = m_style.get_property(name);
-		element::ptr el_parent = parent();
-		if (el_parent)
-		{
-			if ( ( ret && !t_strcasecmp(ret, _t("inherit")) ) || (!ret && inherited) )
-			{
-				ret = el_parent->get_style_property(name, inherited, def);
+		const css_value* ret = m_style.get_property(name);
+		element*   el_parent = parent();
+		
+		if (el_parent) {
+			if ( (!ret && inherited) || ret->is_atom(atom_inherit) ) {
+				return	el_parent->get_style_property(name, inherited);
 			}
 		}
 
-		if(!ret)
-		{
-			ret = def;
-		}
-
-		return ret;
+		return NULL;
 	}
 
-	const tchar_t* html_tag::get_style_property( atom name, bool inherited, const atom def /*= 0*/ )
+	/*
+	const tchar_t* html_tag::get_style_property( atom name, bool inherited, const atom def )
 	{
 		const tchar_t*	ret = m_style.get_property(name);
 		element::ptr	el_parent = parent();
@@ -357,6 +352,7 @@ namespace litehtml {
 
 		return ret;
 	}
+	*/
 
 	void html_tag::parse_styles(bool is_reparse)
 	{
@@ -370,8 +366,8 @@ namespace litehtml {
 		document::ptr doc = get_document();
 
 		//todo: atom_position never used
-		m_el_position	= get_element_position( get_style_property(atom_position,		false,	element_position_static ),		-1, element_position_fixed );
-		m_text_align	= get_text_align(		get_style_property(atom_text_align,		true,	text_align_left ),				-1, text_align_left );
+		m_el_position	= (element_position)__get_element_position( get_style_property(atom_position, false ), element_position_fixed );
+		m_text_align	= (text_align)__get_text_align(		get_style_property(atom_text_align,		true,	text_align_left ),				-1, text_align_left );
 		m_overflow		= get_overflow(			get_style_property(atom_overflow,		false,	overflow_visible ),				-1, overflow_visible );
 		m_white_space	= get_white_space(		get_style_property(atom_white_space,	true,	white_space_normal ),			-1, white_space_normal );
 		m_display		= get_style_display(	get_style_property(atom_display,		false,	style_display_inline ),			-1, style_display_inline );
@@ -2863,10 +2859,10 @@ namespace litehtml {
 
 	element_position html_tag::get_element_position(css_offsets* offsets) const
 	{
-		if(offsets && m_el_position != element_position_static)
-		{
+		if(offsets && m_el_position != element_position_static) {
 			*offsets = m_css_offsets;
 		}
+
 		return m_el_position;
 	}
 

@@ -34,7 +34,7 @@ static const char media_type_input[] = {
 };
 */
 
-int get_media_type( const tchar_t* text, int len, int def )
+int __get_media_type( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, media_type_GT, countof(media_type_GT),
 						media_type_VT, countof(media_type_VT),
@@ -43,41 +43,41 @@ int get_media_type( const tchar_t* text, int len, int def )
 
 
 int atom_GT[] = {
-		   0,    0,    0,    0,  -14, -296, -294, -273, -232,    0,    0,    1,    1,  -37,    1,    0,    0,    0, -288,    3, 
-		-261, -242,    0,    0,    0, -196,    0,    0, -123, -114,  -94,    4,    0,    0,    5,  -57,    0,    1,    3,    1, 
-		   0,    3,    1, -287,    1,    1, -257, -248,    1,    0,    0,    1, -214,    1,    0, -178,    0, -168,    1,    4, 
-		   1, -112, -108,    0,    1,    0,    3,    0,  -74,    0,    2,    0,    1,    0,    1,    1,    0,  -34,  -31,  -27, 
-		   0,  -17,    5,  -12,   -2,    2, -300,    0,    2,    1, -290,    2,    0,    0,    0,    0, -258,    0, -256, -307, 
-		-253, -250, -249,    1,    1, -241,    4,    0, -228, -222,    0,    2,    0,    0, -202,    0,    0, -194,    0,    0, 
-		   0,    2,    0,    3, -176,    0,    0,    5, -167, -161, -157,    0, -146,    0,    0,    0,    0,    0, -125,    5, 
-		   0,    0, -116,    0,    7,    1,    0, -110,    1, -107,    1, -103,    0,  -97,    2,  -93,    0,    6,    3,    0, 
-		   4,  -81,    8,  -73,  -71,  -68,    0,  -66,    1,  -64,    4,   10,  -61,    0,    0,    0,  -56,  -54,  -52,    0, 
-		   0,  -43,    1,  -39,    0,    2,    3,    0,    6,    3,    3,    9,    0,    3,    0,   -5,    9,   -1,   -8,    7, 
-		 -33,    0,    1,    1,  -50,   13,  -59,  -60,    0,  -67,    0,    0,  -85,  -92, -102, -111, -115,    0, -120,    0, 
-		-122, -126,    0,    0, -129, -132,    2,    0, -139,    0,    0,    0, -152,    0,    0,    0, -171, -173,    1, -187, 
-		   0, -192, -193, -195,    2,    0,    2, -216,    2, -229,    0,    0,    7,    0,    0,    5,    3,    0,    0,    0, 
-		   0, -282,    0,    3, -299,  -20,    0,    0,  -35,  -44,    0,  -62,    1,  -84,    1,    0, -106, -177,    1,    1, 
-		   3,    0,    0,    5,    4,  -65,    0,  -88, -134, -184, -220,    0,    0,    1,    5,    1,    5, -303,  -91,    4, 
-		 -41,  -63,    0, -255,    0,    0, -221, 
+		   0,    1,    1,  -10,    1,    1,  -11,    2,    1,    0,  -18,    0,    0,    0,    5,    0,  -45,    0,    2,    0, 
+		   4,    0,    9,  -66,    0,    1,    0,  -89,  -91,    0, -120, -130, -135,    1, -139,    1,    1,    2,    3,    1, 
+		   0, -157, -309,    0,    0,    0,    0,    0,    0, -197,    1,    0, -206,    5,    1, -210, -213,    0,    2, -222, 
+		   2, -226, -232,    0,    0,    0,    0,    0, -277,   12,    0, -289,    5,    2, -290,    0,    0,    0,    0, -166, 
+		-306, -305,    1,    4,    1,    9,    0,    0, -284, -281,    0,    1,    1, -267,    0, -261,    0,    0, -253,    0, 
+		   0, -249, -247,    0, -243, -242,    0, -239,    0,    0,    0,    0,    0, -215,    0,    0,    1,    0,    2,    3, 
+		-202,    0,    0,    1,    0,   14, -192, -188,    0, -181,    5,    1,    0, -171,    0,    2, -165, -160,   14, -155, 
+		   0,    0, -146,    0,    0,    1,    0, -129, -123,    1, -119, -115, -113,    0, -103,  -96,    0,  -93,    1,   15, 
+		   4,    0,  -83,    1,  -77,  -76,    0,  -73,  -69,    4,    1,    1,    0,  -58,    0,    2,    0,    6,  -41,  -40, 
+		   6,  -38,    3,    2,  -30,  -28,  -26,    0,    0,    2,    1,   -7,   -5,  -16,    2,    0,  -47,  -55,  -59,    0, 
+		   0,  -74,  -87,    3, -112,    0,    1,    3,    1, -149, -154,    1,    2, -184, -196,    0,    0,    0,    0, -198, 
+		   0,    0, -201,    0,    0, -208, -211,    0,    5, -217,    0,    6, -224,    2,    0,    3, -241,    0,    0, -245, 
+		-250,    1, -255,    0,    0,    1,    7,    0,    0, -279, -285,    0,    0, -287, -307, -301, -298,    6,    0, -278, 
+		   0,    0,    3, -262,    0,    0,    0,    0,    0,    0, -258,    0,    0,    0,    0, -252,    2,    5,    0, -205, 
+		-194,    1, -179, -178, -173,    0,    0,    0,    0,    0, -169,    0, -144,  -95,    0,  -88,  -78,  -62,  -60,    0, 
+		 -54,  -39,    0,    0,  -37,    1,  -34,    3,   10, 
 	};
 
 int atom_VT[] = {
-		 149,  200,   23,  277,   28,  296,  298,  119,   11,  237,  192,   33,  226,  252,  142,  132,  245,   64,  109,  110, 
-		  98,  166,   65,  194,  130,  141,  268,   30,  115,  174,  207,    4,  146,  230,  244,   15,   13,  191,  210,  280, 
-		  73,   14,  256,  173,  121,  283,  217,  184,  242,   63,  206,  220,   89,  235,  135,  134,  181,   72,  120,  204, 
-		 158,   51,  122,  287,  276,  164,   41,  291,   21,  273,  168,   74,  179,  300,  253,  159,  279,  261,  215,   39, 
-		 156,  148,  147,   70,  267,  228,   93,   78,  203,   67,  201,  295,  249,   25,  260,  289,   97,   91,  170,  278, 
-		 258,  202,  136,  224,  302,   66,  101,  138,    1,  189,  172,    7,  128,  155,  227,  299,   76,  103,   36,  262, 
-		 187,   60,   31,   35,   50,   99,   37,   68,  282,   84,  199,    8,  292,  197,  213,  117,  294,  198,   24,  284, 
-		 161,  240,  293,  163,  297,  303,  176,  229,  239,  108,  223,  152,   61,  290,  218,  183,  167,  251,   16,   75, 
-		 185,    2,    3,  272,   19,  214,   92,  257,   10,   32,  264,  106,  301,  160,  104,  307,  171,  112,  162,  107, 
-		 234,   59,   38,  124,  247,  178,  140,  139,   43,  219,  137,   57,  254,   54,   81,  274,  306,  275,  288,   95, 
-		  96,   82,  243,  165,   53,  151,   77,  271,  285,  265,  263,    5,  126,   52,  225,  105,   29,  236,  231,   87, 
-		  17,  216,  286,   26,  188,  250,  248,  118,   18,  169,   71,  144,  100,   55,   49,   46,  131,  190,   40,  266, 
-		  12,  193,   22,  129,  269,   80,    6,  232,   90,  211,   69,   48,  102,  143,  177,  246,  212,   62,   45,   44, 
-		  42,  195,   56,   79,   27,  150,   58,  205,  180,   88,  270,  186,  222,  113,  175,  116,  233,  305,   94,  153, 
-		  83,  255,  281,  209,  157,  114,  238,  154,  111,    9,   86,   47,   85,  221,  182,  123,  241,  145,  125,   20, 
-		  34,  208,  259,  133,  304,  127,  196, 
+		 133,   36,  134,  186,  204,  178,   71,   90,   25,   32,  117,  253,   30,  287,  194,  118,  166,  171,   14,  264, 
+		  55,   23,   29,    2,  145,  176,  292,  244,  167,  236,  289,  212,   70,  272,   57,  258,  243,  193,  115,  209, 
+		 246,  260,   72,   40,  144,  267,   34,  306,  304,  245,  227,  127,  149,  296,  225,  241,  168,  135,  271,   21, 
+		 270,   53,   27,   44,  184,  138,  298,   76,  105,  207,   87,  150,  128,  220,  182,    6,   19,   63,  235,  279, 
+		 205,  286,  216,    7,  252,  265,  282,   51,  293,  231,   81,  169,  160,  180,  229,   64,  249,   84,  232,  259, 
+		  77,  170,  300,  110,   69,   91,  237,  261,   16,   65,  307,   93,  140,  156,   10,   17,   92,  112,  224,  162, 
+		 302,  255,  240,  263,  308,  113,   59,  215,  251,   52,  250,  276,   68,  214,  217,  143,  114,   58,  139,  100, 
+		 106,  256,  294,  283,  131,  136,   98,  159,  254,   88,   56,    4,  201,   61,   99,   73,  120,   78,  123,  191, 
+		 200,  121,   49,    9,  152,  154,   39,  158,  153,  274,  218,  301,   96,    5,  257,   11,  233,  210,  141,   66, 
+		  26,    3,  108,   42,   24,   67,  280,   20,  262,   47,  221,  174,  228,  295,    1,  188,  285,  107,  247,  284, 
+		 173,  278,  303,  181,  103,  195,   31,   46,  206,  104,   95,   33,  234,  111,  161,  177,  223,   45,  142,  266, 
+		 116,   41,   80,  101,  155,  124,  269,  275,   54,  268,   79,  248,  309,  297,   89,  239,  125,  219,   85,  291, 
+		 238,  202,   86,  165,  172,   74,  179,  273,  213,  185,  164,  281,  192,  288,   48,   12,   38,   35,   60,   15, 
+		 190,  196,  163,  299,  305,  277,   75,   82,   50,    8,  129,  109,  132,  226,  208,  102,   83,  199,   13,  119, 
+		 198,  175,  189,  203,  157,   62,  130,   97,  183,   18,   94,   37,  146,   28,  148,  147,   22,   43,  126,  151, 
+		 211,  137,  187,  222,  242,  122,  197,  290,  230, 
 	};
 
 uint32_t	atom_RH[] = {
@@ -97,21 +97,21 @@ uint32_t	atom_RH[] = {
 		0x5ae09255, 0x165df50e, 0x4edcd7aa, 0x33b11623, 0x61e81029, 0x7bb22310, 0x5c152a41, 0x23ecbfa7, 0x12f85837, 0x3216548,  \
 		0x1a1dab95, 0x408f5e0f, 0x2fb11068, 0x6e2f4e8d, 0x1d13f85, 0x69772265, 0x69772268, 0x69772267, 0x69772262, 0x69772261,  \
 		0x69772264, 0x5ba0e07b, 0x4d887e08, 0x3a199653, 0x4c47d5c1, 0x160b435, 0x69772228, 0x3170f967, 0x5d6233d7, 0x50c5d77,  \
-		0x687720a7, 0x3645c762, 0x2288731b, 0x513749fb, 0x561ee000, 0x1f886eb8, 0x7b3bf3e4, 0x280137dc, 0x4b8436bf, 0x3f4d41ed,  \
-		0x61867a7e, 0x28346586, 0x71482af1, 0x3eb433, 0x5ecb940b, 0x4db06ca6, 0x65771c61, 0x1ffbfe0a, 0x820aba2, 0xd20b3de,  \
-		0x27c730a2, 0x19423a51, 0x62469476, 0x4cbfdea8, 0x344dc69f, 0x780a378c, 0x3c76e6bb, 0x3e7e1246, 0x4a2ae8d4, 0x6ea69dbe,  \
-		0x69f93050, 0x6904fe13, 0x7fe019b6, 0x2776c5af, 0x244300d0, 0x3e7e124e, 0x9273d88, 0xd882a2f, 0x3b4d62dc, 0x1b6c25f1,  \
-		0x316c4847, 0xf75bf95, 0x467e1ea4, 0x274603a6, 0x55a45c39, 0x2f8b3bf5, 0x167b94d1, 0x28a33501, 0x63c2a2b3, 0x4543a451,  \
-		0x361de6b5, 0x65b62077, 0x6277173d, 0x212b5825, 0x26fb0056, 0x2b9d6e4f, 0x6e6ce7aa, 0x4d7f6d38, 0x498d6ac7, 0x56628158,  \
-		0x2fb85571, 0x2fb85572, 0x50c5d70, 0x440b8035, 0x57989a5, 0x780c617f, 0x1d0beb1e, 0x2770e7df, 0x4a620ba5, 0x5c4fce4d,  \
-		0x3451334f, 0x12a70bd3, 0x5e19d275, 0x3d7754b9, 0x126568e1, 0x4937e75c, 0x2f528ae0, 0x50c5d6f, 0x50c5d6e, 0x12d23a50,  \
-		0x3a72d29b, 0x21efca8e, 0x6816f04a, 0x78d05a2a, 0x13d084bf, 0x2361cdc4, 0x5f7712e8, 0x5f7712e4, 0x769a3d56, 0x50c5d6d,  \
-		0x30e998a7, 0x23177499, 0x291a199f, 0x556391b6, 0x23fe9f73, 0x6e13411b, 0x3910092a, 0x2b707ca2, 0x7502dd08, 0x51f39bd9,  \
-		0x4a5356c1, 0x26707482, 0x8ab57a4, 0x26707494, 0x27707612, 0x34d5d75f, 0x7a1e796c, 0xae95b3f, 0x3787cc5c, 0x5d770f16,  \
-		0x4529f970, 0x4de7210d, 0xe7f89e4, 0x45adcd98, 0x20e2e98, 0x16ae8388, 0x58bde79e, 0x19ddf2fc, 0x6a111f7c, 0x53744fa8,  \
-		0x5d770f1a, 0x529ea246, 0x1e3669db, 0x5ce0e62e, 0x406ccc4b, 0x5d770f04, 0x188403fa, 0x5d770f06, 0x310f785e, 0x50c5d6b,  \
-		0x5c770db3, 0x153b1672, 0xca8a5be, 0x2bf928f1, 0x28ed63dd, 0x2668266d, 0x7e45286c, 0x31cc1af7, 0x4e96dd3a, 0xffca4ea,  \
-		0x182e64ec, 0x4924905c, 0x7f911e1e, 0x41ce8b2b, 0x1e639c29, 0x243ce5df, 
+		0x687720a7, 0x3645c762, 0x2288731b, 0x513749fb, 0x4602ea50, 0x561ee000, 0x1f886eb8, 0x7b3bf3e4, 0x280137dc, 0x4b8436bf,  \
+		0x3f4d41ed, 0x61867a7e, 0x28346586, 0x71482af1, 0x3eb433, 0x5ecb940b, 0x4db06ca6, 0x65771c61, 0x1ffbfe0a, 0x820aba2,  \
+		0xd20b3de, 0x27c730a2, 0x19423a51, 0x62469476, 0x4cbfdea8, 0x344dc69f, 0x780a378c, 0x3c76e6bb, 0x3e7e1246, 0x4a2ae8d4,  \
+		0x6ea69dbe, 0x69f93050, 0x6904fe13, 0x7fe019b6, 0x2776c5af, 0x244300d0, 0x3e7e124e, 0x9273d88, 0xd882a2f, 0x3b4d62dc,  \
+		0x1b6c25f1, 0x316c4847, 0xf75bf95, 0x467e1ea4, 0x274603a6, 0x55a45c39, 0x2f8b3bf5, 0x167b94d1, 0x28a33501, 0x63c2a2b3,  \
+		0x4543a451, 0x361de6b5, 0x65b62077, 0x6277173d, 0x212b5825, 0x26fb0056, 0x2b9d6e4f, 0x6e6ce7aa, 0x4d7f6d38, 0x498d6ac7,  \
+		0x56628158, 0x2fb85571, 0x2fb85572, 0x50c5d70, 0x440b8035, 0x57989a5, 0x780c617f, 0x1d0beb1e, 0x2770e7df, 0x4a620ba5,  \
+		0x5c4fce4d, 0x3451334f, 0x12a70bd3, 0x5e19d275, 0x3d7754b9, 0x126568e1, 0x4937e75c, 0x2f528ae0, 0x50c5d6f, 0x50c5d6e,  \
+		0x12d23a50, 0x3a72d29b, 0x21efca8e, 0x6816f04a, 0x78d05a2a, 0x13d084bf, 0x2361cdc4, 0x5f7712e8, 0x5f7712e4, 0x769a3d56,  \
+		0x50c5d6d, 0x30e998a7, 0x23177499, 0x291a199f, 0x556391b6, 0x23fe9f73, 0x6e13411b, 0x3910092a, 0x2b707ca2, 0x7502dd08,  \
+		0x51f39bd9, 0x4a5356c1, 0x26707482, 0x8ab57a4, 0x26707494, 0x27707612, 0x34d5d75f, 0x7a1e796c, 0xae95b3f, 0x3787cc5c,  \
+		0x5d770f16, 0x4529f970, 0x4de7210d, 0xe7f89e4, 0x45adcd98, 0x20e2e98, 0x16ae8388, 0x58bde79e, 0x19ddf2fc, 0x6a111f7c,  \
+		0x53744fa8, 0x5d770f1a, 0x529ea246, 0x1e3669db, 0x5ce0e62e, 0x406ccc4b, 0x5d770f04, 0x188403fa, 0x5d770f06, 0x310f785e,  \
+		0x50c5d6b, 0x5c770db3, 0x153b1672, 0x77609481, 0xca8a5be, 0x2bf928f1, 0x28ed63dd, 0x2668266d, 0x7e45286c, 0x31cc1af7,  \
+		0x4e96dd3a, 0xffca4ea, 0x182e64ec, 0x4924905c, 0x7f911e1e, 0x41ce8b2b, 0x1e639c29, 0x243ce5df, 
 };
 
 /*
@@ -281,6 +281,7 @@ static const char atom_input[] = {
 	"\x6""iframe" \
 	"\x3""img" \
 	"\x7""inherit" \
+	"\x7""initial" \
 	"\x5""input" \
 	"\x3""ins" \
 	"\x7""isindex" \
@@ -409,6 +410,7 @@ static const char atom_input[] = {
 	"\x1""u" \
 	"\x2""ul" \
 	"\xc""unicode-bidi" \
+	"\x5""unset" \
 	"\x9""user_drag" \
 	"\x6""valign" \
 	"\x5""value" \
@@ -427,7 +429,7 @@ static const char atom_input[] = {
 };
 */
 
-int get_atom( const tchar_t* text, int len, int def )
+int __get_atom( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, atom_GT, countof(atom_GT),
 						atom_VT, countof(atom_VT),
@@ -471,7 +473,7 @@ static const char style_display_input[] = {
 };
 */
 
-int get_style_display( const tchar_t* text, int len, int def )
+int __get_style_display( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, style_display_GT, countof(style_display_GT),
 						style_display_VT, countof(style_display_VT),
@@ -506,7 +508,7 @@ static const char font_size_input[] = {
 };
 */
 
-int get_font_size( const tchar_t* text, int len, int def )
+int __get_font_size( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, font_size_GT, countof(font_size_GT),
 						font_size_VT, countof(font_size_VT),
@@ -557,7 +559,7 @@ static const char list_style_type_input[] = {
 };
 */
 
-int get_list_style_type( const tchar_t* text, int len, int def )
+int __get_list_style_type( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, list_style_type_GT, countof(list_style_type_GT),
 						list_style_type_VT, countof(list_style_type_VT),
@@ -591,7 +593,7 @@ static const char vertical_align_input[] = {
 };
 */
 
-int get_vertical_align( const tchar_t* text, int len, int def )
+int __get_vertical_align( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, vertical_align_GT, countof(vertical_align_GT),
 						vertical_align_VT, countof(vertical_align_VT),
@@ -627,7 +629,7 @@ static const char border_style_input[] = {
 };
 */
 
-int get_border_style( const tchar_t* text, int len, int def )
+int __get_border_style( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, border_style_GT, countof(border_style_GT),
 						border_style_VT, countof(border_style_VT),
@@ -645,7 +647,7 @@ static const char font_style_input[] = {
 	"\x6""italic" \
 };
 
-int get_font_style( const tchar_t* text, int len, int def )
+int __get_font_style( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, font_style_input, def );
 }
@@ -661,7 +663,7 @@ static const char font_variant_input[] = {
 	"\xa""small-caps" \
 };
 
-int get_font_variant( const tchar_t* text, int len, int def )
+int __get_font_variant( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, font_variant_input, def );
 }
@@ -678,7 +680,7 @@ static const char border_width_input[] = {
 	"\x5""thick" \
 };
 
-int get_border_width( const tchar_t* text, int len, int def )
+int __get_border_width( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, border_width_input, def );
 }
@@ -695,7 +697,7 @@ static const char element_float_input[] = {
 	"\x5""right" \
 };
 
-int get_element_float( const tchar_t* text, int len, int def )
+int __get_element_float( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, element_float_input, def );
 }
@@ -713,7 +715,7 @@ static const char element_clear_input[] = {
 	"\x4""both" \
 };
 
-int get_element_clear( const tchar_t* text, int len, int def )
+int __get_element_clear( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, element_clear_input, def );
 }
@@ -754,7 +756,7 @@ static const char css_units_input[] = {
 };
 */
 
-int get_css_units( const tchar_t* text, int len, int def )
+int __get_css_units( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, css_units_GT, countof(css_units_GT),
 						css_units_VT, countof(css_units_VT),
@@ -772,7 +774,7 @@ static const char background_attachment_input[] = {
 	"\x5""fixed" \
 };
 
-int get_background_attachment( const tchar_t* text, int len, int def )
+int __get_background_attachment( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, background_attachment_input, def );
 }
@@ -790,7 +792,7 @@ static const char background_repeat_input[] = {
 	"\x9""no-repeat" \
 };
 
-int get_background_repeat( const tchar_t* text, int len, int def )
+int __get_background_repeat( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, background_repeat_input, def );
 }
@@ -807,7 +809,7 @@ static const char background_box_input[] = {
 	"\xb""content-box" \
 };
 
-int get_background_box( const tchar_t* text, int len, int def )
+int __get_background_box( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, background_box_input, def );
 }
@@ -825,7 +827,7 @@ static const char element_position_input[] = {
 	"\x5""fixed" \
 };
 
-int get_element_position( const tchar_t* text, int len, int def )
+int __get_element_position( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, element_position_input, def );
 }
@@ -843,7 +845,7 @@ static const char text_align_input[] = {
 	"\x7""justify" \
 };
 
-int get_text_align( const tchar_t* text, int len, int def )
+int __get_text_align( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, text_align_input, def );
 }
@@ -861,7 +863,7 @@ static const char text_transform_input[] = {
 	"\x9""lowercase" \
 };
 
-int get_text_transform( const tchar_t* text, int len, int def )
+int __get_text_transform( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, text_transform_input, def );
 }
@@ -880,7 +882,7 @@ static const char white_space_input[] = {
 	"\x8""pre-wrap" \
 };
 
-int get_white_space( const tchar_t* text, int len, int def )
+int __get_white_space( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, white_space_input, def );
 }
@@ -900,7 +902,7 @@ static const char overflow_input[] = {
 	"\xa""no-content" \
 };
 
-int get_overflow( const tchar_t* text, int len, int def )
+int __get_overflow( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, overflow_input, def );
 }
@@ -917,7 +919,7 @@ static const char background_size_input[] = {
 	"\x7""contain" \
 };
 
-int get_background_size( const tchar_t* text, int len, int def )
+int __get_background_size( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, background_size_input, def );
 }
@@ -934,7 +936,7 @@ static const char visibility_input[] = {
 	"\x8""collapse" \
 };
 
-int get_visibility( const tchar_t* text, int len, int def )
+int __get_visibility( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, visibility_input, def );
 }
@@ -950,7 +952,7 @@ static const char border_collapse_input[] = {
 	"\x8""separate" \
 };
 
-int get_border_collapse( const tchar_t* text, int len, int def )
+int __get_border_collapse( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, border_collapse_input, def );
 }
@@ -987,7 +989,7 @@ static const char pseudo_class_input[] = {
 };
 */
 
-int get_pseudo_class( const tchar_t* text, int len, int def )
+int __get_pseudo_class( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, pseudo_class_GT, countof(pseudo_class_GT),
 						pseudo_class_VT, countof(pseudo_class_VT),
@@ -1009,7 +1011,7 @@ static const char content_property_input[] = {
 	"\xe""no-close-quote" \
 };
 
-int get_content_property( const tchar_t* text, int len, int def )
+int __get_content_property( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, content_property_input, def );
 }
@@ -1025,7 +1027,7 @@ static const char media_orientation_input[] = {
 	"\x9""landscape" \
 };
 
-int get_media_orientation( const tchar_t* text, int len, int def )
+int __get_media_orientation( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, media_orientation_input, def );
 }
@@ -1086,7 +1088,7 @@ static const char media_feature_input[] = {
 };
 */
 
-int get_media_feature( const tchar_t* text, int len, int def )
+int __get_media_feature( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, media_feature_GT, countof(media_feature_GT),
 						media_feature_VT, countof(media_feature_VT),
@@ -1104,7 +1106,7 @@ static const char box_sizing_input[] = {
 	"\xa""border-box" \
 };
 
-int get_box_sizing( const tchar_t* text, int len, int def )
+int __get_box_sizing( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, box_sizing_input, def );
 }
@@ -1302,7 +1304,7 @@ static const char web_colors_input[] = {
 };
 */
 
-int get_web_colors( const tchar_t* text, int len, int def )
+int __get_web_colors( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, web_colors_GT, countof(web_colors_GT),
 						web_colors_VT, countof(web_colors_VT),
@@ -1320,7 +1322,7 @@ static const char list_style_position_input[] = {
 	"\x7""outside" \
 };
 
-int get_list_style_position( const tchar_t* text, int len, int def )
+int __get_list_style_position( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, list_style_position_input, def );
 }
@@ -1356,7 +1358,7 @@ static const char font_weight_input[] = {
 };
 */
 
-int get_font_weight( const tchar_t* text, int len, int def )
+int __get_font_weight( const tchar_t* text, int len, int def )
 {
 	return hash_find( text, len, font_weight_GT, countof(font_weight_GT),
 						font_weight_VT, countof(font_weight_VT),
@@ -1378,7 +1380,7 @@ static const char style_border_input[] = {
 	"\x6""double" \
 };
 
-int get_style_border( const tchar_t* text, int len, int def )
+int __get_style_border( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, style_border_input, def );
 }
@@ -1395,7 +1397,7 @@ static const char text_decoration_input[] = {
 	"\x8""overline" \
 };
 
-int get_text_decoration( const tchar_t* text, int len, int def )
+int __get_text_decoration( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, text_decoration_input, def );
 }
@@ -1413,7 +1415,7 @@ static const char background_position_input[] = {
 	"\x6""center" \
 };
 
-int get_background_position( const tchar_t* text, int len, int def )
+int __get_background_position( const tchar_t* text, int len, int def )
 {
 	return string_find( text, len, background_position_input, def );
 }
