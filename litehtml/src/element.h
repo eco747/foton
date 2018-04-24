@@ -17,6 +17,8 @@ namespace litehtml
 		friend class document;
 
 	protected:
+		const uint32_t	flag_skip = 0x0001;
+
 		document*			m_doc;
 		box*				m_box;
 		position			m_pos;
@@ -25,17 +27,19 @@ namespace litehtml
 		margins				m_borders;
 		//bool				m_skip;
 		uint32_t 			m_flags;	//
-		const uint32_t	flag_skip = 0x0001;
-		
+				
 		//xVector<element>	m_children;
 		
 		element*			m_parent;
 		element*			m_next_element;
-		element*			m_prev_element;
-		element*			m_first_child;
-		element*			m_last_child;
+		//element*			m_prev_element;
+		element*			m_next_positionned;
 
-		virtual void select_all(const css_selector& selector, xVector<element*>& res);
+		xList<element>		m_children;
+		//element*			m_first_child;
+		//element*			m_last_child;
+
+		virtual void select_all( const css_selector& selector, xVector<element*>& res );
 
 	public:
 		element( document* doc);

@@ -47,11 +47,13 @@ namespace litehtml
 //		typedef std::shared_ptr<html_tag>	ptr;
 
 	protected:
-		xVector<box>			m_boxes;
-		string_vector			m_class_values;
+//		string_vector			m_class_values;
+//		attr_map				m_attrs;
+//		xVector<box>			m_boxes;
+
 		atom					m_tag;
 		style					m_style;
-		attr_map				m_attrs;
+		
 		vertical_align			m_vertical_align;
 		text_align				m_text_align;
 		style_display			m_display;
@@ -60,8 +62,12 @@ namespace litehtml
 		white_space				m_white_space;
 		element_float			m_float;
 		element_clear			m_clear;
-		xVector<floated_box>	m_floats_left;
-		xVector<floated_box>	m_floats_right;
+
+		xList<attribute>		m_attributes;
+		xList<box> 				m_boxes;
+		xList<floated_box>		m_floats_left;
+		xList<floated_box>		m_floats_right;
+		
 		elements_vector			m_positioned;
 		background				m_bg;
 		element_position		m_el_position;
@@ -224,7 +230,7 @@ namespace litehtml
 		virtual int					get_line_left(int y) override;
 		virtual int					get_line_right(int y, int def_right) override;
 		virtual void				get_line_left_right(int y, int def_right, int& ln_left, int& ln_right) override;
-		virtual void				add_float(const element* el, int x, int y) override;
+		virtual void				add_float( element* el, int x, int y) override;
 		virtual void				update_floats(int dy, const element* parent) override;
 		virtual void				add_positioned(const element* el) override;
 		virtual int					find_next_line_top(int top, int width, int def_right) override;

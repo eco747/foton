@@ -97,12 +97,13 @@ namespace litehtml
 
 		atom					attribute;
 		tstring					val;
-		string_vector			class_val;
+		//string_vector			class_val;
 		attr_select_condition	condition;
+		css_attribute_selector*	m_next;
 
 		css_attribute_selector()
 		{
-			condition = select_exists;
+			condition 	= select_exists;
 		}
 	};
 
@@ -111,8 +112,10 @@ namespace litehtml
 	class css_element_selector
 	{
 	public:
-		atom	m_tag;
-		css_attribute_selector::vector	m_attrs;
+		atom		m_tag;
+		css_attribute_selector*	m_first_sel;
+		css_attribute_selector*	m_last_sel;
+		//css_attribute_selector::vector	m_attrs;
 
 	public:
 		void parse(const tstring& txt);

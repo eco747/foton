@@ -22,6 +22,9 @@ namespace litehtml
 		int		m_right;
 
 	public:
+		box*	next;
+
+	public:
 		box(int top, int left, int right)
 		{
 			m_top	= top;
