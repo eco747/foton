@@ -230,7 +230,7 @@ namespace litehtml
 	//	typedef std::vector<used_selector::ptr>	vector;
 
 		const css_selector*	m_selector;
-		bool		;
+		bool		m_used;
 
 		used_selector(const css_selector* selector, bool used)
 		{

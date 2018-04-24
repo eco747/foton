@@ -4,6 +4,8 @@
 
 namespace litehtml
 {
+	struct border_radiuses;
+
 	struct css_border
 	{
 		css_length		width;
@@ -30,6 +32,95 @@ namespace litehtml
 			return *this;
 		}
 	};
+
+
+	struct border_radiuses
+	{
+		struct 	radius {
+			int 	x;
+			int 	y;
+		};
+
+		radius	top_left;
+		radius	top_right;
+		radius 	bottom_right;
+		radius 	bottom_left;
+
+		border_radiuses()
+		{
+			top_left.x = 0;
+			top_left.y = 0;
+			top_right.x = 0;
+			top_right.y = 0;
+			bottom_right.x = 0;
+			bottom_right.y = 0;
+			bottom_left.x = 0;
+			bottom_left.y = 0;
+		}
+
+		border_radiuses(const border_radiuses& val)
+		{
+			top_left.x = val.top_left.x;
+			top_left.y = val.top_left.y;
+			top_right.x = val.top_right.x;
+			top_right.y = val.top_right.y;
+			bottom_right.x = val.bottom_right.x;
+			bottom_right.y = val.bottom_right.y;
+			bottom_left.x = val.bottom_left.x;
+			bottom_left.y = val.bottom_left.y;
+		}
+
+		border_radiuses& operator = (const border_radiuses& val)
+		{
+			top_left.x = val.top_left.x;
+			top_left.y = val.top_left.y;
+			top_right.x = val.top_right.x;
+			top_right.y = val.top_right.y;
+			bottom_right.x = val.bottom_right.x;
+			bottom_right.y = val.bottom_right.y;
+			bottom_left.x = val.bottom_left.x;
+			bottom_left.y = val.bottom_left.y;
+			return *this;
+		}
+
+		void operator += (const margins& mg)
+		{
+			top_left.x += mg.left;
+			top_left.y += mg.top;
+			top_right.x += mg.right;
+			top_right.y += mg.top;
+			bottom_right.x += mg.right;
+			bottom_right.y += mg.bottom;
+			bottom_left.x += mg.left;
+			bottom_left.y += mg.bottom;
+			fix_values();
+		}
+
+		void operator -= (const margins& mg)
+		{
+			top_left.x -= mg.left;
+			top_left.y -= mg.top;
+			top_right.x -= mg.right;
+			top_right.y -= mg.top;
+			bottom_right.x -= mg.right;
+			bottom_right.y -= mg.bottom;
+			bottom_left.x -= mg.left;
+			bottom_left.y -= mg.bottom;
+			fix_values();
+		}
+
+		void fix_values()
+		{
+			if (top_left.x < 0)		top_left.x = 0;
+			if (top_left.y < 0)		top_left.y = 0;
+			if (top_right.x < 0) 	top_right.x = 0;
+			if (bottom_right.x < 0) bottom_right.x = 0;
+			if (bottom_right.y < 0) bottom_right.y = 0;
+			if (bottom_left.x < 0) 	bottom_left.x = 0;
+			if (bottom_left.y < 0) 	bottom_left.y = 0;
+		}
+	};
+
 
 	struct css_border_radius
 	{
@@ -169,93 +260,6 @@ namespace litehtml
 			style = (border_style)val.style;
 			color = val.color;
 			return *this;
-		}
-	};
-
-	struct border_radiuses
-	{
-		struct 	radius {
-			int 	x;
-			int 	y;
-		};
-
-		radius	top_left;
-		radius	top_right;
-		radius 	bottom_right;
-		radius 	bottom_left;
-		
-		border_radiuses()
-		{
-			top_left.x = 0;
-			top_left.y = 0;
-			top_right.x = 0;
-			top_right.y = 0;
-			bottom_right.x = 0;
-			bottom_right.y = 0;
-			bottom_left.x = 0;
-			bottom_left.y = 0;
-		}
-
-		border_radiuses(const border_radiuses& val)
-		{
-			top_left.x = val.top_left.x;
-			top_left.y = val.top_left.y;
-			top_right.x = val.top_right.x;
-			top_right.y = val.top_right.y;
-			bottom_right.x = val.bottom_right.x;
-			bottom_right.y = val.bottom_right.y;
-			bottom_left.x = val.bottom_left.x;
-			bottom_left.y = val.bottom_left.y;
-		}
-
-		border_radiuses& operator = (const border_radiuses& val)
-		{
-			top_left.x = val.top_left.x;
-			top_left.y = val.top_left.y;
-			top_right.x = val.top_right.x;
-			top_right.y = val.top_right.y;
-			bottom_right.x = val.bottom_right.x;
-			bottom_right.y = val.bottom_right.y;
-			bottom_left.x = val.bottom_left.x;
-			bottom_left.y = val.bottom_left.y;
-			return *this;
-		}
-
-		void operator += (const margins& mg)
-		{
-			top_left.x += mg.left;
-			top_left.y += mg.top;
-			top_right.x += mg.right;
-			top_right.y += mg.top;
-			bottom_right.x += mg.right;
-			bottom_right.y += mg.bottom;
-			bottom_left.x += mg.left;
-			bottom_left.y += mg.bottom;
-			fix_values();
-		}
-
-		void operator -= (const margins& mg)
-		{
-			top_left.x -= mg.left;
-			top_left.y -= mg.top;
-			top_right.x -= mg.right;
-			top_right.y -= mg.top;
-			bottom_right.x -= mg.right;
-			bottom_right.y -= mg.bottom;
-			bottom_left.x -= mg.left;
-			bottom_left.y -= mg.bottom;
-			fix_values();
-		}
-
-		void fix_values()
-		{
-			if (top_left.x < 0)		top_left.x = 0;
-			if (top_left.y < 0)		top_left.y = 0;
-			if (top_right.x < 0) 	top_right.x = 0;
-			if (bottom_right.x < 0) bottom_right.x = 0;
-			if (bottom_right.y < 0) bottom_right.y = 0;
-			if (bottom_left.x < 0) 	bottom_left.x = 0;
-			if (bottom_left.y < 0) 	bottom_left.y = 0;
 		}
 	};
 

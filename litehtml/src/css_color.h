@@ -40,7 +40,7 @@ namespace litehtml
 		uint8_t	red( ) const	{ return (color>>16)&0xff; }
 		uint8_t	alpha( ) const	{ return (color>>24)&0xff; }
 
-		static web_color	from_string( const tchar_t* str );
-		static bool         is_color( const tchar_t* str );
+		static bool		from_string(const tchar_t* str, web_color* pcolor );
+		static bool     is_color( const tchar_t* str );
 	};
 }

@@ -24,7 +24,7 @@ namespace litehtml
 			border_top		= 0;
 			height			= 0;
 			el_row			= nullptr;
-			css_height.predef(0);
+			css_height.set_predef( 0 );
 		}
 
 		table_row(int h, element* row)
@@ -36,8 +36,7 @@ namespace litehtml
 			border_top		= 0;
 			top				= 0;
 			bottom			= 0;
-			if (row)
-			{
+			if (row) {
 				css_height = row->get_css_height();
 			}
 		}
@@ -90,7 +89,7 @@ namespace litehtml
 			min_width		= 0;
 			max_width		= 0;
 			width			= 0;
-			css_width.predef(0);
+			css_width.set_predef(0);
 		}
 
 		table_column(int min_w, int max_w)
@@ -102,7 +101,7 @@ namespace litehtml
 			max_width		= max_w;
 			min_width		= min_w;
 			width			= 0;
-			css_width.predef(0);
+			css_width.set_predef(0);
 		}
 
 		table_column(const table_column& val)
@@ -225,8 +224,8 @@ namespace litehtml
 		bool			is_rowspanned(int r, int c);
 		void			finish();
 		table_cell*		cell(int t_col, int t_row);
-		table_column&	column(int c)	{ return m_columns[c];	}
-		table_row&		row(int r)		{ return m_rows[r];		}
+//		table_column&	column(int c)	{ return m_columns[c];	}
+//		table_row&		row(int r)		{ return m_rows[r];		}
 
 		int				rows_count()	{ return m_rows_count;	}
 		int				cols_count()	{ return m_cols_count;	}

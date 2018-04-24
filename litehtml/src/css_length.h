@@ -48,7 +48,7 @@ namespace litehtml
 		css_length&	operator=(float val);
 		
 		bool		is_predefined() const {
-			return 	m_self.is_predefined;
+			return 	!!m_self.is_predefined;
 		}
 
 		void		set_predef( int val ) {

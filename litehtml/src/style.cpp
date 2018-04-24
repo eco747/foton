@@ -122,16 +122,17 @@ namespace litehtml {
 					case atom_inherit:
 					case atom_initial:
 					case atom_unset: {
-						add_prop( css_value(atom__xx_border_spacing_x,(atom)v,important), baseurl );
-						add_prop( css_value(atom__xx_border_spacing_y,(atom)v,important), baseurl );
+						css_value 	undef( (atom)v );
+						add_prop( atom__xx_border_spacing_x, undef, baseurl, important );
+						add_prop( atom__xx_border_spacing_y, undef, baseurl, important );
 						break;
 					}
 
 					default: {
 						css_length_value	length;
 						if( parse_css_length(parts[0],&length) ) {
-							add_prop( css_value(atom__xx_border_spacing_x,length,important), baseurl );
-							add_prop( css_value(atom__xx_border_spacing_y,length,important), baseurl );
+							add_prop( atom__xx_border_spacing_x, css_value(length), baseurl, important );
+							add_prop( atom__xx_border_spacing_y, css_value(length), baseurl, important );
 						}
 						else {
 							//todo: bad length
@@ -144,8 +145,8 @@ namespace litehtml {
 				css_length_value	x, y;
 				if( parse_css_length(parts[0],&x) &&
 					parse_css_length(parts[0],&y) ) {
-					add_prop( css_value(atom__xx_border_spacing_x,x,important), baseurl );
-					add_prop( css_value(atom__xx_border_spacing_y,y,important), baseurl );
+					add_prop( atom__xx_border_spacing_x, css_value(x), baseurl, important );
+					add_prop( atom__xx_border_spacing_y, css_value(y), baseurl, important );
 				}
 				else {
 					//todo: bad length
@@ -155,27 +156,70 @@ namespace litehtml {
 		// Parse borders shorthand properties
 		else if( name == atom_border )
 		{
-			n = value.split( 0x01, parts, 4 );
+			n = value.split( 0x01, parts, 3 );
 
 			//	style
-			//	style/couleur
-			//	largeur/style
-			//	largeur/style/couleur
 			//	inherit
 			//	initial
 			//	unset
+			//	style/couleur
+			//	largeur/style
+			//	largeur/style/couleur
+			
+			if( n==1 ) {
+				int idx = __get_border_style( parts[0].str, parts[0].len, -1 );
+				
+				if(idx >= 0) {
+					css_value	bstyle( css_value_type_border_width, idx );
+					add_prop(atom_border_left_style, bstyle, baseurl, important );
+					add_prop(atom_border_right_style, bstyle, baseurl, important );
+					add_prop(atom_border_top_style, bstyle, baseurl, important );
+					add_prop(atom_border_bottom_style, bstyle, baseurl, important );
+					return;
+				}
+
+				int v = __get_atom( parts[0].str, parts[0].len, -1 );
+				switch( v ) {
+					case atom_inherit:
+					case atom_initial:
+					case atom_unset: {
+						css_value 	undef( (atom)v );
+						add_prop(atom_border_left_style, undef, baseurl, important );
+						add_prop(atom_border_right_style, undef, baseurl, important );
+						add_prop(atom_border_top_style, undef, baseurl, important );
+						add_prop(atom_border_bottom_style, undef, baseurl, important );
+						return;
+					}
+				}
+
+				//todo: malformed border
+				return;
+			}
+			
+			if( n==2 ) {
+				int idx = __get_border_style( parts[0].str, parts[0].len, -1 );
+				
+				if(idx >= 0) {
+					css_value	bstyle( css_value_type_border_width, idx );
+
+					web_color 	clr;
+					if( web_color::from_string(parts[1],&clr) ) {
+						
+					}
+
+					add_prop(atom_border_left_style, bstyle, baseurl, important );
+					add_prop(atom_border_right_style, bstyle, baseurl, important );
+					add_prop(atom_border_top_style, bstyle, baseurl, important );
+					add_prop(atom_border_bottom_style, bstyle, baseurl, important );
+					return;
+				}
+
+
+			}
 			
 			for( int i=0; i<n; i++ ) {
 				
-				int idx = __get_border_style( parts[i].str, parts[i].len, -1 );
-				if(idx >= 0) {
-					css_value	bstyle( (atom)idx, important );
-					_add_property(atom_border_left_style, bstyle, baseurl );
-					_add_property(atom_border_right_style, bstyle, baseurl );
-					_add_property(atom_border_top_style, bstyle, baseurl );
-					_add_property(atom_border_bottom_style, bstyle, baseurl );
-					continue;
-				}
+				
 				
 				css_length_value	bwidth;
 				if ( parse_css_length(parts[i],&length) ) {

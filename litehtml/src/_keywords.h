@@ -1004,7 +1004,7 @@ enum background_position {
 enum css_value_type {
 	css_value_type_null,
 	css_value_type_string,
-	css_value_type_atom,
+	//css_value_type_atom,
 	css_value_type_color,
 	css_value_type_css_length,
 	css_value_type_media_type,

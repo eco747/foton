@@ -1,4 +1,5 @@
-#include "html.h"
+#include "xstring.h"
+#include <ctype.h>
 
 namespace litehtml
 {
@@ -215,7 +216,7 @@ namespace litehtml
 	 */
 
 	bool	xstringpart::i_equ( const xstringpart& o ) {
-		return o.len==len && strnicmp( str, o.str, len )==0;
+		return o.len==len && _memicmp( str, o.str, len )==0;
 	}
 
 	/**
@@ -228,7 +229,7 @@ namespace litehtml
 		return o.len==len && strncmp( str, o.str, len )==0;
 	}
 
-	int 	xstringpart::split( tchar_t sep, xstringpart* parts, int pcount )
+	int 	xstringpart::split( tchar_t sep, xstringpart* parts, int pcount ) const
 	{
 		int  		cidx = 0;
 		xstringpart	temp( str, len );
@@ -242,10 +243,11 @@ namespace litehtml
 			cidx++;
 		}
 
-		return cidx;
+		parts[cidx] = temp;
+		return cidx+1;
 	}
 
-	bool 	xstringpart::split( tchar_t sep, xstringpart* left, xstringpart* right )
+	bool 	xstringpart::split( tchar_t sep, xstringpart* left, xstringpart* right ) const
 	{
 		int 	cidx = 0;
 		const tchar_t*	p = start( );
@@ -262,7 +264,7 @@ namespace litehtml
 				return true;
 			}
 			
-			p++
+			p++;
 		}
 
 		return false;

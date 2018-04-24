@@ -26,7 +26,7 @@ namespace litehtml
 
 	public:
 		void	 clear( );
-		void 	 copy( const XVectorBase& );
+		//void 	 copy( const XVectorBase& );
 		uint32_t length( ) const { return m_length; }
 		bool 	 empty( ) const {return m_length==0; }
 

@@ -1,4 +1,15 @@
 
+#if		1
+#	include <stdint.h>
+#	include <string.h>
+#	include <stdlib.h>
+
+typedef char	tchar_t;
+
+#define		t_strlen	strlen
+#endif
+
+
 /**
 * @brief The xstring class
 */
@@ -77,6 +88,7 @@ namespace litehtml
 		xstringpart&	operator = (const xstringpart& other) {
 			str = other.str;
 			len = other.len;
+			return *this;
 		}
 
 		void 	set( const tchar_t* s, uint32_t l ) {
@@ -91,7 +103,7 @@ namespace litehtml
 		const tchar_t*	trim_right( );
 		const tchar_t*	trim( ) { trim_right(); return trim_left(); }
 
-		int 	split( tchar_t sep, xstringpart* left, xstringpart* right ) const;
+		bool 	split( tchar_t sep, xstringpart* left, xstringpart* right ) const;
 		int 	split( tchar_t sep, xstringpart* parts, int pcount ) const;
 		
 		int 	rsplit( tchar_t sep, xstringpart* left, xstringpart* right );

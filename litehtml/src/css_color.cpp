@@ -171,49 +171,56 @@ namespace litehtml
 		return 0;
 	}
 
-	web_color web_color::from_string(const tchar_t* str )
+	bool	web_color::from_string( const xstringpart& str, web_color* pcolor )
 	{
-		if(!str || !str[0])	{
-			return web_color(0xff000000);
+		if( !str.len)	{
+			*pcolor = web_color(0xff000000);
+			return false;
 		}
 
-		if( str[0] == '#' ) {
-			str++;
+		const tchar_t*	p = str.start();
+		const tchar_t*	e = str.end();
 
-			int	len = t_strlen(str);
-			if( len==3 ) {
-				return web_color( atox(str[0]), atox(str[1]), atox(str[2]) );
-			}
-			else if( len==6 ) {
-				return web_color(	atox(str[0])<<4 | atox(str[1]),
-									atox(str[2])<<4 | atox(str[3]),
-									atox(str[4])<<4 | atox(str[5]) );
-			}
-			else if( len==8 ) {
-				return web_color(	atox(str[0])<<4 | atox(str[1]),
-									atox(str[2])<<4 | atox(str[3]),
-									atox(str[4])<<4 | atox(str[5]),
-									atox(str[6])<<4 | atox(str[7]) );
-			}
-			else {
-				__asm int 3;
-			}
+		if( *p == '#' ) {
 
-			return web_color( );
+			p++;
+			if( str.len==4 ) {
+				*pcolor = 	web_color(	atox(p[0]), 
+										atox(p[1]), 
+										atox(p[2]) );
+				return true;
+			}
+			else if( str.len==7 ) {
+				*pcolor =  	web_color(	atox(p[0])<<4 | atox(p[1]),
+										atox(p[2])<<4 | atox(p[3]),
+										atox(p[4])<<4 | atox(p[5]) );
+				return true;
+			}
+			else if( str.len==9 ) {
+				*pcolor = 	web_color(	atox(p[0])<<4 | atox(p[1]),
+										atox(p[2])<<4 | atox(p[3]),
+										atox(p[4])<<4 | atox(p[5]),
+										atox(p[6])<<4 | atox(p[7]) );
+				return true;
+			}
+			
+			//__asm int 3;
+			//todo: malformed color
+			*pcolor = web_color(0xff000000);
+			return false;
 		}
-		else if( (str[0]=='r' || str[0]=='R') &&
-				 (str[1]=='g' || str[1]=='G') &&
-				 (str[2]=='b' || str[2]=='B') )
+		else if( (p[0]=='r' || p[0]=='R') &&
+				 (p[1]=='g' || p[1]=='G') &&
+				 (p[2]=='b' || p[2]=='B') )
 		{
-			const tchar_t* p;
 			bool  rgba = false;
 
-			if( str[3]=='a' || str[3]=='A' ) {
-				p = skip_sp( str+4 );
+			if( p[3]=='a' || p[3]=='A' ) {
+				p = skip_sp( p+4 );
 				rgba = true;
 			}
 			else {
-				p = skip_sp( str+3 );
+				p = skip_sp( p+3 );
 			}
 			
 			if( *p=='(' ) {
@@ -249,23 +256,27 @@ namespace litehtml
 						}
 
 						if( *p==')' ) {
-							return 	web_color( clr[0], clr[1], clr[2], clr[3] );
+							*pcolor = web_color( clr[0], clr[1], clr[2], clr[3] );
+							return true;
 						}
 					}
 				}
 			}
 
 			//todo: warning bad color
-			return 	0xff0000;
+			*pcolor = web_color(0xff000000);
+			return false;
 		}
 		
-		int idx = get_web_colors(str,-1,-1);
+		int idx = __get_web_colors(str,-1,-1);
 		if( idx>=0 ) {
-			return web_color( color_values [idx] );
+			*pcolor = web_color( color_values [idx] );
+			return true;
 		}
 		
 		//todo: handle initial
-		return web_color(0, 0, 0);
+		*pcolor = web_color(0xff000000);
+		return false;
 	}
 
 	bool web_color::is_color(const tchar_t* str)
@@ -281,7 +292,7 @@ namespace litehtml
 			return true;
 		}
 
-		if( get_web_colors(str,-1,-1)>=0 ) {
+		if( __get_web_colors(str,-1,-1)>=0 ) {
 			return true;
 		}
 

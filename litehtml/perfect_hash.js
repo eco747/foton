@@ -142,7 +142,7 @@ let __cpp_output = '#include "html.h"\n\nnamespace litehtml {\n\n'+
 
 let __h_output = '#ifndef __KEYWORDS_H\n#define __KEYWORDS_H\n\n\nnamespace litehtml {\n\n';
 
-let  elements_types = ['null','string','atom','color','css_length'];
+let  elements_types = ['null','string','color','css_length'];
 					
 
 function generate( input, output_name, sort_it, gen_zero ) {

@@ -4,6 +4,9 @@
 #include "xvector.h"
 #include <string>
 
+#define		mem_free	free
+#define		mem_alloc	malloc
+
 namespace litehtml
 {
 	class	css_value
@@ -21,47 +24,33 @@ namespace litehtml
 			css_length_value	len;
 		} 	m_value;
 
-		atom 		m_name;
 		uint8_t 	m_type;
-		uint8_t		m_important;
-
-		css_value*	m_next;
 		
-		css_value( atom name )
+		css_value( )
 		{
-			m_name 		= name;
 			m_type 		= css_value_type_null;
-			m_important = false;
 		}
 
-		css_value( atom name, atom val, bool imp = false ) 
+		css_value( atom val, bool imp = false ) 
 		{
-			m_name 		= name;
-			m_important = imp;
 			m_type 		= css_value_type_atom;
 			m_value.atm = atom_value;
 		}
 
-		css_value( atom name, css_value_type type, int val, bool imp = false ) 
+		css_value( css_value_type type, int val, bool imp = false ) 
 		{
-			m_name 		= name;
-			m_important = imp;
 			m_type 		= type;
 			m_value.typ = val;
 		}
 
-		css_value( atom name, const tchar_t* val, bool imp = false ) 
+		css_value( const tchar_t* val, bool imp = false ) 
 		{
-			m_name 		= name;
-			m_important = imp;
-			m_value.str = t_strdup( val );
+			m_value.str = _strdup( val );
 			m_type		= css_value_type_string;
 		}
 
-		css_value( atom name, const css_length_value& val, bool imp = false )
+		css_value( const css_length_value& val, bool imp = false )
 		{
-			m_name 		= name;
-			m_important = imp;
 			m_value.len = val;
 			m_type = css_value_type_css_length;
 		}
@@ -87,12 +76,10 @@ namespace litehtml
 		void set( const css_value& val ) {
 			clear( );
 
-			m_name 		= val.m_name;
 			m_type		= val.m_type;
-			m_important	= val.m_important;
 
 			if( val.m_type==css_value_type_string ) {
-				m_value.str	= t_strdup(val.m_value.str);
+				m_value.str	= _strdup(val.m_value.str);
 			}
 			else {
 				m_value		= val.m_value;
@@ -108,6 +95,16 @@ namespace litehtml
 		bool 	is_atom( atom item ) const {
 			return m_type==css_value_type_atom && m_value.atm==item;
 		}
+	};
+
+	class css_property
+	{
+		atom 			m_name;
+		uint8_t			m_important;
+		css_property*	m_next;
+			
+
+
 	};
 
 	class style
@@ -158,7 +155,7 @@ namespace litehtml
 		void 	parse_short_background(const tstring& val, const tchar_t* baseurl, bool important);
 		void 	parse_short_font(const tstring& val, bool important);
 
-		void 	add_prop( css_value& value, const tchar_t* baseurl );
+		void 	add_prop( atom name, css_value& value, const tchar_t* baseurl, bool important );
 		//void 	add_parsed_property(atom name, const css_value& val, bool important);
 		//void 	remove_property( atom name, bool important );
 	};
