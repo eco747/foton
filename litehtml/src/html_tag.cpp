@@ -4059,7 +4059,7 @@ namespace litehtml {
 		if(child_count > 1) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -4125,30 +4125,29 @@ namespace litehtml {
 
 	element* html_tag::get_element_before()
 	{
-		if(!m_children.empty())
-		{
+		if(!m_children.empty()) {
 			//if( !t_strcmp(m_children.front()->get_tagName(), _t("::before")) )
-			if( m_children.front()->get_tagName()==atom___before )
-			{
+			if( m_children.front()->get_tagName()==atom___before ) {
 				return m_children.front();
 			}
 		}
-		element* el = std::make_shared<el_before>(get_document());
+
+		element* el = new el_before(get_document());
 		el->parent(this);
+
 		m_children.insert(m_children.begin(), el);
 		return el;
 	}
 
 	element* html_tag::get_element_after()
 	{
-		if(!m_children.empty())
-		{
+		if(!m_children.empty()) {
 			//if( !t_strcmp(m_children.back()->get_tagName(), _t("::after")) )
-			if( m_children.back()->get_tagName()==atom___after )
-			{
+			if( m_children.back()->get_tagName()==atom___after ) {
 				return m_children.back();
 			}
 		}
+
 		element* el = std::make_shared<el_after>(get_document());
 		appendChild(el);
 		return el;
@@ -4161,16 +4160,15 @@ namespace litehtml {
 
 	bool html_tag::have_inline_child() const
 	{
-		if(!m_children.empty())
-		{
-			for(const auto& el : m_children)
-			{
-				if(!el->is_white_space())
-				{
+		if(!m_children.empty()) {
+			for( element* el=m_children.first; el; el = el->m_next_element ) {
+			
+				if(!el->is_white_space()) {
 					return true;
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -4178,10 +4176,9 @@ namespace litehtml {
 	{
 		remove_before_after();
 
-		for (auto& el : m_children)
-		{
-			if(el->get_display() != display_inline_text)
-			{
+		for( element* el=m_children.first; el; el = el->m_next_element ) {
+		
+			if(el->get_display() != display_inline_text) {
 				el->refresh_styles();
 			}
 		}
@@ -4361,7 +4358,8 @@ namespace litehtml {
 
 	element* html_tag::get_element_by_point(int x, int y, int client_x, int client_y)
 	{
-		if(!is_visible()) return 0;
+		if(!is_visible())
+			return 0;
 
 		element* ret;
 
@@ -5262,14 +5260,14 @@ namespace litehtml {
 			return this;
 		}
 
-		for(auto& el : m_children)
-		{
+		for( element* el=m_children.first; el; el = el->m_next_element ) {
+		
 			element* res = el->select_one(selector);
-			if(res)
-			{
+			if(res) {
 				return res;
 			}
 		}
+		
 		return 0;
 	}
 
