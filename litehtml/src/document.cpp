@@ -296,7 +296,8 @@ namespace litehtml
 		}
 	}
 
-	int document::cvt_units( const tchar_t* str, int fontSize, bool* is_percent/*= 0*/ ) const
+	/*
+	int document::cvt_units( const tchar_t* str, int fontSize, bool* is_percent ) const
 	{
 		if(!str)	return 0;
 
@@ -309,8 +310,9 @@ namespace litehtml
 
 		return cvt_units(val, fontSize);
 	}
+	*/
 
-	int document::cvt_units( css_length& val, int fontSize, int size ) const
+	int document::cvt_units( const css_length& val, int fontSize, int size ) const
 	{
 		if(val.is_predefined()) {
 			return 0;

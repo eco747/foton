@@ -142,7 +142,7 @@ let __cpp_output = '#include "html.h"\n\nnamespace litehtml {\n\n'+
 
 let __h_output = '#ifndef __KEYWORDS_H\n#define __KEYWORDS_H\n\n\nnamespace litehtml {\n\n';
 
-let  elements_types = ['null','string','color','css_length'];
+let  elements_types = ['null','string','int','color','css_length'];
 					
 
 function generate( input, output_name, sort_it, gen_zero ) {
@@ -323,7 +323,7 @@ generate( 'pseudo-el;before;after;pseudo;id;class;inherit;initial;unset;auto;br;
 	'mark;big;small;s;strike;del;sub;sup;nobr;html;embed;iframe;object;ruby;rt;rp;noframes;frameset;frame;details;summary;template;unicode-bidi;bdi;bdo;dialog;lang;charset;' +
 	'name;role;abbr;datetime;time;alt;controls;audio;canvas;value;min;max;svg;cx;cy;r;fill;circle;for;placeholder;checked;rows;cols;span;nowrap;isindex;flex-grow;flex-basis;background-position-x;' +
 	'background-position-y;word-break;table-layout;zoom;text-overflow;box-shadow;justify-content;user_drag;tabindex;halign;column-gap;flex-wrap;column-width;column-count;align-content;' +
-	'flex-flow;transparent',
+	'flex-flow;transparent;none;normal;',
 	//'none;block;inline;inline-block;inline-table;list-item;table-caption;table-cell;table-column;table-column-group;table-footer-group;table-header-group;table-row;table-row-group;flex;' +
 	//'static;relative;absolute;fixed;capitalize;uppercase;lowercase;border-box;padding-box;content-box;repeat;repeat-x;repeat-y;no-repeat;' +
 	//'justify;normal;pre-line;pre-wrap;visible;hidden;scroll;no-display;no-content;cover;contain;collapse;separate;only-child;only-of-type;first-child;first-of-type;last-child;last-of-type;' +

@@ -44,6 +44,12 @@ namespace litehtml
 			m_self = val.m_self;
 			return *this;
 		}
+
+		css_length&	operator = ( const css_length_value& val )
+		{
+			m_self = val;
+			return *this;
+		}
 		
 		css_length&	operator=(float val);
 		

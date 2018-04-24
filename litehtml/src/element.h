@@ -166,7 +166,6 @@ namespace litehtml
 		virtual void				draw(uint_ptr hdc, int x, int y, const position* clip);
 		virtual void				draw_background( uint_ptr hdc, int x, int y, const position* clip );
 		virtual const css_value*	get_style_property(atom name, bool inherited);
-//		virtual const tchar_t*		get_style_property(atom name, bool inherited, const atom def = (atom)0);
 		virtual uint_ptr			get_font(font_metrics* fm = 0);
 		virtual int					get_font_size() const;
 		virtual void				get_text(tstring& text);

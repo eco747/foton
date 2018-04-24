@@ -17,47 +17,46 @@ namespace litehtml
 	public:
 
 		union {
-			tchar_t*			str;
-			atom 				atm;
-			int 				typ;
-			css_color_value		clr;
-			css_length_value	len;
-		} 	m_value;
+			tchar_t*			str_val;
+			int 				int_val;
+			css_color_value		color_val;
+			css_length_value	length_val;
+		};
 
-		uint8_t 	m_type;
+		uint8_t 	type;
 		
 		css_value( )
 		{
-			m_type 		= css_value_type_null;
+			type 		= css_value_type_null;
 		}
 
-		css_value( atom val, bool imp = false ) 
+		css_value( atom val ) 
 		{
-			m_type 		= css_value_type_atom;
-			m_value.atm = atom_value;
+			type 		= css_value_type_atom;
+			int_val		= val;
 		}
 
-		css_value( css_value_type type, int val, bool imp = false ) 
+		css_value( css_value_type t, int val ) 
 		{
-			m_type 		= type;
-			m_value.typ = val;
+			type 		= t;
+			int_val		= val;
 		}
 
-		css_value( const tchar_t* val, bool imp = false ) 
+		css_value( const tchar_t* val ) 
 		{
-			m_value.str = _strdup( val );
-			m_type		= css_value_type_string;
+			type		= css_value_type_string;
+			str_val 	= _strdup( val );
 		}
 
-		css_value( const css_length_value& val, bool imp = false )
+		css_value( const css_length_value& val )
 		{
-			m_value.len = val;
-			m_type = css_value_type_css_length;
+			type 		= css_value_type_css_length;
+			lenght_val	= val;
 		}
 
 		css_value( const css_value& val )
 		{
-			m_type	= css_value_type_null;	// avoid clear
+			type	= css_value_type_null;	// avoid clear
 			set( val );
 		}
 
@@ -66,23 +65,22 @@ namespace litehtml
 		}
 
 		void clear( ) {
-			if( m_type==css_value_type_string ) {
-				mem_free( m_value.str );
+			if( type==css_value_type_string ) {
+				mem_free( str_val );
 			}
 
-			m_type = css_value_type_null;
+			type = css_value_type_null;
 		}
 
 		void set( const css_value& val ) {
 			clear( );
 
-			m_type		= val.m_type;
-
-			if( val.m_type==css_value_type_string ) {
-				m_value.str	= _strdup(val.m_value.str);
+			type		= val.m_type;
+			if( val.type==css_value_type_string ) {
+				str_val	= _strdup(val.str_val);
 			}
 			else {
-				m_value		= val.m_value;
+				int_val	= val.int_val;
 			}
 		}
 
@@ -93,25 +91,27 @@ namespace litehtml
 		}
 
 		bool 	is_atom( atom item ) const {
-			return m_type==css_value_type_atom && m_value.atm==item;
+			return type==css_value_type_atom && atom_val==item;
+		}
+
+		bool 	is( css_value_type t ) const {
+			return type==type;
 		}
 	};
 
 	class css_property
 	{
 		atom 			m_name;
+		css_value 		m_value;
 		uint8_t			m_important;
 		css_property*	m_next;
-			
-
-
 	};
 
 	class style
 	{
 	private:
-		css_value*	m_first_value;
-		css_value*	m_last_value;
+		css_property*	m_first_prop;
+		css_property*	m_last_prop;
 
 	private:
 		style( const style& val );
@@ -135,9 +135,9 @@ namespace litehtml
 		const css_value*	get_property( atom name ) const
 		{
 			if( name ) {
-				for( css_value* e=m_first_value; e; e=e->m_next ) {
-					if( e->m_name==name ) {
-						return e;
+				for( css_property* p=m_first_prop; p; p=p->m_next ) {
+					if( p->m_name==name ) {
+						return p->value;
 					}
 				}
 			}

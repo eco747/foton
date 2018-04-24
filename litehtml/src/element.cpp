@@ -746,7 +746,7 @@ namespace litehtml
 
 	}
 
-	const tchar_t *element::get_style_property(atom name, bool inherited, const tchar_t *def /*= 0*/)
+	const css_value* element::get_style_property(atom name, bool inherited )
 	{
 		return 0;
 	}
