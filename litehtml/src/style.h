@@ -100,6 +100,7 @@ namespace litehtml
 	};
 
 	class css_property
+		: public xListNode<css_property>
 	{
 		atom 			m_name;
 		css_value 		m_value;
@@ -110,9 +111,8 @@ namespace litehtml
 	class style
 	{
 	private:
-		css_property*	m_first_prop;
-		css_property*	m_last_prop;
-
+		xList<css_property>	m_props;
+		
 	private:
 		style( const style& val );
 		
@@ -135,7 +135,7 @@ namespace litehtml
 		const css_value*	get_property( atom name ) const
 		{
 			if( name ) {
-				for( css_property* p=m_first_prop; p; p=p->m_next ) {
+				for( css_property* p=m_props.first; p; p=p->m_next ) {
 					if( p->m_name==name ) {
 						return p->value;
 					}

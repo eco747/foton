@@ -186,12 +186,7 @@ namespace litehtml
 
 	const tchar_t* xstringpart::trim_left( ) {
 
-		while( len && (*str==' ' || *str=='\t') ) {
-			str++;
-			len--;
-		}
-
-		return str;
+		return skip( ' ', '\t' );
 	}
 
 	/**
@@ -216,8 +211,15 @@ namespace litehtml
 	 */
 
 	bool	xstringpart::i_equ( const xstringpart& o ) {
+		return i_equ( o.str, o.len )==0;
+	}
+
+	bool	xtringpart::i_equ( const tchar_t* s, uint32_t len )
+	{
 		return o.len==len && _memicmp( str, o.str, len )==0;
 	}
+
+
 
 	/**
 	 * @brief xstringpart::equ
@@ -270,4 +272,63 @@ namespace litehtml
 		return false;
 	}
 
+	void xstringpart::move_start( int n )
+	{
+		if( n>len ) {
+			n = len;
+		}
+
+		str += n;
+		len -= n;
+	}
+
+	void xstringpart::skip( tchar_t c1, tchar_t c2=0 ) 
+	{
+		tchar_t*	s = str;
+		tchar_t*	e = end( );
+
+		if( c1 && c2 ) {
+			while( s<e && *s==c1 ) {
+				s++;
+			}
+		}
+		else {
+			while( s<e && (*s==c1 || *s==c2) ) {
+				s++;
+			}
+		}
+		
+		str	= s;
+		len = e-s;
+
+		return str;
+	}
+
+	bool xstringpart::extract( tchar_t sep_start, tchar_t sep_end, xstringpart* out )
+	{
+		tchar_t*	s = str;
+		tchar_t*	e = end( );
+
+		while( s<e && (*s==' ' || *s=='\t') ) {
+			s++;
+		}
+
+		if( *s!=sep_start ) {
+			return false;
+		}
+
+		tchar_t*	v = s;
+
+		s++;
+		while( s<e ) {
+			if( *s==sep_end ) {
+				out.set( v, s-v );
+				return true;
+			}
+			s++;
+		}
+
+		return false;
+	}
 }
+

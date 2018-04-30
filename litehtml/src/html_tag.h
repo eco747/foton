@@ -47,13 +47,14 @@ namespace litehtml
 //		typedef std::shared_ptr<html_tag>	ptr;
 
 	protected:
-//		string_vector			m_class_values;
+//		
 //		attr_map				m_attrs;
 //		xVector<box>			m_boxes;
 
+		//	elements internal attributes
 		atom					m_tag;
 		style					m_style;
-		
+	
 		vertical_align			m_vertical_align;
 		text_align				m_text_align;
 		style_display			m_display;
@@ -62,20 +63,8 @@ namespace litehtml
 		white_space				m_white_space;
 		element_float			m_float;
 		element_clear			m_clear;
-
-		xList<attribute>		m_attributes;
-		xList<box> 				m_boxes;
-		xList<floated_box>		m_floats_left;
-		xList<floated_box>		m_floats_right;
-		
-		elements_vector			m_positioned;
-		background				m_bg;
 		element_position		m_el_position;
 		int						m_line_height;
-		bool					m_lh_predefined;
-		string_vector			m_pseudo_classes;
-		xVector<used_selector>	m_used_styles;
-		
 		uint_ptr				m_font;
 		int						m_font_size;
 		font_metrics			m_font_metrics;
@@ -91,12 +80,25 @@ namespace litehtml
 		css_length				m_css_max_height;
 		css_offsets				m_css_offsets;
 		css_length				m_css_text_indent;
-
+		background				m_bg;
+		
 		overflow				m_overflow;
 		visibility				m_visibility;
 		int						m_z_index;
 		box_sizing				m_box_sizing;
-
+		//string_vector			m_pseudo_classes;
+		//string_vector			m_class_values;
+	
+		bool					m_lh_predefined;
+		
+		xList<attribute>		m_attributes;
+		xList<box> 				m_boxes;
+		xList<floated_box>		m_floats_left;
+		xList<floated_box>		m_floats_right;
+		
+		elements_vector			m_positioned;
+		xVector<used_selector>	m_used_styles;
+				
 		int_int_cache			m_cache_line_left;
 		int_int_cache			m_cache_line_right;
 

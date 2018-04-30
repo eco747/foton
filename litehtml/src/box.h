@@ -11,6 +11,7 @@ namespace litehtml
 	};
 
 	class box
+		:	public xListNode<box>
 	{
 //	public:
 //		typedef std::unique_ptr<box>	ptr;
@@ -20,9 +21,6 @@ namespace litehtml
 		int		m_top;
 		int		m_left;
 		int		m_right;
-
-	public:
-		box*	next;
 
 	public:
 		box(int top, int left, int right)

@@ -9,6 +9,7 @@ namespace litehtml
 
 
 	class element
+		:	public 	xListNode<element>
 	{
 		friend class block_box;
 		friend class line_box;
@@ -31,14 +32,12 @@ namespace litehtml
 		//xVector<element>	m_children;
 		
 		element*			m_parent;
-		element*			m_next_element;
+		//element*			m_next_element;
 		//element*			m_prev_element;
 		element*			m_next_positionned;
 
 		xList<element>		m_children;
-		//element*			m_first_child;
-		//element*			m_last_child;
-
+		
 		virtual void select_all( const css_selector& selector, xVector<element*>& res );
 
 	public:

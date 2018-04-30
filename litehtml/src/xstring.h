@@ -99,6 +99,9 @@ namespace litehtml
 		const tchar_t*	end( ) const { return str+len; }
 		const tchar_t*	start( ) const { return str; }
 
+		void 			move_start( int n );
+		bool			extract( tchar_t sep_start, tchar_t sep_end, xstringpart* out );
+
 		const tchar_t* 	trim_left( );
 		const tchar_t*	trim_right( );
 		const tchar_t*	trim( ) { trim_right(); return trim_left(); }
@@ -110,5 +113,8 @@ namespace litehtml
 
 		bool	i_equ( const xstringpart& o );
 		bool	equ( const xstringpart& o );
+		
+		bool	i_equ( const tchar_t* s, uint32_t len );
+		bool	equ( const tchar_t* s, uint32_t len );
 	};
 }
