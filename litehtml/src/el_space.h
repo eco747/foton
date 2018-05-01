@@ -2,13 +2,11 @@
 #include "html_tag.h"
 #include "el_text.h"
 
-namespace litehtml
-{
+namespace litehtml {
 	class el_space
-		: public el_text
-	{
+		: public el_text {
 	public:
-		el_space(const tchar_t* text, document* doc);
+		el_space( const tchar_t* text, document* doc );
 		virtual ~el_space();
 
 		virtual bool	is_white_space() const override;

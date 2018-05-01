@@ -1,11 +1,10 @@
 #include "html.h"
 #include "el_comment.h"
 
-namespace litehtml
-{
+namespace litehtml {
 
-	el_comment::el_comment(document* doc)
-		: element(doc)
+	el_comment::el_comment( document* doc )
+		: element( doc )
 	{
 		m_skip = true;
 	}
@@ -21,7 +20,7 @@ namespace litehtml
 
 	void el_comment::set_data( const tchar_t* data )
 	{
-		if(data) {
+		if( data ) {
 			m_text += data;
 		}
 	}

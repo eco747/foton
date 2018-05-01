@@ -1,7 +1,6 @@
 #pragma once
 
-namespace litehtml
-{
+namespace litehtml {
 	/*
 	struct	attr_color {
 		uint32_t	color;

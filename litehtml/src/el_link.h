@@ -1,13 +1,11 @@
 #pragma once
 #include "html_tag.h"
 
-namespace litehtml
-{
-	class el_link 
-		: public html_tag
-	{
+namespace litehtml {
+	class el_link
+		: public html_tag {
 	public:
-		el_link(document* doc);
+		el_link( document* doc );
 		virtual ~el_link();
 
 	protected:

@@ -1,13 +1,11 @@
 #pragma once
 #include "html_tag.h"
 
-namespace litehtml
-{
-	class el_break 
-		: public html_tag
-	{
+namespace litehtml {
+	class el_break
+		: public html_tag {
 	public:
-		el_break( document* doc);
+		el_break( document* doc );
 		virtual ~el_break();
 
 		virtual bool is_break() const override;

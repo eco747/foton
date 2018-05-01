@@ -4,8 +4,8 @@
 
 namespace litehtml {
 
-	el_base::el_base(document* doc)
-		: html_tag(doc)
+	el_base::el_base( document* doc )
+		: html_tag( doc )
 	{
 	}
 
@@ -15,6 +15,6 @@ namespace litehtml {
 
 	void el_base::parse_attributes()
 	{
-		get_document()->container()->set_base_url(get_attr(atom_href));
+		get_document()->container()->set_base_url( get_attr( atom_href ) );
 	}
 }

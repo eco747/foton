@@ -5,20 +5,22 @@
 #define 	mem_free 	free
 
 namespace litehtml {
-	xVectorBase::xVectorBase( uint32_t initial_capacity /*=0*/ ) 
+	xVectorBase::xVectorBase( uint32_t initial_capacity /*=0*/ )
 	{
 		m_length = 0;
 		m_capacity = initial_capacity;
-		if (initial_capacity > 0) {
-			m_data = (void**)mem_alloc( sizeof(void*) * initial_capacity );
+
+		if( initial_capacity > 0 ) {
+			m_data = ( void** )mem_alloc( sizeof( void* ) * initial_capacity );
 		}
 		else {
 			m_data = NULL;
 		}
 	}
 
-	xVectorBase:: ~xVectorBase( ) {
-		if (m_capacity > 0) {
+	xVectorBase:: ~xVectorBase( )
+	{
+		if( m_capacity > 0 ) {
 			mem_free( m_data );
 		}
 	}
@@ -28,13 +30,12 @@ namespace litehtml {
 		_grow_if_full( );
 		//assert(m_data);
 		//assert(m_length < m_capacity);
-
 		m_data[m_length++] = el;
 	}
 
 	void* xVectorBase::_pop( )
 	{
-		if ( m_length == 0) {
+		if( m_length == 0 ) {
 			return NULL;
 		}
 
@@ -43,8 +44,8 @@ namespace litehtml {
 
 	int xVectorBase::_index_of( void* el )
 	{
-		for (uint32_t i = 0; i < m_length; ++i) {
-			if (m_data[i] == el) {
+		for( uint32_t i = 0; i < m_length; ++i ) {
+			if( m_data[i] == el ) {
 				return i;
 			}
 		}
@@ -56,16 +57,16 @@ namespace litehtml {
 	{
 		//assert(index <= m_length);
 		_grow_if_full();
-
 		++m_length;
-		memmove( &m_data[index + 1], &m_data[index], sizeof(void*) * (m_length - index - 1) );
+		memmove( &m_data[index + 1], &m_data[index], sizeof( void* ) * ( m_length - index - 1 ) );
 		m_data[index] = el;
 	}
 
 	void xVectorBase::_remove( void* el )
 	{
 		int index = _index_of( el );
-		if (index == -1) {
+
+		if( index == -1 ) {
 			return;
 		}
 
@@ -76,10 +77,8 @@ namespace litehtml {
 	{
 		//assert(index < m_length);
 		void* result = m_data[index];
-
-		memmove( &m_data[index], &m_data[index + 1], sizeof(void*) * (m_length - index - 1));
+		memmove( &m_data[index], &m_data[index + 1], sizeof( void* ) * ( m_length - index - 1 ) );
 		--m_length;
-		
 		return result;
 	}
 
@@ -89,37 +88,35 @@ namespace litehtml {
 		return m_data[index];
 	}
 
-	void*  xVectorBase::_first( ) const {
-		return m_length==0 ? NULL : m_data[0];
-	}
-
-	void*  xVectorBase::_last( ) const {
-		return m_length==0 ? NULL : m_data[m_length-1];
-	}
-
-	void xVectorBase::_grow_if_full( ) 
+	void*  xVectorBase::_first( ) const
 	{
-		if ( m_length >= m_capacity ) {
-			
+		return m_length == 0 ? NULL : m_data[0];
+	}
+
+	void*  xVectorBase::_last( ) const
+	{
+		return m_length == 0 ? NULL : m_data[m_length - 1];
+	}
+
+	void xVectorBase::_grow_if_full( )
+	{
+		if( m_length >= m_capacity ) {
 			if( m_capacity ) {
-				size_t old_num_bytes = sizeof(void*) * m_capacity;
+				size_t old_num_bytes = sizeof( void* ) * m_capacity;
 				m_capacity *= 2;
-
-				size_t num_bytes = sizeof(void*) * m_capacity;
-				void** temp = (void**)mem_alloc( num_bytes );
-
-				memcpy(temp, m_data, old_num_bytes);
+				size_t num_bytes = sizeof( void* ) * m_capacity;
+				void** temp = ( void** )mem_alloc( num_bytes );
+				memcpy( temp, m_data, old_num_bytes );
 				mem_free( m_data );
-		
 				m_data = temp;
 			}
 		}
 		else {
 			// 0-capacity vector; no previous array to deallocate.
 			m_capacity = 2;
-			m_data = (void**)mem_alloc( sizeof(void*) * m_capacity);
+			m_data = ( void** )mem_alloc( sizeof( void* ) * m_capacity );
 		}
-	}	
+	}
 }
 
 

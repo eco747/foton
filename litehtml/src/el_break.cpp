@@ -1,10 +1,9 @@
 #include "html.h"
 #include "el_break.h"
 
-namespace litehtml
-{
-	el_break::el_break( document* doc)
-		: html_tag(doc)
+namespace litehtml {
+	el_break::el_break( document* doc )
+		: html_tag( doc )
 	{
 	}
 

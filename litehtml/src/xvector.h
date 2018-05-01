@@ -1,17 +1,15 @@
 #ifndef __XVECTOR_H
 #define __XVECTOR_H
 
-namespace litehtml
-{
+namespace litehtml {
 
-	class xVectorBase
-	{
+	class xVectorBase {
 		void**		m_data;
 		uint32_t	m_length;
 		uint32_t	m_capacity;
 
 	protected:
-		xVectorBase( uint32_t initial_capacity=0 );
+		xVectorBase( uint32_t initial_capacity = 0 );
 		virtual ~xVectorBase( );
 
 		void 	_add( void* el );
@@ -27,8 +25,12 @@ namespace litehtml
 	public:
 		void	 clear( );
 		//void 	 copy( const XVectorBase& );
-		uint32_t length( ) const { return m_length; }
-		bool 	 empty( ) const {return m_length==0; }
+		uint32_t length( ) const {
+			return m_length;
+		}
+		bool 	 empty( ) const {
+			return m_length == 0;
+		}
 
 	private:
 		void 	_grow_if_full( );
@@ -36,51 +38,42 @@ namespace litehtml
 
 	template <class type>
 	class 	xVector
-		:	public xVectorBase
-	{
+		:	public xVectorBase {
 	public:
-		xVector( uint32_t initial_capacity=0 )
-			: xVectorBase( initial_capacity )
-		{
+		xVector( uint32_t initial_capacity = 0 )
+			: xVectorBase( initial_capacity ) {
 		}
 
-		void 	add( type* el )
-		{
+		void 	add( type* el ) {
 			_add( el );
 		}
 
-		type*		pop( )
-		{
-			return (type*)_pop( );
+		type*		pop( ) {
+			return ( type* )_pop( );
 		}
 
-		type* operator [] ( uint32_t index ) const {
-			return (type*)_at( index );
+		type* operator []( uint32_t index ) const {
+			return ( type* )_at( index );
 		}
 
-		type*	at( uint32_t index ) const
-		{
-			return (type*)_at( index );
+		type*	at( uint32_t index ) const {
+			return ( type* )_at( index );
 		}
 
-		int 	index_of( type* el )
-		{
+		int 	index_of( type* el ) {
 			return _index_of( el );
 		}
 
-		void 	insert_at( uint32_t index, type* el )
-		{
+		void 	insert_at( uint32_t index, type* el ) {
 			return insert_at( index, el );
 		}
 
-		void 	remove( type* el )
-		{
+		void 	remove( type* el ) {
 			_remove( el );
 		}
 
-		type* 	remove_at( uint32_t index )
-		{
-			return (type*)_remove_at( index );
+		type* 	remove_at( uint32_t index ) {
+			return ( type* )_remove_at( index );
 		}
 
 		type*  first( ) const {

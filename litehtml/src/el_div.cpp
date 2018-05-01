@@ -1,12 +1,10 @@
 #include "html.h"
 #include "el_div.h"
 
-namespace litehtml
-{
-	el_div::el_div(document* doc)
-		: html_tag(doc)
+namespace litehtml {
+	el_div::el_div( document* doc )
+		: html_tag( doc )
 	{
-
 	}
 
 	el_div::~el_div()
@@ -20,7 +18,6 @@ namespace litehtml
 		//if(str) {
 		//	m_style.add_property(atom_text_align, str, 0, false);
 		//}
-
 		html_tag::parse_attributes();
 	}
 }

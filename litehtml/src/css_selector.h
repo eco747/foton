@@ -2,73 +2,95 @@
 #include "style.h"
 #include "media_query.h"
 
-namespace litehtml
-{
+namespace litehtml {
 	//////////////////////////////////////////////////////////////////////////
 
-	struct selector_specificity
-	{
+	struct selector_specificity {
 		int		a;
 		int		b;
 		int		c;
 		int		d;
 
-		selector_specificity(int va = 0, int vb = 0, int vc = 0, int vd = 0)
-		{
+		selector_specificity( int va = 0, int vb = 0, int vc = 0, int vd = 0 ) {
 			a	= va;
 			b	= vb;
 			c	= vc;
 			d	= vd;
 		}
 
-		void operator += (const selector_specificity& val)
-		{
+		void operator += ( const selector_specificity& val ) {
 			a	+= val.a;
 			b	+= val.b;
 			c	+= val.c;
 			d	+= val.d;
 		}
 
-		bool operator==(const selector_specificity& val) const
-		{
-			return (a == val.a && b == val.b && c == val.c && d == val.d);
+		bool operator==( const selector_specificity& val ) const {
+			return ( a == val.a && b == val.b && c == val.c && d == val.d );
 		}
 
-		bool operator!=(const selector_specificity& val) const
-		{
-			return (a != val.a || b != val.b || c != val.c || d != val.d);
+		bool operator!=( const selector_specificity& val ) const {
+			return ( a != val.a || b != val.b || c != val.c || d != val.d );
 		}
 
-		bool operator > (const selector_specificity& val) const
-		{
-			if(a > val.a)	{return true;}
-			if(a < val.a)	{return false;}
-			if(b > val.b)	{return true;}
-			if(b < val.b)	{return false;}
-			if(c > val.c)	{return true;}
-			if(c < val.c)	{return false;}
-			if(d > val.d)	{return true;}
-			if(d < val.d)	{return false;}
+		bool operator > ( const selector_specificity& val ) const {
+			if( a > val.a )	{
+				return true;
+			}
+
+			if( a < val.a )	{
+				return false;
+			}
+
+			if( b > val.b )	{
+				return true;
+			}
+
+			if( b < val.b )	{
+				return false;
+			}
+
+			if( c > val.c )	{
+				return true;
+			}
+
+			if( c < val.c )	{
+				return false;
+			}
+
+			if( d > val.d )	{
+				return true;
+			}
+
+			if( d < val.d )	{
+				return false;
+			}
 
 			return false;
 		}
 
-		bool operator >= (const selector_specificity& val) const
-		{
-			if( (*this) == val) return true;
-			if( (*this) > val) return true;
+		bool operator >= ( const selector_specificity& val ) const {
+			if( ( *this ) == val ) {
+				return true;
+			}
+
+			if( ( *this ) > val ) {
+				return true;
+			}
+
 			return false;
 		}
 
-		bool operator <= (const selector_specificity& val) const
-		{
-			if( (*this) > val ) {return false;}
+		bool operator <= ( const selector_specificity& val ) const {
+			if( ( *this ) > val ) {
+				return false;
+			}
+
 			return true;
 		}
 
-		bool operator < (const selector_specificity& val) const
-		{
-			if( (*this)<=val && (*this) != val ) {
+		bool operator < ( const selector_specificity& val ) const {
+			if( ( *this ) <= val && ( *this ) != val ) {
 				return true;
 			}
 
@@ -78,8 +100,7 @@ namespace litehtml
 
 	//////////////////////////////////////////////////////////////////////////
 
-	enum attr_select_condition
-	{
+	enum attr_select_condition {
 		select_exists,
 		select_equal,
 		select_contain_str,
@@ -91,8 +112,7 @@ namespace litehtml
 
 	//////////////////////////////////////////////////////////////////////////
 
-	struct css_attribute_selector
-	{
+	struct css_attribute_selector {
 		typedef std::vector<css_attribute_selector>	vector;
 
 		atom					attribute;
@@ -101,16 +121,14 @@ namespace litehtml
 		attr_select_condition	condition;
 		css_attribute_selector*	m_next;
 
-		css_attribute_selector()
-		{
+		css_attribute_selector() {
 			condition 	= select_exists;
 		}
 	};
 
 	//////////////////////////////////////////////////////////////////////////
 
-	class css_element_selector
-	{
+	class css_element_selector {
 	public:
 		atom		m_tag;
 		css_attribute_selector*	m_first_sel;
@@ -118,13 +136,12 @@ namespace litehtml
 		//css_attribute_selector::vector	m_attrs;
 
 	public:
-		void parse(const tstring& txt);
+		void parse( const tstring& txt );
 	};
 
 	//////////////////////////////////////////////////////////////////////////
 
-	enum css_combinator
-	{
+	enum css_combinator {
 		combinator_descendant,
 		combinator_child,
 		combinator_adjacent_sibling,
@@ -133,9 +150,8 @@ namespace litehtml
 
 	//////////////////////////////////////////////////////////////////////////
 
-	class css_selector
-	{
-	//public:
+	class css_selector {
+		//public:
 		//typedef std::shared_ptr<css_selector>	ptr;
 		//typedef std::vector<css_selector::ptr>	vector;
 
@@ -149,8 +165,7 @@ namespace litehtml
 		media_query_list*		m_media_query;
 
 	public:
-		css_selector(media_query_list* media, style* st = NULL )
-		{
+		css_selector( media_query_list* media, style* st = NULL ) {
 			m_media_query	= media;
 			m_combinator	= combinator_descendant;
 			m_order			= 0;
@@ -158,13 +173,12 @@ namespace litehtml
 			m_style			= st;
 		}
 
-		~css_selector()
-		{
+		~css_selector() {
 		}
 
-		css_selector(const css_selector& val)
-		{
+		css_selector( const css_selector& val ) {
 			m_right			= val.m_right;
+
 			if( val.m_left ) {
 				m_left			= new css_selector( *val.m_left );
 			}
@@ -178,15 +192,15 @@ namespace litehtml
 			m_media_query	= val.m_media_query;
 		}
 
-		bool parse(const tstring& text);
+		bool parse( const tstring& text );
 		void calc_specificity();
 		bool is_media_valid() const;
-		void add_media_to_doc(document* doc) const;
+		void add_media_to_doc( document* doc ) const;
 	};
 
 	inline bool css_selector::is_media_valid() const
 	{
-		if(!m_media_query) {
+		if( !m_media_query ) {
 			return true;
 		}
 
@@ -196,22 +210,22 @@ namespace litehtml
 
 	//////////////////////////////////////////////////////////////////////////
 
-	inline bool operator > (const css_selector& v1, const css_selector& v2)
+	inline bool operator > ( const css_selector& v1, const css_selector& v2 )
 	{
-		if(v1.m_specificity == v2.m_specificity) {
-			return (v1.m_order > v2.m_order);
+		if( v1.m_specificity == v2.m_specificity ) {
+			return ( v1.m_order > v2.m_order );
 		}
 
-		return (v1.m_specificity > v2.m_specificity);
+		return ( v1.m_specificity > v2.m_specificity );
 	}
 
-	inline bool operator < (const css_selector& v1, const css_selector& v2)
+	inline bool operator < ( const css_selector& v1, const css_selector& v2 )
 	{
-		if(v1.m_specificity == v2.m_specificity) {
-			return (v1.m_order < v2.m_order);
+		if( v1.m_specificity == v2.m_specificity ) {
+			return ( v1.m_order < v2.m_order );
 		}
 
-		return (v1.m_specificity < v2.m_specificity);
+		return ( v1.m_specificity < v2.m_specificity );
 	}
 
 	//inline bool operator >(const css_selector*& v1, const css_selector*& v2)
@@ -226,17 +240,15 @@ namespace litehtml
 
 	//////////////////////////////////////////////////////////////////////////
 
-	class used_selector
-	{
-	//public:
-	//	typedef std::unique_ptr<used_selector>	ptr;
-	//	typedef std::vector<used_selector::ptr>	vector;
+	class used_selector {
+		//public:
+		//	typedef std::unique_ptr<used_selector>	ptr;
+		//	typedef std::vector<used_selector::ptr>	vector;
 
 		const css_selector*	m_selector;
 		bool		m_used;
 
-		used_selector(const css_selector* selector, bool used)
-		{
+		used_selector( const css_selector* selector, bool used ) {
 			m_used		= used;
 			m_selector	= selector;
 		}

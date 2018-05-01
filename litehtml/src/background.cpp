@@ -1,9 +1,8 @@
 #include "html.h"
 #include "background.h"
 
-namespace litehtml
-{
-	background::background(void)
+namespace litehtml {
+	background::background( void )
 	{
 		m_attachment	= background_attachment_scroll;
 		m_repeat		= background_repeat_repeat;
@@ -23,7 +22,7 @@ namespace litehtml
 		m_origin		= val.m_origin;
 	}
 
-	background::~background(void)
+	background::~background( void )
 	{
 	}
 
@@ -43,8 +42,8 @@ namespace litehtml
 
 
 
-	background_paint::background_paint() 
-		: color(0, 0, 0, 0)
+	background_paint::background_paint()
+		: color( 0, 0, 0, 0 )
 	{
 		position_x		= 0;
 		position_y		= 0;

@@ -3,8 +3,7 @@
 #include <algorithm>
 #include "document.h"
 
-namespace litehtml
-{
+namespace litehtml {
 	/**
 	 * @brief extract_string
 	 * @param text - must be on the separator
@@ -12,17 +11,17 @@ namespace litehtml
 	 * @return next text position
 	 */
 
-	const tchar_t* extract_string( const tchar_t* text, xstring& result ) {
-
+	const tchar_t* extract_string( const tchar_t* text, xstring& result )
+	{
 		tchar_t	sep = *text++;
 		const tchar_t* start = text;
 
-		while( *text && *text!=sep ) {
+		while( *text && *text != sep ) {
 			text++;
 		}
 
-		if( *text==sep ) {
-			result.set( start, text-start );
+		if( *text == sep ) {
+			result.set( start, text - start );
 			text++;
 		}
 		else {
@@ -39,30 +38,30 @@ namespace litehtml
 	 * @return
 	 */
 
-	const tchar_t* extract_url( const tchar_t* text, xstring& result ) {
-
+	const tchar_t* extract_url( const tchar_t* text, xstring& result )
+	{
 		// direct string
-		if( *text=='\'' || *text=='"' ) {
+		if( *text == '\'' || *text == '"' ) {
 			return extract_string( text, result );
 		}
 
 		// url( ... )
-		if( t_strncmp(text,"url",3)==0 ) {
-			text = skip_sp( text+3 );
+		if( t_strncmp( text, "url", 3 ) == 0 ) {
+			text = skip_sp( text + 3 );
 
-			if( *text=='(' ) {
-				text = skip_sp( text+1 );
+			if( *text == '(' ) {
+				text = skip_sp( text + 1 );
 
 				// string
-				if( *text=='\'' || *text=='"' ) {
+				if( *text == '\'' || *text == '"' ) {
 					text = extract_string( text, result );
 
 					// skip to ')'
-					while( *text && *text!=')' ) {
+					while( *text && *text != ')' ) {
 						text++;
 					}
 
-					if( *text==')' ) {
+					if( *text == ')' ) {
 						text;;
 					}
 
@@ -72,13 +71,14 @@ namespace litehtml
 				// direct value
 				const tchar_t* start = text;
 
-				while( *text && *text!=')' ) {
+				while( *text && *text != ')' ) {
 					text++;
 				}
 
-				if( *text==')' ) {
-					const tchar_t* q = text-1;
-					while( q>start && (*q==' ' || *q=='\t') ) {
+				if( *text == ')' ) {
+					const tchar_t* q = text - 1;
+
+					while( q > start && ( *q == ' ' || *q == '\t' ) ) {
 						q--;
 					}
 
@@ -116,21 +116,19 @@ namespace litehtml
 	{
 		//todo: memory optim, think about not creating xstring but using directly str
 		xstring		text( str );
-
 		bool			cmt = false;
 		const tchar_t*	p = text.c_str( );
 
-		while( *p )
-		{
+		while( *p ) {
 			p = skip_sp( p );
-			if( *p==0 ) {
+
+			if( *p == 0 ) {
 				break;
 			}
 
 			if( !cmt ) {
-
 				//	start of comment
-				if( *p=='/' && p[1]=='*' ) {
+				if( *p == '/' && p[1] == '*' ) {
 					cmt = true;
 					p += 2;
 					continue;
@@ -139,40 +137,36 @@ namespace litehtml
 				//  @import
 				//	@media ...
 
-				if( *p=='@' ) {
-					p = parse_at_rule( p, baseurl, doc, media);
+				if( *p == '@' ) {
+					p = parse_at_rule( p, baseurl, doc, media );
 					continue;
 				}
 
 				// standard rule
-
 				//	selector
 				const tchar_t* sel_p = p;
-				while( *p && *p!='{ ') {
+
+				while( *p && *p != '{ ' ) {
 					p++;
 				}
 
 				//	rule
-				if( *p=='{' ) {
-
-					xstring		selector( sel_p, p-sel_p );
-
+				if( *p == '{' ) {
+					xstring		selector( sel_p, p - sel_p );
 					const tchar_t* rule_p = ++p;
-					while( *p && *p!='}' ) {
+
+					while( *p && *p != '}' ) {
 						p++;
 					}
 
-					if( *p=='}' ) {
-
-						xstring		rule( rule_p, p-rule_p );
-
+					if( *p == '}' ) {
+						xstring		rule( rule_p, p - rule_p );
 						style::ptr st = std::make_shared<style>();
-						st->add( rule.c_str(), baseurl);
-
-						parse_selectors(selector, st, media);
+						st->add( rule.c_str(), baseurl );
+						parse_selectors( selector, st, media );
 
 						if( media && doc ) {
-							doc->add_media_list(media);
+							doc->add_media_list( media );
 						}
 
 						p++;
@@ -180,8 +174,7 @@ namespace litehtml
 				}
 			}
 			else {
-
-				if( ch=='*' && p[1]=='/' ) {
+				if( ch == '*' && p[1] == '/' ) {
 					cmt = false;
 					p += 2;
 					continue;
@@ -218,30 +211,27 @@ namespace litehtml
 		bool added_something = false;
 
 		while( *p ) {
-
 			p = skip_sp( p );
-
 			tchar_t*	start = p;
-			while( *p && *p!=',' ) {
+
+			while( *p && *p != ',' ) {
 				p++;
 			}
 
-			if( p>start ) {
-
+			if( p > start ) {
 				// trim
-				const tchar_t* q = p-1;
-				while( q>start && (*q==' ' || *q=='\t') ) {
+				const tchar_t* q = p - 1;
+
+				while( q > start && ( *q == ' ' || *q == '\t' ) ) {
 					q--;
 				}
 
-				if( q>start ) {
-
+				if( q > start ) {
 					// parse selector
 					css_selector* selector = new css_selector( media, styles );
+					tstring	tok( start, q - start );
 
-					tstring	tok( start, q-start );
-					if( selector->parse(tok) )
-					{
+					if( selector->parse( tok ) ) {
 						selector->calc_specificity( );
 						add_selector( selector );
 						added_something = true;
@@ -259,12 +249,11 @@ namespace litehtml
 
 	void css::sort_selectors()
 	{
-		std::sort(m_selectors.begin(), m_selectors.end(),
-			 [](const css_selector::ptr& v1, const css_selector::ptr& v2)
-			 {
-				 return (*v1) < (*v2);
-			 }
-		);
+		std::sort( m_selectors.begin(), m_selectors.end(),
+		[]( const css_selector::ptr & v1, const css_selector::ptr & v2 ) {
+			return ( *v1 ) < ( *v2 );
+		}
+				 );
 	}
 
 	/**
@@ -275,21 +264,18 @@ namespace litehtml
 	 * @param media
 	 */
 
-	void css::parse_atrule( const tchar_t* text, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media)
+	void css::parse_atrule( const tchar_t* text, const tchar_t* baseurl, const std::shared_ptr<document>& doc, const media_query_list::ptr& media )
 	{
-		if( t_strncmp(text,"@import",7)==0 ) {
-
+		if( t_strncmp( text, "@import", 7 ) == 0 ) {
 			text += 7;
-
 			//	@import url;
 			//	@import url liste-requetes-media;
-
 			xstring	url;
 			text = extract_url( text, url );
 			text = skip_sp( text );
-
 			const tchar_t*	start = text;
-			while( *text && *text!=';' ) {
+
+			while( *text && *text != ';' ) {
 				text++;
 			}
 
@@ -349,27 +335,24 @@ namespace litehtml
 			*/
 		}
 
-		if( t_strncmp(text,"@media",6)==0 ) {
+		if( t_strncmp( text, "@media", 6 ) == 0 ) {
+			tstring::size_type b1 = text.find_first_of( _t( '{' ) );
+			tstring::size_type b2 = text.find_last_of( _t( '}' ) );
 
-			tstring::size_type b1 = text.find_first_of(_t('{'));
-			tstring::size_type b2 = text.find_last_of(_t('}'));
-
-			if(b1 != tstring::npos)
-			{
-				tstring media_type = text.substr(6, b1 - 6);
-				trim(media_type);
-				media_query_list::ptr new_media = media_query_list::create_from_string(media_type, doc);
-
+			if( b1 != tstring::npos ) {
+				tstring media_type = text.substr( 6, b1 - 6 );
+				trim( media_type );
+				media_query_list::ptr new_media = media_query_list::create_from_string( media_type, doc );
 				tstring media_style;
-				if(b2 != tstring::npos)
-				{
-					media_style = text.substr(b1 + 1, b2 - b1 - 1);
+
+				if( b2 != tstring::npos ) {
+					media_style = text.substr( b1 + 1, b2 - b1 - 1 );
 				}
 				else {
-					media_style = text.substr(b1 + 1);
+					media_style = text.substr( b1 + 1 );
 				}
 
-				parse_stylesheet(media_style.c_str(), baseurl, doc, new_media);
+				parse_stylesheet( media_style.c_str(), baseurl, doc, new_media );
 			}
 		}
 	}

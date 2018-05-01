@@ -1,28 +1,24 @@
 #pragma once
 
-namespace litehtml
-{
-	struct media_query_expression
-	{
+namespace litehtml {
+	struct media_query_expression {
 		typedef std::vector<media_query_expression>	vector;
 		media_feature	feature;
 		int				val;
 		int				val2;
 		bool			check_as_bool;
-		
-		media_query_expression()
-		{
+
+		media_query_expression() {
 			check_as_bool	= false;
 			feature			= media_feature_none;
 			val				= 0;
 			val2			= 0;
 		}
 
-		bool check(const media_features& features) const;
+		bool check( const media_features& features ) const;
 	};
 
-	class media_query
-	{
+	class media_query {
 	public:
 		typedef std::shared_ptr<media_query>	ptr;
 		typedef std::vector<media_query::ptr>	vector;
@@ -32,14 +28,13 @@ namespace litehtml
 		media_type						m_media_type;
 	public:
 		media_query();
-		media_query(const media_query& val);
+		media_query( const media_query& val );
 
-		static media_query::ptr create_from_string(const tstring& str, const std::shared_ptr<document>& doc);
-		bool check(const media_features& features) const;
+		static media_query::ptr create_from_string( const tstring& str, const std::shared_ptr<document>& doc );
+		bool check( const media_features& features ) const;
 	};
 
-	class media_query_list
-	{
+	class media_query_list {
 	public:
 		typedef std::shared_ptr<media_query_list>	ptr;
 		typedef std::vector<media_query_list::ptr>	vector;
@@ -48,14 +43,14 @@ namespace litehtml
 		bool				m_is_used;
 	public:
 		media_query_list();
-		media_query_list(const media_query_list& val);
+		media_query_list( const media_query_list& val );
 
-		static media_query_list::ptr create_from_string(const tstring& str, const std::shared_ptr<document>& doc);
+		static media_query_list::ptr create_from_string( const tstring& str, const std::shared_ptr<document>& doc );
 		bool is_used() const;
-		bool apply_media_features(const media_features& features);	// returns true if the m_is_used changed
+		bool apply_media_features( const media_features& features );	// returns true if the m_is_used changed
 	};
 
-	inline media_query_list::media_query_list(const media_query_list& val)
+	inline media_query_list::media_query_list( const media_query_list& val )
 	{
 		m_is_used	= val.m_is_used;
 		m_queries	= val.m_queries;

@@ -28,7 +28,7 @@ struct GumboInternalParser;
 // Release the memory used for an GumboAttribute, including the attribute
 // itself.
 void gumbo_destroy_attribute(
-    struct GumboInternalParser* parser, GumboAttribute* attribute);
+	struct GumboInternalParser* parser, GumboAttribute* attribute );
 
 #ifdef __cplusplus
 }

@@ -1,18 +1,15 @@
 #ifndef __XLIST_H
 #define __XLIST_H
 
-namespace litehtml
-{
+namespace litehtml {
 	template <class type>
-	struct 	xListNode
-	{
+	struct 	xListNode {
 		type*	next;
 		type*	prev;
 	};
 
 	template <class type>
-	struct xList
-	{
+	struct xList {
 		type*	first;
 		type*	last;
 
@@ -25,7 +22,7 @@ namespace litehtml
 		}
 
 		type* 	add( type* el ) {
-			if( first==NULL ) {
+			if( first == NULL ) {
 				first = last = el;
 				el->next = el->prev = NULL;
 			}
